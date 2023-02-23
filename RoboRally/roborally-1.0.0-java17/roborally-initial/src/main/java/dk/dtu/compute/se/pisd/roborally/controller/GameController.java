@@ -38,6 +38,12 @@ public class GameController {
         this.board = board;
     }
 
+    // Method for switching turns
+    public void nextTurn() {
+        int currenPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
+        board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
+        //int i = currenPlayerIndex + 1;
+    }
     /**
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
@@ -59,9 +65,7 @@ public class GameController {
         }
         // Moves player to chosen space
         board.getCurrentPlayer().setSpace(space);
-        
-
-
+        nextTurn();
     }
 
     /**
