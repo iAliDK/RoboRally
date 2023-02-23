@@ -64,6 +64,12 @@ public class GameController {
         //     is not yet implemented
     };
 
+    /**
+     *
+     * @param source
+     * @param target
+     * @return
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();

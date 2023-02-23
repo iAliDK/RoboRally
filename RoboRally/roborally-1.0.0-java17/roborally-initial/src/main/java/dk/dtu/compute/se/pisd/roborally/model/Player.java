@@ -48,6 +48,13 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+    /**
+     * Constructor method "Player" creates a new player with the specified board, color, and name
+     *
+     * @param board The board where the player is going to play
+     * @param color The color of the player
+     * @param name The name of the player
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -70,6 +77,17 @@ public class Player extends Subject {
         return name;
     }
 
+    /** Checks whether the name is a null or if it's different from the current field
+     * if not null and name not already in field, it sets the field to the new name value passed as a parameter
+     * it then calls the method notifyChange
+     * Checks whether space is null
+     * if not null, it calls playerChanged
+     *
+     * Overall, the setName method updates the name field of the object,
+     * notifies observers of the change,
+     * and updates the game board if necessary.
+     * @param name
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -84,6 +102,10 @@ public class Player extends Subject {
         return color;
     }
 
+    /**
+     *
+     * @param color The color chosen for the player
+     */
     public void setColor(String color) {
         this.color = color;
         notifyChange();
@@ -96,6 +118,10 @@ public class Player extends Subject {
         return space;
     }
 
+    /**
+     * Space where the player is located on the board
+     * @param space The new space to set for the player.
+     */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -115,6 +141,11 @@ public class Player extends Subject {
         return heading;
     }
 
+    /**
+     * Sets the heading direction for the player
+     *
+     * @param heading The new heading direction
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
