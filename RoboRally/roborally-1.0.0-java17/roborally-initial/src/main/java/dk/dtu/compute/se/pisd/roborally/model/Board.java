@@ -218,4 +218,7 @@ public class Board extends Subject {
     //      state the board (game) contains the number of moves, which then can
     //      be used to extend the status message including the number of
 
+    public void getNumberOfTurns(){
+
+    }
 }
