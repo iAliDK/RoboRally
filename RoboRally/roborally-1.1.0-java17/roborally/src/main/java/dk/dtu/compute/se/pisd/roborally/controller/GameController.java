@@ -38,6 +38,10 @@ public class GameController {
         this.board = board;
     }
 
+    public void nextTurn() {
+        int currenPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
+        board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
+    }
     /**
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
@@ -53,8 +57,14 @@ public class GameController {
         //   - the counter of moves in the game should be increased by one
         //     if the player is moved
 
+    // Checks whether the space is free
+        if(space.getPlayer() != null){
+        return;
     }
-
+    // Moves player to chosen space
+        board.getCurrentPlayer().setSpace(space);
+    nextTurn();
+    }
     // XXX: V2
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
