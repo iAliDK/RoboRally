@@ -208,137 +208,33 @@ public class GameController {
 
     // TODO Assignment V2
     public void moveForward(@NotNull Player player) {
-        int x = board.getCurrentPlayer().getSpace().x;
-        int y = board.getCurrentPlayer().getSpace().y;
-        Space space = player.getSpace();
-
-        int newX = x;
-        int newY = y;
-
-        Heading heading = player.getHeading();
-
-        switch (heading) {
-            case SOUTH:
-                newY += 1;
-                break;
-            case WEST:
-                newX -= 1;
-                break;
-            case NORTH:
-                newY -= 1;
-                break;
-            case EAST:
-                newX += 1;
-                break;
-
-        }
-        Space newSpace = board.getSpace(newX, newY);
-
+        Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
             if (newSpace.getPlayer() == null) {
-                space.setPlayer(null);
+                player.getSpace().setPlayer(null);
                 player.setSpace(newSpace);
                 newSpace.setPlayer(player);
 
         }
-        nextTurn();
     }
 
     // TODO Assignment V2
     public void fastForward(@NotNull Player player) {
-
-        int x = board.getCurrentPlayer().getSpace().x;
-        int y = board.getCurrentPlayer().getSpace().y;
-        Space space = player.getSpace();
-
-        int newX = x;
-        int newY = y;
-
-        Heading heading = player.getHeading();
-
-        switch (heading) {
-            case SOUTH:
-                newY += 2;
-                break;
-            case WEST:
-                newX -= 2;
-                break;
-            case NORTH:
-                newY -= 2;
-                break;
-            case EAST:
-                newX += 2;
-                break;
-
-        }
-        Space newSpace = board.getSpace(newX, newY);
-
-        if (newSpace.getPlayer() == null) {
-            space.setPlayer(null);
-            player.setSpace(newSpace);
-            newSpace.setPlayer(player);
-
-        }
-        nextTurn();
+        moveForward(player);
+        moveForward(player);
     }
 
 
     // TODO Assignment V2
     public void turnRight(@NotNull Player player) {
-            int x = board.getCurrentPlayer().getSpace().x;
-            int y = board.getCurrentPlayer().getSpace().y;
-            // Space space = player.getSpace();
-            // int newX = x;
-            // int newY = y;
-
-            Heading heading = player.getHeading();
-
-            switch (heading) {
-                case SOUTH:
-                    player.setHeading(Heading.WEST);
-                    break;
-                case WEST:
-                    player.setHeading(Heading.NORTH);
-                    break;
-                case NORTH:
-                    player.setHeading(Heading.EAST);
-                    break;
-                case EAST:
-                    player.setHeading(Heading.SOUTH);
-                    break;
-
-            }
-            nextTurn();
+        player.setHeading(player.getHeading().next());
         }
 
 
 
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
-        int x = board.getCurrentPlayer().getSpace().x;
-        int y = board.getCurrentPlayer().getSpace().y;
-        //int newX = x;
-        //int newY = y;
-
-        Heading heading = player.getHeading();
-
-        switch (heading) {
-            case SOUTH:
-                player.setHeading(Heading.EAST);
-                break;
-            case WEST:
-                player.setHeading(Heading.SOUTH);
-                break;
-            case NORTH:
-                player.setHeading(Heading.WEST);
-                break;
-            case EAST:
-                player.setHeading(Heading.NORTH);
-                break;
-
-        }
-        nextTurn();
-
+        player.setHeading(player.getHeading().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
