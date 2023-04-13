@@ -153,12 +153,17 @@ public class GameController {
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
-                    Command command = card.command;
+                    Command command=card.command;
+                    if (command.isInteractive()){
+                    board.setPhase(Phase.PLAYER_INTERACTION);
+                    return;
+                    }
                     if (command.isInteractive()){
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
                     executeCommand(currentPlayer, command);
+
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
