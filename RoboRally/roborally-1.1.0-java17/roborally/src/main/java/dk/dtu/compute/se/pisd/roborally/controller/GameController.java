@@ -259,6 +259,12 @@ public class GameController {
         }
     }
 
+
+    public void executeCommandOptionAndContinue(){
+        
+    }
+
+
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
