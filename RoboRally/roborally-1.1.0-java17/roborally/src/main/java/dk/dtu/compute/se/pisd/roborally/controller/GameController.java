@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.view.PlayerView;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -153,17 +154,17 @@ public class GameController {
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
-                    Command command=card.command;
+                    Command command = card.command;
                     if (command.isInteractive()){
-                    board.setPhase(Phase.PLAYER_INTERACTION);
-                    return;
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                        return;
                     }
                     if (command.isInteractive()){
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
+                    executeCommandOptionAndContinue(command); //Idk
                     executeCommand(currentPlayer, command);
-
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -259,11 +260,30 @@ public class GameController {
         }
     }
 
+    public void executeCommandOptionAndContinue(Command command) {
+        Phase phase = board.getPhase();
+        Player currentPlayer = board.getCurrentPlayer();
 
-    public void executeCommandOptionAndContinue(){
-        
+        // Setting the phase to ACTIVATION when and INTERACTIVE card is put
+        if (phase == Phase.PLAYER_INTERACTION && currentPlayer != null) {
+            board.setPhase(Phase.ACTIVATION);
+
+            // We have made a switch cases?
+            switch (command){
+                case LEFT:
+                    executeCommand(currentPlayer, Command.LEFT);
+                    break;
+
+                case RIGHT:
+                    executeCommand(currentPlayer, Command.RIGHT);
+                    break;
+                //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
+            }
+
+            //executeCommand(currentPlayer, Command.RIGHT);
+            executeNextStep(); // move to next program card
+        }
     }
-
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
@@ -273,5 +293,4 @@ public class GameController {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
     }
-
 }
