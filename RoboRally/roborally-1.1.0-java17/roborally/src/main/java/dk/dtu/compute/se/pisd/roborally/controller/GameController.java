@@ -307,12 +307,12 @@ public class GameController {
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
                     //command.getOptions().get(0);
-                    break;
+                    return;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
                     //command.getOptions().get(1);
-                    break;
+                    return;
                 //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
             }
 
