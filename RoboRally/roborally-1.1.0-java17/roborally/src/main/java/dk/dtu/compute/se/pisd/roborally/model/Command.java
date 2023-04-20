@@ -42,6 +42,8 @@ public enum Command {
     LEFT("Turn Left"),
     FAST_FORWARD("Fast Fwd"),
     FAST_FAST_FORWARD("Move 3 Fwd"),
+    U_TURN("U-turn"),
+    BACK_UP("Back up"),
 
     // XXX Assignment P3
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);

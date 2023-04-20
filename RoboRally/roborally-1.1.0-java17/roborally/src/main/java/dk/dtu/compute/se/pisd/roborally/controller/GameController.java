@@ -214,8 +214,14 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
-                case FAST_FAST_FORWARD:FORWARD:
+                case FAST_FAST_FORWARD:
                     this.fastFastForward(player);
+                    break;
+                case U_TURN:
+                this.uTurn(player);
+                    break;
+                case BACK_UP:
+                    this.backUp(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -259,6 +265,22 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    // U TURN
+    public void uTurn(@NotNull Player player) {
+        player.setHeading(player.getHeading().prev().prev());
+    }
+
+    public void backUp(@NotNull Player player) {
+        Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
+
+        if (newSpace.getPlayer() == null) {
+            player.getSpace().setPlayer(null);
+            player.setSpace(newSpace);
+            newSpace.setPlayer(player);
+
+        }
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
