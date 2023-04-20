@@ -159,12 +159,8 @@ public class GameController {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
-                    if (command.isInteractive()){
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
-                    executeCommandOptionAndContinue(command); //Idk
-                    executeCommand(currentPlayer, command);
+                        executeCommand(currentPlayer, command);
+
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -269,21 +265,54 @@ public class GameController {
             board.setPhase(Phase.ACTIVATION);
 
             // We have made a switch cases?
-            switch (command){
+
+            switch (command) {
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
-                    break;
+                    return;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
-                    break;
-                //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
+                    return;
+
+            }
+            //New shit under this. Copied from executeNextStep(). Trying to make it remove the interaction card after it runs it once. Doesnt work.
+            //Might be because it returns the command left/right from above switch command before it, so it never gets down here.
+            currentPlayer = board.getCurrentPlayer();
+            if (phase == Phase.ACTIVATION && currentPlayer != null) {
+                int step = board.getStep();
+                if (step >= 0 && step < Player.NO_REGISTERS) {
+
+//                    if (card != null) {
+//                        command = card.command;
+//                        return;
+//                    }
+
+                    int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+                    if (nextPlayerNumber < board.getPlayersNumber()) {
+                        board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+                    } else {
+                        step++;
+                        if (step < Player.NO_REGISTERS) {
+                            makeProgramFieldsVisible(step);
+                            board.setStep(step);
+                            board.setCurrentPlayer(board.getPlayer(0));
+                        } else {
+                            startProgrammingPhase();
+                        }
+                    }
+                }
+
             }
 
-            //executeCommand(currentPlayer, Command.RIGHT);
-            executeNextStep(); // move to next program card
+
         }
     }
+            //executeCommand(currentPlayer, Command.RIGHT);
+//            executeNextStep(); // move to next program card
+
+//        }
+
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
