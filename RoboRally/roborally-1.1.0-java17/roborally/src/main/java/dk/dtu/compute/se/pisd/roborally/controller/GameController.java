@@ -155,12 +155,20 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
+                    if (command.isInteractive()) {
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                            //executeCommand(currentPlayer, Command.LEFT);
+                            return;
+                    }
                     if (command.isInteractive()){
                         board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
-                        executeCommand(currentPlayer, command);
+                           //executeCommand(currentPlayer, Command.RIGHT);
+                            return;
 
+                        //executeCommandOptionAndContinue(command.getOptions().get(1))
+                    }
+                    //executeCommandOptionAndContinue(command);
+                    executeCommand(currentPlayer, command);
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -206,6 +214,15 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case FAST_FAST_FORWARD:
+                    this.fastFastForward(player);
+                    break;
+                case U_TURN:
+                this.uTurn(player);
+                    break;
+                case BACK_UP:
+                    this.backUp(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -231,6 +248,11 @@ public class GameController {
         moveForward(player);
     }
 
+    public void fastFastForward(@NotNull Player player) {
+        fastForward(player);
+        moveForward(player);
+    }
+
 
     // TODO Assignment V2
     public void turnRight(@NotNull Player player) {
@@ -242,6 +264,22 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    // U TURN
+    public void uTurn(@NotNull Player player) {
+        player.setHeading(player.getHeading().prev().prev());
+    }
+
+    public void backUp(@NotNull Player player) {
+        Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
+
+        if (newSpace.getPlayer() == null) {
+            player.getSpace().setPlayer(null);
+            player.setSpace(newSpace);
+            newSpace.setPlayer(player);
+
+        }
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
@@ -265,54 +303,23 @@ public class GameController {
             board.setPhase(Phase.ACTIVATION);
 
             // We have made a switch cases?
-
-            switch (command) {
+            switch (command){
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
-                    return;
+                    //command.getOptions().get(0);
+                    break;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
-                    return;
-
-            }
-            //New shit under this. Copied from executeNextStep(). Trying to make it remove the interaction card after it runs it once. Doesnt work.
-            //Might be because it returns the command left/right from above switch command before it, so it never gets down here.
-            currentPlayer = board.getCurrentPlayer();
-            if (phase == Phase.ACTIVATION && currentPlayer != null) {
-                int step = board.getStep();
-                if (step >= 0 && step < Player.NO_REGISTERS) {
-
-//                    if (card != null) {
-//                        command = card.command;
-//                        return;
-//                    }
-
-                    int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                    if (nextPlayerNumber < board.getPlayersNumber()) {
-                        board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                    } else {
-                        step++;
-                        if (step < Player.NO_REGISTERS) {
-                            makeProgramFieldsVisible(step);
-                            board.setStep(step);
-                            board.setCurrentPlayer(board.getPlayer(0));
-                        } else {
-                            startProgrammingPhase();
-                        }
-                    }
-                }
-
+                    //command.getOptions().get(1);
+                    break;
+                //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
             }
 
-
+            //executeCommand(currentPlayer, Command.RIGHT);
+            executeNextStep(); // move to next program card
         }
     }
-            //executeCommand(currentPlayer, Command.RIGHT);
-//            executeNextStep(); // move to next program card
-
-//        }
-
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

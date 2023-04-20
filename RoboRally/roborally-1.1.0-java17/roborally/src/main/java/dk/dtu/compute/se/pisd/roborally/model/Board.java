@@ -195,6 +195,28 @@ public class Board extends Subject {
             case EAST:
                 x = (x + 1) % width;
                 break;
+
+        }
+        return getSpace(x, y);
+    }
+
+    // Method that finds the space BEHIND the player
+    public Space getSpaceBehind(@NotNull Space space, @NotNull Heading heading) {
+        int x = space.x;
+        int y = space.y;
+        switch (heading) {
+            case SOUTH:
+                y = (y + height - 1) % height;
+                break;
+            case WEST:
+                x = (x + 1) % width;
+                break;
+            case NORTH:
+                y = (y + 1) % height;
+                break;
+            case EAST:
+                x = (x + width - 1) % width;
+                break;
         }
 
         return getSpace(x, y);

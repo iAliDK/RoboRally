@@ -21,6 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,9 +41,13 @@ public enum Command {
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     FAST_FORWARD("Fast Fwd"),
+    FAST_FAST_FORWARD("Move 3 Fwd"),
+    U_TURN("U-turn"),
+    BACK_UP("Back up"),
 
     // XXX Assignment P3
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
+
 
     final public String displayName;
 
@@ -66,5 +72,4 @@ public enum Command {
     public List<Command> getOptions() {
         return options;
     }
-
 }
