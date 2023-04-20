@@ -249,8 +249,7 @@ public class GameController {
     }
 
     public void fastFastForward(@NotNull Player player) {
-        moveForward(player);
-        moveForward(player);
+        fastForward(player);
         moveForward(player);
     }
 
