@@ -155,15 +155,19 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
-                    if (command.isInteractive()){
+                    if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                            //executeCommand(currentPlayer, Command.LEFT);
+                            return;
                     }
                     if (command.isInteractive()){
                         board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                           //executeCommand(currentPlayer, Command.RIGHT);
+                            return;
+
+                        //executeCommandOptionAndContinue(command.getOptions().get(1))
                     }
-                    executeCommandOptionAndContinue(command); //Idk
+                    //executeCommandOptionAndContinue(command);
                     executeCommand(currentPlayer, command);
                 }
 
@@ -210,6 +214,9 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case FAST_FAST_FORWARD:FORWARD:
+                    this.fastFastForward(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -231,6 +238,12 @@ public class GameController {
 
     // TODO Assignment V2
     public void fastForward(@NotNull Player player) {
+        moveForward(player);
+        moveForward(player);
+    }
+
+    public void fastFastForward(@NotNull Player player) {
+        moveForward(player);
         moveForward(player);
         moveForward(player);
     }
@@ -272,10 +285,12 @@ public class GameController {
             switch (command){
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
+                    //command.getOptions().get(0);
                     break;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
+                    //command.getOptions().get(1);
                     break;
                 //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
             }
