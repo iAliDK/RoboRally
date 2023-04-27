@@ -295,17 +295,21 @@ public class GameController {
             board.setPhase(Phase.ACTIVATION);
 
             // We have made a switch cases?
-            switch (command){
+            switch (command) {
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
-                    return;
+                    break;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
-                    return;
-                 // execute selected option for current player
+                    break;
+                // execute selected option for current player
             }
-            executeNextStep(); // move to next program card
+            if (phase == Phase.PROGRAMMING && currentPlayer != null) {
+                board.setPhase(Phase.ACTIVATION);
+                executeNextStep();
+                //executeNextStep(); // move to next program card
+            }
         }
     }
 
