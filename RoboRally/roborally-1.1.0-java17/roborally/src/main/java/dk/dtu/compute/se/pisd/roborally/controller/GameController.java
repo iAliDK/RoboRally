@@ -157,17 +157,9 @@ public class GameController {
                     Command command = card.command;
                     if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
-                            //executeCommand(currentPlayer, Command.LEFT);
                             return;
                     }
-                    if (command.isInteractive()){
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                           //executeCommand(currentPlayer, Command.RIGHT);
-                            return;
 
-                        //executeCommandOptionAndContinue(command.getOptions().get(1))
-                    }
-                    //executeCommandOptionAndContinue(command);
                     executeCommand(currentPlayer, command);
                 }
 
@@ -306,17 +298,13 @@ public class GameController {
             switch (command){
                 case LEFT:
                     executeCommand(currentPlayer, Command.LEFT);
-                    //command.getOptions().get(0);
                     return;
 
                 case RIGHT:
                     executeCommand(currentPlayer, Command.RIGHT);
-                    //command.getOptions().get(1);
                     return;
-                //executeCommand(currentPlayer, Command.LEFT); // execute selected option for current player
+                 // execute selected option for current player
             }
-
-            //executeCommand(currentPlayer, Command.RIGHT);
             executeNextStep(); // move to next program card
         }
     }
