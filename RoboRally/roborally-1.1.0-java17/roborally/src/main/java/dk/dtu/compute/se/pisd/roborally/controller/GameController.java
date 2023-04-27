@@ -305,11 +305,34 @@ public class GameController {
                     break;
                 // execute selected option for current player
             }
-            if (phase == Phase.PROGRAMMING && currentPlayer != null) {
-                board.setPhase(Phase.ACTIVATION);
-                executeNextStep();
-                //executeNextStep(); // move to next program card
+            int step = board.getStep();
+            int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+            if (nextPlayerNumber < board.getPlayersNumber()) {
+                board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+            } else {
+                step++;
+                if (step < Player.NO_REGISTERS) {
+                    makeProgramFieldsVisible(step);
+                    board.setStep(step);
+                    board.setCurrentPlayer(board.getPlayer(0));
+                    executeNextStep();
+                } else {
+                    startProgrammingPhase();
+                }
             }
+
+            CommandCard card = currentPlayer.getProgramField(step).getCard();
+            if (card != null) {
+                continuePrograms();
+            }
+
+            /*
+            if (phase == Phase.ACTIVATION && currentPlayer != null) {
+                executeNextStep();
+                board.setPhase(Phase.PROGRAMMING);
+
+                //executeNextStep(); // move to next program card
+            }*/
         }
     }
 
