@@ -59,6 +59,12 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
+    /**
+     * Show dialog and makes players choose number of players
+     * creates a new game, and sets up the board
+     * If a game is already in progress, prompts the user to
+     * save the game or abort before starting a new game.
+     */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");

@@ -274,6 +274,12 @@ public class GameController {
         }
     }
 
+    /**
+     *
+     * @param source
+     * @param target
+     * @return
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();
