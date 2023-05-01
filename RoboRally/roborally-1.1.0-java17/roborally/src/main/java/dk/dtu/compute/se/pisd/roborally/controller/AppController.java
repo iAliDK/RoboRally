@@ -41,9 +41,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * This class is the controller for the whole application. It is the
+ * observer of the {@link RoboRally} class, and it is the controller
+ * for the {@link GameController}.
  *
  */
 public class AppController implements Observer {
@@ -59,6 +59,11 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
+/**
+     * This method is called by the {@link RoboRally} class when the
+     * application is started. It sets up the application and shows
+     * the main window.
+     */
     /**
      * Show dialog and makes players choose number of players
      * creates a new game, and sets up the board
@@ -99,6 +104,7 @@ public class AppController implements Observer {
         }
     }
 
+
     public void saveGame() {
         // XXX needs to be implemented eventually
     }
@@ -133,6 +139,9 @@ public class AppController implements Observer {
         return false;
     }
 
+    /**
+     * Method that is used when you want to close the game.
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);

@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -26,11 +27,10 @@ import dk.dtu.compute.se.pisd.roborally.view.PlayerView;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This is the controller class for the game. It is responsible for
+ * the game logic.
  */
+
 public class GameController {
 
     final public Board board;
@@ -67,6 +67,14 @@ public class GameController {
         board.getCurrentPlayer().setSpace(space);
     }
     // XXX: V2
+
+
+    /**
+     * It sets the phase to programming, the current player to the first player and the step to 0
+     * It also sets the cards in the program field to null and the cards in the card field to random cards
+     * It is used in executeCommandOptionAndContinue and executeNextStep
+     */
+
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -97,6 +105,10 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * This method stops the programming phase and activates the activation phase
+     */
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -104,6 +116,7 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
     }
+
 
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
@@ -116,6 +129,7 @@ public class GameController {
         }
     }
 
+
     // XXX: V2
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -127,17 +141,24 @@ public class GameController {
         }
     }
 
+    /**
+     * This method executes all steps of the current player
+     */
     // XXX: V2
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
+    /**
+     * This method executes the next step of the current player
+     */
     // XXX: V2
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
+
 
     // XXX: V2
     private void continuePrograms() {
@@ -146,6 +167,14 @@ public class GameController {
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
+    /**
+     * This method executes the next step of the current player
+     * and changes the phase to PLAYER_INTERACTION if the command
+     * is interactive
+     *
+     * This method is used in continuePrograms
+     *
+     */
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
@@ -186,6 +215,14 @@ public class GameController {
         }
     }
 
+    /**
+     * This method executes the given command for the given player
+     *
+     * This method is used in executeNextStep
+     *
+     * @param player
+     * @param command
+     */
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
@@ -223,6 +260,11 @@ public class GameController {
 
 
     // TODO Assignment V2
+    /**
+     * This method moves the player one space forward
+     *
+     * @param player
+     */
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
@@ -235,11 +277,21 @@ public class GameController {
     }
 
     // TODO Assignment V2
+    /**
+     * This method moves the player two spaces forward
+     *
+     * @param player
+     */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
     }
 
+    /**
+     * This method moves the player three spaces forward
+     *
+     * @param player
+     */
     public void fastFastForward(@NotNull Player player) {
         fastForward(player);
         moveForward(player);
@@ -247,6 +299,11 @@ public class GameController {
 
 
     // TODO Assignment V2
+    /**
+     * This method turns the player to the right
+     *
+     * @param player
+     */
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
         }
@@ -254,15 +311,31 @@ public class GameController {
 
 
     // TODO Assignment V2
+    /**
+     * This method turns the player to the left
+     *
+     * @param player
+     */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
-    // U TURN
+    /**
+     * This method turns the player around
+     * (makes a u-turn)
+     *
+     * @param player
+     */
     public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().prev().prev());
     }
 
+    /**
+     * This method moves the player one space backwards
+     * without changing the heading
+     *
+     * @param player
+     */
     public void backUp(@NotNull Player player) {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
@@ -274,7 +347,11 @@ public class GameController {
         }
     }
 
+
     /**
+     * This method checks if a card can be moved from the source field to the target field.
+     * If it can, the card is moved and the method returns true.
+     * If it can't, the method returns false.
      *
      * @param source
      * @param target
@@ -292,6 +369,13 @@ public class GameController {
         }
     }
 
+    /**
+     * This method executes the chosen option for the current player
+     * and continues with the next step
+     * (or the next player if the current player has no more steps)
+     * or starts the programming phase if all players have finished their steps.
+     * @param command
+     */
     public void executeCommandOptionAndContinue(Command command) {
         Phase phase = board.getPhase();
         Player currentPlayer = board.getCurrentPlayer();
@@ -331,16 +415,9 @@ public class GameController {
             if (card != null) {
                 continuePrograms();
             }
-
-            /*
-            if (phase == Phase.ACTIVATION && currentPlayer != null) {
-                executeNextStep();
-                board.setPhase(Phase.PROGRAMMING);
-
-                //executeNextStep(); // move to next program card
-            }*/
         }
     }
+
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
