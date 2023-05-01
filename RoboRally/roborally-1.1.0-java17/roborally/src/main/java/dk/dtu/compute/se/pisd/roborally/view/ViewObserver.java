@@ -26,10 +26,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import javafx.application.Platform;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This interface extends the {@link Observer} interface with a method to update
+ * the view. The update method is called by the {@link Subject} when the
+ * {@link Subject} has changed.
  */
 public interface ViewObserver extends Observer {
 

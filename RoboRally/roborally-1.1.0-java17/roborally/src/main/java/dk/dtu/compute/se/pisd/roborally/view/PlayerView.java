@@ -35,9 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The view of a player.
  *
  */
 public class PlayerView extends Tab implements ViewObserver {
@@ -63,6 +61,12 @@ public class PlayerView extends Tab implements ViewObserver {
     private VBox playerInteractionPanel;
 
     private GameController gameController;
+
+    /**
+     * Constructor for the view of a player.
+     * @param gameController
+     * @param player
+     */
 
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
@@ -134,6 +138,11 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
+    /**
+     * Updates the view of the player.
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {

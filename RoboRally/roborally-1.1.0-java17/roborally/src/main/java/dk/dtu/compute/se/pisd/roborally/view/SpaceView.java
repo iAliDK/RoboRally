@@ -34,9 +34,7 @@ import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The view of a space on the board.
  *
  */
 public class SpaceView extends StackPane implements ViewObserver {
@@ -46,7 +44,11 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
-
+    /**
+     * The constructor of the space view.
+     *
+     * @param space
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -91,6 +93,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * This method is called, when the space has changed. It updates the
+     * view of the space.
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {

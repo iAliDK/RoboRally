@@ -38,10 +38,7 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * The view of the board.
  */
 public class CardFieldView extends GridPane implements ViewObserver {
 
@@ -67,6 +64,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     private GameController gameController;
 
+    /**
+     * This class handles the drag detection on the card field view. It is
+     * responsible for starting the drag and drop operation.
+     *
+     * @param gameController
+     * @param field
+     */
     public CardFieldView(@NotNull GameController gameController, @NotNull CommandCardField field) {
         this.gameController = gameController;
         this.field = field;
@@ -140,6 +144,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
         return null;
     }
 
+    /**
+     * This method is called when the view is updated. It updates the
+     * background color of the card field view according to the state of the
+     * card field.
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == field && subject != null) {
@@ -153,7 +164,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {
-
+        /**
+         * This method is called when a drag is detected on the card field
+         * view. It starts the drag and drop operation.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(MouseEvent event) {
             Object t = event.getTarget();
@@ -182,7 +198,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragOverHandler implements EventHandler<DragEvent> {
-
+        /**
+         * This method is called when a full press-drag-release gesture enters
+         * the target.
+         * The transfer mode of the gesture is set to move.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -204,7 +226,19 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
-
+        /**
+         * This method is called when a full press-drag-release gesture enters
+         * the target.
+         * The transfer mode of the gesture is transferred to the target.
+         * The accept transfer modes for the gesture are checked and if the
+         * gesture source is not equal to the target, the accept transfer modes
+         * are updated to have only the common transfer modes with the gesture
+         * source.
+         * The drag event is consumed.
+         * The default implementation is a no-op.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -227,7 +261,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
-
+        /**
+         * This method is called when a drag and drop gesture exits the target.
+         * The drag and drop gesture entered the target before this event
+         * occurred.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -250,7 +290,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragDroppedHandler implements EventHandler<DragEvent> {
-
+        /**
+         * This method is called when a drag and drop gesture is dropped on the
+         * target. The drag and drop gesture is accepted by the target before
+         * this method is called.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -290,6 +336,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
 
+        /**
+         * This method is called when the drag and drop gesture is done.
+         *
+         * @param event the event which occurred
+         */
         @Override
         public void handle(DragEvent event) {
             Object t = event.getTarget();
@@ -303,7 +354,3 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
 }
-
-
-
-
