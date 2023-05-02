@@ -35,7 +35,12 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The view of a space on the board.
- *
+ * <p>
+ * This view is a {@link StackPane} and shows the space as a square with a
+ * border and a player on it.
+ * The player is shown as a triangle with the color of the player.
+ * The space view is an observer of the space and updates itself when the
+ * space changes.
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
@@ -81,14 +86,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
                     10.0, 20.0,
-                    20.0, 0.0 );
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
                 arrow.setFill(Color.MEDIUMPURPLE);
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
+            arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(arrow);
         }
     }
@@ -96,6 +101,15 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * This method is called, when the space has changed. It updates the
      * view of the space.
+     * <p>
+     * The view is updated by drawing a border around the space and
+     * showing the player on the space.
+     * The border is drawn with the color of the player, if the space
+     * is a checkpoint.
+     * The player is shown as a triangle with the color of the player.
+     * If the space is a checkpoint, the player is shown in the color
+     * of the player.
+     *
      * @param subject
      */
     @Override
@@ -104,5 +118,4 @@ public class SpaceView extends StackPane implements ViewObserver {
             updatePlayer();
         }
     }
-
 }
