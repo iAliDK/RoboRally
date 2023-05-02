@@ -24,9 +24,13 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 /**
- * ...
+ * This class represents a space on the board.
+ * It also keeps track of the player that is on the space.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The class itself extends the {@link Subject} class, which means that
+ * it is observable and can notify its observers about changes.
+ *
+ * A space can have a player on it.
  *
  */
 public class Space extends Subject {
@@ -38,6 +42,13 @@ public class Space extends Subject {
 
     private Player player;
 
+    /**
+     * Constructor for a space on the board.
+     *
+     * @param board the board the space belongs to
+     * @param x the x-coordinate of the space
+     * @param y the y-coordinate of the space
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -49,6 +60,11 @@ public class Space extends Subject {
         return player;
     }
 
+    /**
+     * Sets the player on this space.
+     *
+     * @param player the player to be set on this space
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
