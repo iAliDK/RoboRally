@@ -39,12 +39,27 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The view of the board.
+ * This class handles the drag detection on the card field view
+ * and the drag and drop of the cards.
+ * It also handles the highlighting of the card field view
+ * when the player is active.
+ * <p>
+ * The card field view is a grid pane with a label for the player name
+ * and a card view for the card.
+ * The card field view is also a subject of the observer pattern
+ * and notifies its observers when the card field view is clicked.
+ * The observers are the game controller and the player view.
+ * The game controller is notified when the card field view is clicked
+ * and the player view is notified when the card field view is clicked
+ * and the player is active.
+ * The card field view is also a subject of the observer pattern
+ * and notifies its observers when the card field view is clicked.
  */
 public class CardFieldView extends GridPane implements ViewObserver {
 
     // This data format helps avoiding transfers of e.g. Strings from other
     // programs which can copy/paste Strings.
-    final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
+    final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
     final public static int CARDFIELD_WIDTH = 65;
     final public static int CARDFIELD_HEIGHT = 100;
@@ -56,7 +71,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
-    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
+    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
     private CommandCardField field;
 
@@ -67,6 +82,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
     /**
      * This class handles the drag detection on the card field view. It is
      * responsible for starting the drag and drop operation.
+     * <p>
+     * The drag detection is started when the mouse is pressed on the
+     * card field view. The dragboard is set with the card field view
+     * and the card field view is set to be the source of the dragboard.
+     * The dragboard is also set with the data format of the card field view.
+     * The dragboard is set with the card field view and the card field view
+     * is set to be the source of the dragboard.
      *
      * @param gameController
      * @param field
@@ -148,6 +170,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
      * This method is called when the view is updated. It updates the
      * background color of the card field view according to the state of the
      * card field.
+     * <p>
+     * If the card field is visible, the background color is set to
+     * {@link #BG_DEFAULT}. If the card field is active, the background
+     * color is set to {@link #BG_ACTIVE}. If the card field is done,
+     * the background color is set to {@link #BG_DONE}.
+     * If the card field is not visible, the background color is set to
+     * {@link #BG_DEFAULT}.
      *
      * @param subject
      */
@@ -167,6 +196,14 @@ public class CardFieldView extends GridPane implements ViewObserver {
         /**
          * This method is called when a drag is detected on the card field
          * view. It starts the drag and drop operation.
+         * <p>
+         * The dragboard is set with the card field view and the card field
+         * view is set to be the source of the dragboard. The dragboard is
+         * also set with the data format of the card field view.
+         * The background color of the card field view is set to
+         * {@link #BG_DRAG}.
+         * The event is consumed.
+         * The drag and drop operation is started.
          *
          * @param event the event which occurred
          */
@@ -202,6 +239,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
          * This method is called when a full press-drag-release gesture enters
          * the target.
          * The transfer mode of the gesture is set to move.
+         * The event is consumed.
          *
          * @param event the event which occurred
          */
@@ -235,7 +273,6 @@ public class CardFieldView extends GridPane implements ViewObserver {
          * are updated to have only the common transfer modes with the gesture
          * source.
          * The drag event is consumed.
-         * The default implementation is a no-op.
          *
          * @param event the event which occurred
          */
@@ -265,6 +302,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
          * This method is called when a drag and drop gesture exits the target.
          * The drag and drop gesture entered the target before this event
          * occurred.
+         * The background color of the card field view is set to
+         * {@link #BG_DEFAULT}.
+         * The event is consumed.
          *
          * @param event the event which occurred
          */
@@ -294,6 +334,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
          * This method is called when a drag and drop gesture is dropped on the
          * target. The drag and drop gesture is accepted by the target before
          * this method is called.
+         * The background color of the card field view is set to
+         * {@link #BG_DEFAULT}.
          *
          * @param event the event which occurred
          */
@@ -319,8 +361,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                                 // CommandCard card = source.getCard();
                                 // if (card != null) {
                                 // if (gameController.moveCards(source, cardField)) {
-                                    // cardField.setCard(card);
-                                    success = true;
+                                // cardField.setCard(card);
+                                success = true;
                                 // }
                             }
                         }
@@ -338,6 +380,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         /**
          * This method is called when the drag and drop gesture is done.
+         * The background color of the card field view is set to
+         * {@link #BG_DEFAULT}.
+         * The event is consumed.
          *
          * @param event the event which occurred
          */

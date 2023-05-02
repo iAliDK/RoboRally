@@ -53,6 +53,8 @@ public class BoardView extends VBox implements ViewObserver {
 
     /**
      * The event handler for mouse clicks on a space.
+     * <p>
+     * This event handler is used to select a space on the board.
      *
      * @param gameController
      */
@@ -86,6 +88,12 @@ public class BoardView extends VBox implements ViewObserver {
 
     /**
      * Updates the view, when the model has changed.
+     * <p>
+     * This method is called by the {@link Subject} (the model), when it has changed.
+     * It is called by the {@link Board} when the phase of the game has changed.
+     * It is called by the {@link GameController} when the game controller has changed.
+     * It is called by the {@link Player} when the current player has changed.
+     * It is called by the {@link Space} when the current space has changed.
      *
      * @param subject
      */
