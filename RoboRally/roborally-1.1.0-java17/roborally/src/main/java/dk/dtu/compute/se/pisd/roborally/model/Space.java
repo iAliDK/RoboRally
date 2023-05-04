@@ -26,12 +26,11 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 /**
  * This class represents a space on the board.
  * It also keeps track of the player that is on the space.
- *
+ * <p>
  * The class itself extends the {@link Subject} class, which means that
  * it is observable and can notify its observers about changes.
- *
+ * <p>
  * A space can have a player on it.
- *
  */
 public class Space extends Subject {
 
@@ -46,8 +45,8 @@ public class Space extends Subject {
      * Constructor for a space on the board.
      *
      * @param board the board the space belongs to
-     * @param x the x-coordinate of the space
-     * @param y the y-coordinate of the space
+     * @param x     the x-coordinate of the space
+     * @param y     the y-coordinate of the space
      */
     public Space(Board board, int x, int y) {
         this.board = board;
@@ -67,8 +66,7 @@ public class Space extends Subject {
      */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
-        if (player != oldPlayer &&
-                (player == null || board == player.board)) {
+        if (player != oldPlayer && (player == null || board == player.board)) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen

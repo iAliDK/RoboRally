@@ -44,7 +44,6 @@ import java.util.Optional;
  * This class is the controller for the whole application. It is the
  * observer of the {@link RoboRally} class, and it is the controller
  * for the {@link GameController}.
- *
  */
 public class AppController implements Observer {
 
@@ -60,10 +59,10 @@ public class AppController implements Observer {
     }
 
 /**
-     * This method is called by the {@link RoboRally} class when the
-     * application is started. It sets up the application and shows
-     * the main window.
-     */
+ * This method is called by the {@link RoboRally} class when the
+ * application is started. It sets up the application and shows
+ * the main window.
+ */
     /**
      * Show dialog and makes players choose number of players
      * creates a new game, and sets up the board
@@ -87,7 +86,7 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
+            Board board = new Board(8, 8);
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
