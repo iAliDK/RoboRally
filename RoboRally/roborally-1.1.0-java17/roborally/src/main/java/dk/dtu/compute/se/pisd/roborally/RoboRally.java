@@ -32,10 +32,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This class is the main class for the RoboRally application. It
+ * creates the stage and scene and it is the
+ * central place for the controllers of the application.
  */
 public class RoboRally extends Application {
 
@@ -47,11 +46,19 @@ public class RoboRally extends Application {
 
     // private AppController appController;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void init() throws Exception {
         super.init();
     }
 
+    /**
+     * This method is called when the application is started. It creates
+     * the stage and scene and shows the stage.
+     */
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -72,12 +79,19 @@ public class RoboRally extends Application {
         stage.setOnCloseRequest(
                 e -> {
                     e.consume();
-                    appController.exit();} );
+                    appController.exit();
+                });
         stage.setResizable(false);
         stage.sizeToScene();
         stage.show();
     }
 
+    /**
+     * This method creates a new boardview for the given game controller
+     * It also replaces the old boardview with the new one.
+     *
+     * @param gameController
+     */
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
@@ -100,10 +114,6 @@ public class RoboRally extends Application {
         //     but right now the only way for the user to exit the app
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }

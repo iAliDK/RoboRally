@@ -3,7 +3,7 @@
  *  course "Project in Software Development (02362)" held at
  *  DTU Compute at the Technical University of Denmark.
  *
- *  Copyright (C) 2019, 2020,2021: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,21 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally;
+package dk.dtu.compute.se.pisd.roborally.controller;
+
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
- * This is a class for starting up the RoboRally application. This is a
- * workaround for a strange quirk in the Open JavaFX project launcher,
- * which prevents starting a JavaFX application in IntelliJ directly:
- * <p>
- * https://stackoverflow.com/questions/52569724/javafx-11-create-a-jar-file-with-gradle/52571719#52571719
+ * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ *
  */
-public class StartRoboRally {
+public abstract class FieldAction {
 
-    public static void main(String[] args) {
-        RoboRally.main(args);
-    }
+    /**
+     * Executes the field action for a given space. In order to be able to do
+     * that the GameController associated with the game is passed to this method.
+     *
+     * @param gameController the gameController of the respective game
+     * @param space the space this action should be executed for
+     * @return whether the action was successfully executed
+     */
+    public abstract boolean doAction(GameController gameController, Space space);
 
 }

@@ -25,19 +25,27 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This class represents a command card in the game. It is a subject
+ * in the observer pattern, because the command card is displayed in
+ * the GUI and the GUI needs to be updated, when the command card
+ * changes.
  */
 public class CommandCard extends Subject {
 
     final public Command command;
 
+    /**
+     * Constructor for a command card.
+     *
+     * @param command the command of the card
+     */
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
 
+    /**
+     * @return the name of the command card
+     */
     public String getName() {
         return command.displayName;
     }

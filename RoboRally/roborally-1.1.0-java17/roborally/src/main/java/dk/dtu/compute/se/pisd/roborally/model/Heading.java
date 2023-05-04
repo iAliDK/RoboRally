@@ -22,19 +22,21 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This class represents the heading of a robot.
  */
 public enum Heading {
 
     SOUTH, WEST, NORTH, EAST;
 
+    /**
+     * @return the heading to the right of this heading
+     */
     public Heading next() {
         return values()[(this.ordinal() + 1) % values().length];
     }
-
+    /**
+     * @return the heading to the left of this heading
+     */
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }

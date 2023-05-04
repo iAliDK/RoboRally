@@ -27,11 +27,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.scene.control.TabPane;
 
+
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * The view of the board.
  */
 public class PlayersView extends TabPane implements ViewObserver {
 
@@ -39,13 +37,19 @@ public class PlayersView extends TabPane implements ViewObserver {
 
     private PlayerView[] playerViews;
 
+    /**
+     * Creates the view of the board.
+     *
+     * @param gameController
+     */
+
     public PlayersView(GameController gameController) {
         board = gameController.board;
 
         this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
         playerViews = new PlayerView[board.getPlayersNumber()];
-        for (int i = 0; i < board.getPlayersNumber();  i++) {
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
             playerViews[i] = new PlayerView(gameController, board.getPlayer(i));
             this.getTabs().add(playerViews[i]);
         }
@@ -53,6 +57,11 @@ public class PlayersView extends TabPane implements ViewObserver {
         update(board);
     }
 
+    /**
+     * Updates the view, when the model has changed.
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {

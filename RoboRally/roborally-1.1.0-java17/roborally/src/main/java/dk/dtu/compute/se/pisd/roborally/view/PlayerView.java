@@ -23,7 +23,10 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Command;
+import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,14 +34,33 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * The view of a player.
+ * <p>
+ * The view of a player consists of the following parts:
+ * <ul>
+ *     <li>the program of the player</li>
+ *     <li>the cards of the player</li>
+ *     <li>the buttons to control the player</li>
+ *     <li>the interaction panel to interact with the player</li>
+ *     <li>the player's robot</li>
+ *     <li>the player's flags</li>
+ *     <li>the player's lives</li>
+ *     <li>the player's damage tokens</li>
+ *     <li>the player's power down token</li>
+ *     <li>the player's checkpoint token</li>
+ *     <li>the player's archive marker</li>
+ *     <li>the player's archive</li>
+ *     <li>the player's discard pile</li>
+ *     <li>the player's deck</li>
+ *     <li>the player's hand</li>
+ *     <li>the player's program card field</li>
+ *     <li>the player's card field</li>
+ *     <li>the player's register</li>
+ *     <li>the player's register card field</li>
+ *     <li>the player's register card</li>
+ *     <li>the player's register card view</li>
  */
 public class PlayerView extends Tab implements ViewObserver {
 
@@ -63,6 +85,16 @@ public class PlayerView extends Tab implements ViewObserver {
     private VBox playerInteractionPanel;
 
     private GameController gameController;
+
+    /**
+     * Constructor for the view of a player.
+     * <p>
+     * The constructor creates the view of a player and registers itself
+     * as an observer of the player.
+     *
+     * @param gameController
+     * @param player
+     */
 
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
@@ -93,13 +125,13 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
 
         executeButton = new Button("Execute Program");
-        executeButton.setOnAction( e-> gameController.executePrograms());
+        executeButton.setOnAction(e -> gameController.executePrograms());
 
         stepButton = new Button("Execute Current Register");
-        stepButton.setOnAction( e-> gameController.executeStep());
+        stepButton.setOnAction(e -> gameController.executeStep());
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
@@ -134,13 +166,23 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
+    /**
+     * Updates the view of the player.
+     * <p>
+     * The update method is called by the player's board whenever the board
+     * changes. The method updates the view of the player accordingly.
+     * The method is called by the player's board whenever the board changes.
+     * The method updates the view of the player accordingly.
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
                         cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                     } else {
                         if (i < player.board.getStep()) {
@@ -206,9 +248,9 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Command currentCommand = player.getProgramField(player.board.getStep()).getCard().command;
-                    for (Command command: currentCommand.getOptions()){
+                    for (Command command : currentCommand.getOptions()) {
                         Button optionButton = new Button(command.toString());
-                        optionButton.setOnAction( e -> gameController.executeCommandOptionAndContinue(command));
+                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(command));
                         optionButton.setDisable(false);
                         playerInteractionPanel.getChildren().add(optionButton);
                     }

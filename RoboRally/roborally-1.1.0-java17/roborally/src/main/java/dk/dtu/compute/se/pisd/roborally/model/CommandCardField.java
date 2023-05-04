@@ -24,10 +24,11 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * This class is used to represent a command card field in the game.
+ * The command card field is used to hold a command card of a player.
+ * <p>
+ * A command card can be visible or not. This is used to hide the
+ * command card in the GUI, when it is not used.
  */
 public class CommandCardField extends Subject {
 
@@ -37,16 +38,28 @@ public class CommandCardField extends Subject {
 
     private boolean visible;
 
+    /**
+     * Creates a command card field for the given player.
+     * @param player
+     */
     public CommandCardField(Player player) {
         this.player = player;
-        this. card = null;
+        this.card = null;
         this.visible = true;
     }
 
+    /**
+     * Returns the command card of this field.
+     * @return
+     */
     public CommandCard getCard() {
         return card;
     }
 
+    /**
+     * Sets the command card of this field.
+     * @param card
+     */
     public void setCard(CommandCard card) {
         if (card != this.card) {
             this.card = card;
@@ -54,10 +67,18 @@ public class CommandCardField extends Subject {
         }
     }
 
+    /**
+     * Returns the visibility of the command card field.
+     * @return
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     * Sets the visibility of the command card field.
+     * @param visible
+     */
     public void setVisible(boolean visible) {
         if (visible != this.visible) {
             this.visible = visible;

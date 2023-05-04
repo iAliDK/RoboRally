@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
@@ -35,10 +36,7 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * The view of the board.
  */
 public class BoardView extends VBox implements ViewObserver {
 
@@ -53,6 +51,13 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+    /**
+     * The event handler for mouse clicks on a space.
+     * <p>
+     * This event handler is used to select a space on the board.
+     *
+     * @param gameController
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -77,11 +82,21 @@ public class BoardView extends VBox implements ViewObserver {
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
-
         board.attach(this);
         update(board);
     }
 
+    /**
+     * Updates the view, when the model has changed.
+     * <p>
+     * This method is called by the {@link Subject} (the model), when it has changed.
+     * It is called by the {@link Board} when the phase of the game has changed.
+     * It is called by the {@link GameController} when the game controller has changed.
+     * It is called by the {@link Player} when the current player has changed.
+     * It is called by the {@link Space} when the current space has changed.
+     *
+     * @param subject
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -100,6 +115,12 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
+        /**
+         * Handles a mouse click on a space. If the space is on the board of the
+         * current game, the current player is moved to this space.
+         *
+         * @param event
+         */
         @Override
         public void handle(MouseEvent event) {
             Object source = event.getSource();
@@ -114,7 +135,5 @@ public class BoardView extends VBox implements ViewObserver {
                 }
             }
         }
-
     }
-
 }

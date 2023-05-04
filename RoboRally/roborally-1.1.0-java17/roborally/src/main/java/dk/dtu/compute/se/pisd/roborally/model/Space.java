@@ -22,21 +22,33 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * ...
+ * This class represents a space on the board.
+ * It also keeps track of the player that is on the space.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The class itself extends the {@link Subject} class, which means that
+ * it is observable and can notify its observers about changes.
+ *
+ * A space can have a player on it.
  *
  */
 public class Space extends Subject {
+
+    private Player player;
+
+    private List<Heading> walls = new ArrayList<>();
+    private List<FieldAction> actions = new ArrayList<>();
 
     public final Board board;
 
     public final int x;
     public final int y;
 
-    private Player player;
 
     private boolean isWall; //Getter og Setter
 
@@ -48,18 +60,29 @@ public class Space extends Subject {
         isWall = wall;
     }
 
+    /**
+     * Constructor for a space on the board.
+     *
+     * @param board the board the space belongs to
+     * @param x the x-coordinate of the space
+     * @param y the y-coordinate of the space
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
         player = null;
-        isWall = false;
     }
 
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Sets the player on this space.
+     *
+     * @param player the player to be set on this space
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
@@ -75,6 +98,7 @@ public class Space extends Subject {
             notifyChange();
         }
     }
+
     void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can

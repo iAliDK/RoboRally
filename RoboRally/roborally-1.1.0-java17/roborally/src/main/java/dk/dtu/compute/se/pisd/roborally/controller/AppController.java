@@ -27,10 +27,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.GameWalls;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import dk.dtu.compute.se.pisd.roborally.model.Walls;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,15 +36,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * This class is the controller for the whole application. It is the
+ * observer of the {@link RoboRally} class, and it is the controller
+ * for the {@link GameController}.
  *
  */
 public class AppController implements Observer {
@@ -55,13 +52,24 @@ public class AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
-    private ArrayList<GameWalls> wall;
+   // private ArrayList<GameWalls> wall;
     private GameController gameController;
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+/**
+     * This method is called by the {@link RoboRally} class when the
+     * application is started. It sets up the application and shows
+     * the main window.
+     */
+    /**
+     * Show dialog and makes players choose number of players
+     * creates a new game, and sets up the board
+     * If a game is already in progress, prompts the user to
+     * save the game or abort before starting a new game.
+     */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
@@ -80,15 +88,14 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
-            GameWalls gameWalls = new GameWalls( board);
-            gameWalls.addAWall(new Walls(4,4));
+            //GameWalls gameWalls = new GameWalls( board);
+            //gameWalls.addAWall(new Walls(4,4));
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
-                //board.addAWall(4, 4);
             }
 
             // XXX: V2
@@ -133,6 +140,9 @@ public class AppController implements Observer {
         return false;
     }
 
+    /**
+     * Method that is used when you want to close the game.
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
