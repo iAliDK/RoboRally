@@ -226,7 +226,8 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
-            if (newSpace.getPlayer() == null) {
+        //check if sapce is wall
+            if (newSpace.getPlayer() == null && newSpace.getIsWall() == false) {
                 player.getSpace().setPlayer(null);
                 player.setSpace(newSpace);
                 newSpace.setPlayer(player);

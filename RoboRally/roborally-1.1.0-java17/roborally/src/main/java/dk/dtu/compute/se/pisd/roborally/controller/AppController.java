@@ -27,8 +27,10 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.GameWalls;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Walls;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,6 +38,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +55,7 @@ public class AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
-
+    private ArrayList<GameWalls> wall;
     private GameController gameController;
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -77,12 +80,15 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
+            GameWalls gameWalls = new GameWalls( board);
+            gameWalls.addAWall(new Walls(4,4));
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
+                //board.addAWall(4, 4);
             }
 
             // XXX: V2

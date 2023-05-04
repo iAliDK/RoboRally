@@ -57,10 +57,14 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+private Walls walls;
+
+
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;
         this.height = height;
+
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
@@ -69,7 +73,15 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+        //walls = new Walls();
+
     }
+    /*
+        public void addAWall(int wallx, int wally){
+        GameWalls gameWalls = new GameWalls(wallx, wally);
+        walls.addAWall(gameWalls);
+        }*/
+
 
     public Board(int width, int height) {
         this(width, height, "defaultboard");
@@ -88,6 +100,8 @@ public class Board extends Subject {
             }
         }
     }
+
+
 
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&

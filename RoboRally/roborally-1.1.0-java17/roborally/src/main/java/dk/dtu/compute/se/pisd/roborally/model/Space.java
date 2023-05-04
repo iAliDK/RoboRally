@@ -38,11 +38,22 @@ public class Space extends Subject {
 
     private Player player;
 
+    private boolean isWall; //Getter og Setter
+
+    public boolean getIsWall() {
+        return isWall;
+    }
+
+    public void setIsWall(boolean wall) {
+        isWall = wall;
+    }
+
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
         player = null;
+        isWall = false;
     }
 
     public Player getPlayer() {
@@ -64,7 +75,6 @@ public class Space extends Subject {
             notifyChange();
         }
     }
-
     void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can
