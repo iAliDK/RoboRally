@@ -40,7 +40,6 @@ public class CommandCardField extends Subject {
 
     /**
      * Creates a command card field for the given player.
-     *
      * @param player
      */
     public CommandCardField(Player player) {
@@ -51,7 +50,6 @@ public class CommandCardField extends Subject {
 
     /**
      * Returns the command card of this field.
-     *
      * @return
      */
     public CommandCard getCard() {
@@ -60,7 +58,6 @@ public class CommandCardField extends Subject {
 
     /**
      * Sets the command card of this field.
-     *
      * @param card
      */
     public void setCard(CommandCard card) {
@@ -72,7 +69,6 @@ public class CommandCardField extends Subject {
 
     /**
      * Returns the visibility of the command card field.
-     *
      * @return
      */
     public boolean isVisible() {
@@ -81,7 +77,6 @@ public class CommandCardField extends Subject {
 
     /**
      * Sets the visibility of the command card field.
-     *
      * @param visible
      */
     public void setVisible(boolean visible) {

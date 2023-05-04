@@ -30,7 +30,7 @@ import java.util.List;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
- * The board class extends subject to use the method notifyChange from Subject.
+ *  The board class extends subject to use the method notifyChange from Subject.
  */
 public class Board extends Subject {
 
@@ -39,9 +39,13 @@ public class Board extends Subject {
     public final int height;
 
     public final String boardName;
-    private final Space[][] spaces;
-    private final List<Player> players = new ArrayList<>();
+
     private Integer gameId;
+
+    private final Space[][] spaces;
+
+    private final List<Player> players = new ArrayList<>();
+
     private Player current;
 
     private Phase phase = INITIALISATION;
@@ -53,9 +57,8 @@ public class Board extends Subject {
     /**
      * The method is used by the next method. It Sets the current objects boardname to a String and the width and height to integers.
      * It gives each space on the board a coordinate using a foor loop.
-     *
-     * @param width     The width of the current objects board.
-     * @param height    The height of the current objects board.
+     * @param width The width of the current objects board.
+     * @param height The height of the current objects board.
      * @param boardName The name of the current objects board.
      */
     public Board(int width, int height, @NotNull String boardName) {
@@ -64,7 +67,7 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+            for(int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -75,8 +78,7 @@ public class Board extends Subject {
     /**
      * This method uses the width and height from the above method and sets the boardname to "defaultboard"
      * This is the method we call in the App and Game controllers.
-     *
-     * @param width  Width from previous method.
+     * @param width Width from previous method.
      * @param height Height from previous method.
      */
     public Board(int width, int height) {
@@ -86,7 +88,6 @@ public class Board extends Subject {
     /**
      * The method returns the gameId.
      * Not used.
-     *
      * @return gameId
      */
     public Integer getGameId() {
@@ -96,7 +97,6 @@ public class Board extends Subject {
     /**
      * This method sets the gameId of the current object and throws an exception if another object has the same gameId.
      * Not used.
-     *
      * @param gameId
      */
     public void setGameId(int gameId) {
@@ -111,13 +111,13 @@ public class Board extends Subject {
 
     /**
      * This method lets you get a space using the coordinates for the space.
-     *
      * @param x The x position.
      * @param y The y position.
      * @return Returns the space on the coordinate.
      */
     public Space getSpace(int x, int y) {
-        if (x >= 0 && x < width && y >= 0 && y < height) {
+        if (x >= 0 && x < width &&
+                y >= 0 && y < height) {
             return spaces[x][y];
         } else {
             return null;
@@ -126,7 +126,6 @@ public class Board extends Subject {
 
     /**
      * This method lets you get the amount of players in the game.
-     *
      * @return The number of players.
      */
     public int getPlayersNumber() {
@@ -136,7 +135,6 @@ public class Board extends Subject {
     /**
      * This method is used to check if a player is already added and if not it adds it to an array list.
      * After that it calls the notifyChange method from the Subject class.
-     *
      * @param player
      */
     public void addPlayer(@NotNull Player player) {
@@ -148,7 +146,6 @@ public class Board extends Subject {
 
     /**
      * This methods gets the player from the array list equal to the index you give your parameter.
-     *
      * @param i Index of player.
      * @return A player.
      */
@@ -162,7 +159,6 @@ public class Board extends Subject {
 
     /**
      * Returns the current player.
-     *
      * @return The current player.
      */
     public Player getCurrentPlayer() {
@@ -171,7 +167,6 @@ public class Board extends Subject {
 
     /**
      * Sets the current player. Then notifies the observer.
-     *
      * @param player The player you want to be the current player.
      */
     public void setCurrentPlayer(Player player) {
@@ -183,7 +178,6 @@ public class Board extends Subject {
 
     /**
      * Gets the current phase.
-     *
      * @return Enum corresponding to the phase.
      */
     public Phase getPhase() {
@@ -192,7 +186,6 @@ public class Board extends Subject {
 
     /**
      * Sets the current phase and notifies the observer. Does nothing if you try to set the phase to the same phase.
-     *
      * @param phase The parameter determines what phase you want to set it to.
      */
     public void setPhase(Phase phase) {
@@ -204,7 +197,6 @@ public class Board extends Subject {
 
     /**
      * Gets which step you are on.
-     *
      * @return The number of the step you are on.
      */
     public int getStep() {
@@ -213,7 +205,6 @@ public class Board extends Subject {
 
     /**
      * Sets the current step to the step you want and notifies the observer.
-     *
      * @param step The step you want to change to.
      */
     public void setStep(int step) {
@@ -225,7 +216,6 @@ public class Board extends Subject {
 
     /**
      * Checks your stepMode.
-     *
      * @return If stepMode is true or false.
      */
     public boolean isStepMode() {
@@ -235,7 +225,6 @@ public class Board extends Subject {
     /**
      * Sets the stepMode to the one you give it. If it's the same as current stepMode, it does nothing.
      * If it is different, it changes it and updates the observer.
-     *
      * @param stepMode
      */
     public void setStepMode(boolean stepMode) {
@@ -247,7 +236,6 @@ public class Board extends Subject {
 
     /**
      * Gets the index of the layer you provide in the parameter.
-     *
      * @param player a player.
      * @return The index of the player.
      */
@@ -265,11 +253,14 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space   the space for which the neighbour should be computed
+     * @param space the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
+        if (space.getWalls().contains(heading)) {
+            return null;
+        }
         int x = space.x;
         int y = space.y;
         switch (heading) {
@@ -287,14 +278,20 @@ public class Board extends Subject {
                 break;
 
         }
-        return getSpace(x, y);
+        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
+        Space result = getSpace(x, y);
+        if (result != null) {
+            if (result.getWalls().contains(reverse)) {
+                return null;
+            }
+        }
+        return result;
     }
 
     /**
      * This method finds the space behind the player using the space coordinates and the heading as parameters.
      * It is used for moving the robot backwards.
-     *
-     * @param space   Coordinate of robot.
+     * @param space Coordinate of robot.
      * @param heading Heading of robot.
      * @return Coordinate behind robot.
      */
@@ -321,7 +318,6 @@ public class Board extends Subject {
 
     /**
      * This method shows the status of the game, including the phase, current player and current step.
-     *
      * @return A string showing all the information.
      */
     public String getStatusMessage() {
@@ -330,7 +326,9 @@ public class Board extends Subject {
         // status of the game
 
         // XXX: V2 changed the status so that it shows the phase, the player and the step
-        return "Phase: " + getPhase().name() + ", Player = " + getCurrentPlayer().getName() + ", Step: " + getStep();
+        return "Phase: " + getPhase().name() +
+                ", Player = " + getCurrentPlayer().getName() +
+                ", Step: " + getStep();
     }
 
 

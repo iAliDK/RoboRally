@@ -34,7 +34,6 @@ public enum Heading {
     public Heading next() {
         return values()[(this.ordinal() + 1) % values().length];
     }
-
     /**
      * @return the heading to the left of this heading
      */
