@@ -3,6 +3,9 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import java.sql.Array;
 import java.util.ArrayList;
 
+/**
+ * @author Daniel.
+ */
 public class Walls {
     private ArrayList<GameWalls> wall;
     private int x;

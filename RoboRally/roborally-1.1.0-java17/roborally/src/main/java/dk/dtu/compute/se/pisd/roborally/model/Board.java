@@ -301,6 +301,7 @@ private Walls walls;
     }
 
     /**
+     * @author Zainab.
      * This method finds the space behind the player using the space coordinates and the heading as parameters.
      * It is used for moving the robot backwards.
      * @param space Coordinate of robot.

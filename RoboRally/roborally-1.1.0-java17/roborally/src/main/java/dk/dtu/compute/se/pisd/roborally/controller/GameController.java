@@ -39,16 +39,22 @@ public class GameController {
         this.board = board;
     }
 
+    /**
+     * @author Daniel, Ismail and Zainab.
+     * Changes the current player to the next one.
+     */
     public void nextTurn() {
         int currenPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
         board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
     }
 
     /**
+     * @author Daniel, Ismail and Zainab.
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
      *
      * @param space the space to which the current player should move
+     *
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         // TODO Assignment V1: method should be implemented by the students:
@@ -168,6 +174,7 @@ public class GameController {
     }
 
     /**
+     * @author Qiao and Zainab.
      * This method executes the next step of the current player
      * and changes the phase to PLAYER_INTERACTION if the command
      * is interactive
@@ -216,6 +223,7 @@ public class GameController {
     }
 
     /**
+     * @author Daniel, Ismail and Zainab.
      * This method executes the given command for the given player
      *
      * This method is used in executeNextStep
@@ -261,6 +269,7 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * @author Daniel, Ismail and Zainab.
      * This method moves the player one space forward
      *
      * @param player
@@ -268,7 +277,7 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
-        //check if sapce is wall
+        //check if space is wall
             if (newSpace.getPlayer() == null && newSpace.getIsWall() == false) {
                 player.getSpace().setPlayer(null);
                 player.setSpace(newSpace);
@@ -279,6 +288,7 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * @author Daniel, Ismail and Zainab.
      * This method moves the player two spaces forward
      *
      * @param player
@@ -289,6 +299,7 @@ public class GameController {
     }
 
     /**
+     * @author Zainab.
      * This method moves the player three spaces forward
      *
      * @param player
@@ -301,6 +312,7 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * @author Daniel, Ismail and Zainab.
      * This method turns the player to the right
      *
      * @param player
@@ -313,6 +325,7 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * @author Daniel, Ismail and Zainab.
      * This method turns the player to the left
      *
      * @param player
@@ -322,6 +335,7 @@ public class GameController {
     }
 
     /**
+     * @author Zainab.
      * This method turns the player around
      * (makes a u-turn)
      *
@@ -332,6 +346,7 @@ public class GameController {
     }
 
     /**
+     * @author Zainab.
      * This method moves the player one space backwards
      * without changing the heading
      *
@@ -371,6 +386,7 @@ public class GameController {
     }
 
     /**
+     * @author Qiao and Zainab.
      * This method executes the chosen option for the current player
      * and continues with the next step
      * (or the next player if the current player has no more steps)

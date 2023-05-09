@@ -1,6 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 import java.util.ArrayList;
 
+/**
+ * @author Daniel.
+ */
 public class GameWalls {
     Board board;
     public GameWalls(Board board){

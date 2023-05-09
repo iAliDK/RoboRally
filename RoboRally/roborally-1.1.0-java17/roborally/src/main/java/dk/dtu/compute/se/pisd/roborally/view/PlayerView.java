@@ -87,6 +87,7 @@ public class PlayerView extends Tab implements ViewObserver {
     private GameController gameController;
 
     /**
+     * @author Daniel, Ismail and Zainab.
      * Constructor for the view of a player.
      * <p>
      * The constructor creates the view of a player and registers itself
@@ -167,6 +168,7 @@ public class PlayerView extends Tab implements ViewObserver {
     }
 
     /**
+     * @author Qiao and Zainab.
      * Updates the view of the player.
      * <p>
      * The update method is called by the player's board whenever the board
