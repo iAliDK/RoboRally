@@ -270,7 +270,9 @@ private Walls walls;
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        if (space.getWalls().contains(heading)) {
+        //if (space.getWalls().contains(heading)) {
+          //  return null;
+        if(space.getIsWall()==true){
             return null;
         }
         int x = space.x;
@@ -292,10 +294,13 @@ private Walls walls;
         }
         Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
         Space result = getSpace(x, y);
-        if (result != null) {
+        /*if (result != null) {
             if (result.getWalls().contains(reverse)) {
                 return null;
             }
+         */
+        if(result.getIsWall()==true){
+            return null;
         }
         return result;
     }
