@@ -40,6 +40,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
+
 /**
  * This class is the controller for the whole application. It is the
  * observer of the {@link RoboRally} class, and it is the controller
@@ -108,14 +111,18 @@ public class AppController implements Observer {
 
     public void saveGame() {
         // XXX needs to be implemented eventually
+        saveBoard(this.gameController.board, "test");
     }
 
     public void loadGame() {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         if (gameController == null) {
-            newGame();
+//            newGame();
+            loadBoard(null);
         }
+
+
     }
 
     /**
