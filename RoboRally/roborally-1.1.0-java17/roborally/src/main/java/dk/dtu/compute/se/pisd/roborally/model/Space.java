@@ -54,6 +54,10 @@ public class Space extends Subject {
      */
     private boolean isWall; //Getter og Setter
 
+    public boolean isWall() {
+        return isWall;
+    }
+
     public boolean getIsWall() {
         return isWall;
     }

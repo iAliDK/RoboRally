@@ -54,6 +54,8 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    private Walls walls;
+
     /**
      * The method is used by the next method. It Sets the current objects boardname to a String and the width and height to integers.
      * It gives each space on the board a coordinate using a foor loop.
@@ -61,7 +63,6 @@ public class Board extends Subject {
      * @param height The height of the current objects board.
      * @param boardName The name of the current objects board.
      */
-private Walls walls;
 
     public List<Player> getPlayers() {
         return players;
@@ -74,20 +75,35 @@ private Walls walls;
         this.gameId = gameId;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
         }
+        spaces[2][2].setIsWall(true);
+
+        spaces[2][2].setIsWall(true);
+
+
+
         this.stepMode = false;
-        //walls = new Walls();
 
     }
+
     /*
         public void addAWall(int wallx, int wally){
         GameWalls gameWalls = new GameWalls(wallx, wally);
         walls.addAWall(gameWalls);
-        }*/
+        }
+
+     */
+
+    public void addAWall(int wallx, int wally){
+        GameWalls gameWalls = new GameWalls(this);
+        walls.addAWall(gameWalls);
+        addAWall(2,4);
+    }
+
 
 
     /**
