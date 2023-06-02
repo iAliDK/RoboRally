@@ -23,18 +23,27 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * ...
@@ -45,7 +54,7 @@ public class LoadBoard {
 
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "defaultboard";
-    private static final String JSON_EXT = "json";
+    private static final String JSON_EXT = ".json";
 
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
@@ -53,7 +62,7 @@ public class LoadBoard {
         }
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
             return new Board(8, 8);
@@ -80,6 +89,8 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+
+
             reader.close();
             return result;
         } catch (IOException e1) {
@@ -100,68 +111,103 @@ public class LoadBoard {
         return null;
     }
 
+
+
     public static void saveBoard(Board board, String name) {
-        BoardTemplate template = new BoardTemplate();
-        template.width = board.width;
-        template.height = board.height;
 
-        for (int i = 0; i < board.width; i++) {
-            for (int j = 0; j < board.height; j++) {
-                Space space = board.getSpace(i, j);
-                if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                    if (!space.getIsWall() == false) {
-                        SpaceTemplate spaceTemplate = new SpaceTemplate();
-                        spaceTemplate.x = space.x;
-                        spaceTemplate.y = space.y;
-                        spaceTemplate.actions.addAll(space.getActions());
-                        spaceTemplate.walls.addAll(space.getWalls());
-                        template.spaces.add(spaceTemplate);
-                    }
-                }
-            }
+//        JsonObject myBoard = new JsonObject();
+//
+//
+//        myBoard.addProperty("Boardwidth", board.width);
+//
+//        myBoard.addProperty("Boardheight", board.height);
 
-            ClassLoader classLoader = LoadBoard.class.getClassLoader();
-            // TODO: this is not very defensive, and will result in a NullPointerException
-            //       when the folder "resources" does not exist! But, it does not need
-            //       the file "simpleCards.json" to exist!
-            String filename =
-                    classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+        BoardTemplate boardTemplate = new BoardTemplate();
 
-            // In simple cases, we can create a Gson object with new:
-            //
-            //   Gson gson = new Gson();
-            //
-            // But, if you need to configure it, it is better to create it from
-            // a builder (here, we want to configure the JSON serialisation with
-            // a pretty printer):
-            GsonBuilder simpleBuilder = new GsonBuilder().
-                    registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
-                    setPrettyPrinting();
-            Gson gson = simpleBuilder.create();
+        boardTemplate.width = board.width;
+        boardTemplate.height = board.height;
 
-            FileWriter fileWriter = null;
-            JsonWriter writer = null;
-            try {
-                fileWriter = new FileWriter(filename);
-                writer = gson.newJsonWriter(fileWriter);
-                gson.toJson(template, template.getClass(), writer);
-                writer.close();
-            } catch (IOException e1) {
-                if (writer != null) {
-                    try {
-                        writer.close();
-                        fileWriter = null;
-                    } catch (IOException e2) {
-                    }
-                }
-                if (fileWriter != null) {
-                    try {
-                        fileWriter.close();
-                    } catch (IOException e2) {
-                    }
-                }
-            }
+        List<Player> players =  board.getPlayers();
+        for(int i = 0; i< board.getPlayersNumber(); i++){
+            boardTemplate.players.add(players.get(i).createTemplate());
+
         }
 
+
+
+
+
+//        final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+//        for (int i = 0; i < board.getPlayersNumber(); i++) {
+//            Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+//            player.getSpace();
+//
+//            myBoard.addProperty("PlayerXCor" + (i+1), player.getSpace().x);
+//            template.player = board.getPlayer(i+1);
+//        }
+
+
+            for (int i = 0; i < board.width; i++) {
+                for (int j = 0; j < board.height; j++) {
+                    Space space = board.getSpace(i, j);
+                    if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
+                        if (!space.getIsWall() == false) {
+                            SpaceTemplate spaceTemplate = new SpaceTemplate();
+                            spaceTemplate.x = space.x;
+                            spaceTemplate.y = space.y;
+                            spaceTemplate.actions.addAll(space.getActions());
+                            spaceTemplate.walls.addAll(space.getWalls());
+//                            template.spaces.add(spaceTemplate);
+                        }
+                    }
+                }
+
+                ClassLoader classLoader = LoadBoard.class.getClassLoader();
+                // TODO: this is not very defensive, and will result in a NullPointerException
+                //       when the folder "resources" does not exist! But, it does not need
+                //       the file "simpleCards.json" to exist!
+//                String filename = "src/"+ name + JSON_EXT;
+//             String filename = "resources/boards/"+ name + JSON_EXT;
+               String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + JSON_EXT;
+
+
+                // In simple cases, we can create a Gson object with new:
+                //
+                //   Gson gson = new Gson();
+                //
+                // But, if you need to configure it, it is better to create it from
+                // a builder (here, we want to configure the JSON serialisation with
+                // a pretty printer):
+                GsonBuilder simpleBuilder = new GsonBuilder().
+                        registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
+                        setPrettyPrinting();
+                Gson gson = simpleBuilder.create();
+
+                FileWriter fileWriter = null;
+                JsonWriter writer = null;
+                try {
+                    fileWriter = new FileWriter(filename);
+
+                    fileWriter.write(boardTemplate.toString());
+                    writer = gson.newJsonWriter(fileWriter);
+                    gson.toJson(boardTemplate, boardTemplate.getClass(), writer);
+                    writer.close();
+                } catch (IOException e1) {
+                    if (writer != null) {
+                        try {
+                            writer.close();
+                            fileWriter = null;
+                        } catch (IOException e2) {
+                        }
+                    }
+                    if (fileWriter != null) {
+                        try {
+                            fileWriter.close();
+                        } catch (IOException e2) {
+                        }
+                    }
+                }
+            }
+
+        }
     }
-}

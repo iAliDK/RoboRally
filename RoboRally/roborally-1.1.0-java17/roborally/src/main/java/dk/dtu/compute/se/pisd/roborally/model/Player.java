@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import org.jetbrains.annotations.NotNull;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
@@ -71,6 +72,10 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+    }
+
+    public PlayerTemplate createTemplate(){
+        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color);
     }
 
     public String getName() {

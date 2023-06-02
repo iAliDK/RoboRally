@@ -53,7 +53,6 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-
     final private RoboRally roboRally;
    // private ArrayList<GameWalls> wall;
     private GameController gameController;
@@ -90,12 +89,12 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
+            Board board = loadBoard("testboard");
             //GameWalls gameWalls = new GameWalls( board);
             //gameWalls.addAWall(new Walls(4,4));
             gameController = new GameController(board);
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
+            int noPlayers = result.get();
+            for (int i = 0; i < noPlayers; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
@@ -104,7 +103,6 @@ public class AppController implements Observer {
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
-
             roboRally.createBoardView(gameController);
         }
     }
@@ -119,7 +117,7 @@ public class AppController implements Observer {
         // for now, we just create a new game
         if (gameController == null) {
 //            newGame();
-            loadBoard("defaultboard.json");
+            loadBoard("defaultboard");
         }
 
         roboRally.createBoardView(gameController);

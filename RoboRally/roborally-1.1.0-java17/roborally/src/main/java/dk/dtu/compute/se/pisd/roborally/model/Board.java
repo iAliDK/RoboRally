@@ -40,7 +40,7 @@ public class Board extends Subject {
 
     public final String boardName;
 
-    private Integer gameId;
+    public Integer gameId;
 
     private final Space[][] spaces;
 
@@ -63,12 +63,15 @@ public class Board extends Subject {
      */
 private Walls walls;
 
+    public List<Player> getPlayers() {
+        return players;
+    }
 
-    public Board(int width, int height, @NotNull String boardName) {
+    public Board(int width, int height, @NotNull String boardName, int gameId) {
         this.boardName = boardName;
         this.width = width;
         this.height = height;
-
+        this.gameId = gameId;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
@@ -94,7 +97,7 @@ private Walls walls;
      * @param height Height from previous method.
      */
     public Board(int width, int height) {
-        this(width, height, "defaultboard");
+        this(width, height, "defaultboard", 1);
     }
 
     /**
@@ -102,7 +105,7 @@ private Walls walls;
      * Not used.
      * @return gameId
      */
-    public Integer getGameId() {
+    public int getGameId() {
         return gameId;
     }
 
@@ -119,6 +122,10 @@ private Walls walls;
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
     /**
