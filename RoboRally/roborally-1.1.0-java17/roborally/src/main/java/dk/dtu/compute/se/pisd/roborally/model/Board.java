@@ -271,8 +271,8 @@ private Walls walls;
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         //if (space.getWalls().contains(heading)) {
-          //  return null;
-        if(space.getIsWall()==true){
+        //  return null;
+        if (space.getIsWall() == true) {
             return null;
         }
         int x = space.x;
@@ -292,13 +292,14 @@ private Walls walls;
                 break;
 
         }
-        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
+        Heading reverse = Heading.values()[(heading.ordinal() + 2) % Heading.values().length];
         Space result = getSpace(x, y);
-        /*if (result != null) {
+        if (result != null) {
             if (result.getWalls().contains(reverse)) {
                 return null;
             }
-         */
+
+    }
         if(result.getIsWall()==true){
             return null;
         }

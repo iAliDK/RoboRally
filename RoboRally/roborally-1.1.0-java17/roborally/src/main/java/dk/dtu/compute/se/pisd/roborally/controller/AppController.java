@@ -119,8 +119,10 @@ public class AppController implements Observer {
         // for now, we just create a new game
         if (gameController == null) {
 //            newGame();
-            loadBoard(null);
+            loadBoard("defaultboard.json");
         }
+
+        roboRally.createBoardView(gameController);
 
 
     }
