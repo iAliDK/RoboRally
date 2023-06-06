@@ -23,40 +23,48 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
+import dk.dtu.compute.se.pisd.roborally.model.upgrade.Upgrade;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
-public class Player extends Subject {
+public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
-
     final public Board board;
-
+    private final List<CommandCardField> cards = new ArrayList<>(8);
+    private int numberOfCards = 8;
     private String name;
     private String color;
-
+    private Space finalDestination;
     private Space space;
     private Heading heading = SOUTH;
-
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private final CommandCardField[] program;
+    private int lastCheckpointVisited = 0;
+    private boolean playerWin = false;
+    private Space rebootSpace;
+    public int antennaDistance;
+    private int energyBank = 0;
+    private List<Upgrade> upgrades = new ArrayList<>();
+    private List<Command> damageCards = new ArrayList<>();
 
     /**
      * Constructor method "Player" creates a new player with the specified board, color, and name
      *
      * @param board The board where the player is going to play
      * @param color The color of the player
-     * @param name The name of the player
+     * @param name  The name of the player
      */
-    public Player(@NotNull Board board, String color, @NotNull String name) {
+    public Player(@NotNull Board board, @NotNull String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
@@ -68,9 +76,9 @@ public class Player extends Subject {
             program[i] = new CommandCardField(this);
         }
 
-        cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
+        //cards = new CommandCardField[numberOfCards];
+        for (int i = 0; i < numberOfCards; i++) {
+            cards.add(new CommandCardField(this));
         }
     }
 
@@ -78,20 +86,30 @@ public class Player extends Subject {
         return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color);
     }
 
+    public void setFinalDestination(Space finalDestination) {
+        this.finalDestination = finalDestination;
+    }
+    public Space getFinalDestination() {
+        return finalDestination;
+    }
+
     public String getName() {
         return name;
     }
 
-    /** Checks whether the name is a null or if it's different from the current field
+
+    /**
+     * Checks whether the name is a null or if it's different from the current field
      * if not null and name not already in field, it sets the field to the new name value passed as a parameter
      * it then calls the method notifyChange
      * Checks whether space is null
      * if not null, it calls playerChanged
-     *
+     * <p>
      * Overall, the setName method updates the name field of the object,
      * notifies observers of the change,
      * and updates the game board if necessary.
-     * @param name
+     *
+     * @param name The new name to set for the player. Must not be null. Must be different from the current name. Must not be already used by another player.
      */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
@@ -108,30 +126,18 @@ public class Player extends Subject {
         return color;
     }
 
-    /**
-     *
-     * @param color The color chosen for the player
-     */
-    public void setColor(String color) {
-        this.color = color;
-        notifyChange();
-        if (space != null) {
-            space.playerChanged();
-        }
-    }
-
     public Space getSpace() {
         return space;
     }
 
     /**
      * Space where the player is located on the board
+     *
      * @param space The new space to set for the player.
      */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
-        if (space != oldSpace &&
-                (space == null || space.board == this.board)) {
+        if (space != oldSpace && (space == null || space.board == this.board)) {
             this.space = space;
             if (oldSpace != null) {
                 oldSpace.setPlayer(null);
@@ -162,12 +168,61 @@ public class Player extends Subject {
         }
     }
 
+
+    public void setPlayerWin(boolean playerWin) {
+        this.playerWin = playerWin;
+    }
+
+    public void setLastCheckpointVisited(int lastCheckpointVisited) {
+        this.lastCheckpointVisited = lastCheckpointVisited;
+    }
+
+    public int getLastCheckpointVisited() {
+        return lastCheckpointVisited;
+    }
+
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
 
-    public CommandCardField getCardField(int i) {
-        return cards[i];
+    public void setRebootSpace(Space rebootSpace) {
+        this.rebootSpace = rebootSpace;
     }
 
+    public int getAntennaDistance() {
+        return antennaDistance;
+    }
+
+    public void addEnergy() {
+        energyBank++;
+    }
+
+    public List<Upgrade> getUpgrades() {
+        return upgrades;
+    }
+
+    public int getNumberOfCards() {
+        return numberOfCards;
+    }
+
+    public void setExtraHandCard() {
+        cards.add(new CommandCardField(this));
+        numberOfCards++;
+    }
+    public List<CommandCardField> getCards() {
+        return cards;
+    }
+    public List<Command> getDamageCards () {
+        return damageCards;
+    }
+    public void setDamageCards(List<Command> damageCards) {
+        this.damageCards = damageCards;
+    }
+
+    @Override
+    public int compareTo(@NotNull Player o) {
+        if (o.getAntennaDistance() > antennaDistance) return -1;
+        else if (o.getAntennaDistance() == antennaDistance) return o.getSpace().y < space.y ? -1 : 1;
+        else return 1;
+    }
 }

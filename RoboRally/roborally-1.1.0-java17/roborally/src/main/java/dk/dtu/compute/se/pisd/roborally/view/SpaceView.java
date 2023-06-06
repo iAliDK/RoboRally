@@ -22,14 +22,23 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
+
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
+
+import javax.swing.*;
+import javax.swing.text.html.ImageView;
+import java.awt.*;
 
 /**
  * The view of a space on the board.
@@ -51,7 +60,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * The constructor of the space view.
      *
-     * @param space
+     * @param space the space to be shown by this view.
      */
     public SpaceView(@NotNull Space space) {
         this.space = space;
@@ -64,7 +73,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setPrefHeight(SPACE_HEIGHT);
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
-
 
 
         if ((space.x + space.y) % 2 == 0) {
@@ -83,7 +91,8 @@ public class SpaceView extends StackPane implements ViewObserver {
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: up;";
 
-                if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";;
+                if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
+                ;
                 this.setStyle(north);
 
 
@@ -118,12 +127,12 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
 
 
-
         // updatePlayer();
 
         // This space view should listen to changes of the space
         space.attach(this);
         update(space);
+        boardElements();
     }
 
     private void updatePlayer() {
@@ -145,6 +154,40 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    private void boardElements() {
+        this.getChildren().clear();
+        //ConveyorBelt
+        if (!space.getActions().isEmpty()) {
+            for (FieldAction actions : space.getActions()) {
+                if (actions instanceof ConveyorBelt conveyorBelt) {
+                    Polygon arrow = new Polygon(0.0, 0.0, 16.0, 30.0, 30.0, 0.0);
+                    if (conveyorBelt.command == Command.FAST_FORWARD) {
+                        arrow.setFill(Color.GREEN);
+                    } else {
+                        arrow.setFill(Color.RED);
+                    }
+                    arrow.setRotate((90 * conveyorBelt.heading.ordinal()) % 360);
+                    this.setStyle("-fx-setBackground-color: Black");
+                    this.getChildren().add(arrow);
+                    //Gear
+                } else if (actions instanceof Gear gear) {
+                    Image img;
+                    ImageView iView;
+                    if (gear.isClockwise()) {
+                        img = new Image("file:src/main/resources/gearClockwise.png"), SPACE_WIDTH, SPACE_HEIGHT, true, true)
+                        ;
+                        iView = new ImageView(img);
+                    } else {
+                        img = new Image("file:src/main/resources/gearCounterClockwise.png"), SPACE_WIDTH, SPACE_HEIGHT, true, true)
+                        ;
+                        iView = new ImageView(img);
+                    }
+                    this.getChildren().add(iView);
+                }
+            }
+        }
+    }
+
     /**
      * This method is called, when the space has changed. It updates the
      * view of the space.
@@ -157,7 +200,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      * If the space is a checkpoint, the player is shown in the color
      * of the player.
      *
-     * @param subject
+     * @param subject the space that has changed.
      */
     @Override
     public void updateView(Subject subject) {

@@ -40,4 +40,8 @@ public enum Heading {
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
+
+    public Heading oppositeHeading() {
+        return values()[(this.ordinal() + values().length - 2) % values().length];
+    }
 }

@@ -101,7 +101,6 @@ public class RoboRally extends Application {
             BoardView boardView = new BoardView(gameController);
             boardRoot.setCenter(boardView);
         }
-
         stage.sizeToScene();
     }
 
@@ -115,5 +114,4 @@ public class RoboRally extends Application {
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
     }
-
 }

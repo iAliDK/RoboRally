@@ -19,20 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-/*package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
- */
+
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-/*public class ConveyorBelt extends FieldAction {
+public class ConveyorBelt extends FieldAction {
 
     public final Heading heading;
     public final Command command;
@@ -42,16 +42,14 @@ import org.jetbrains.annotations.NotNull;
         this.command = command;
     }
 
- */
-
-    /*public Heading getHeading() {
+    public Heading getHeading() {
         return heading;
     }
 
     public void setHeading(Heading heading) {
         this.heading = heading;
-    }*/
-/*
+    }
+
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Player player) {
         Space target = player.board.getNeighbour(player.getSpace(), heading);
@@ -63,5 +61,3 @@ import org.jetbrains.annotations.NotNull;
         return false;
     }
 }
-
- */

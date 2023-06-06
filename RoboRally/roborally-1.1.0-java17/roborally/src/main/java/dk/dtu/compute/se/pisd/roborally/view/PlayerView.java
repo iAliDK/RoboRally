@@ -35,6 +35,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The view of a player.
  * <p>
@@ -74,8 +77,8 @@ public class PlayerView extends Tab implements ViewObserver {
     private GridPane cardsPane;
 
     private CardFieldView[] programCardViews;
-    private CardFieldView[] cardViews;
-
+    //private CardFieldView[] cardViews;
+    private final List<CardFieldView> cardViews = new ArrayList<>();
     private VBox buttonPanel;
 
     private Button finishButton;
@@ -87,14 +90,13 @@ public class PlayerView extends Tab implements ViewObserver {
     private GameController gameController;
 
     /**
+     * @param gameController the game controller
+     * @param player        the player
      * @author Daniel, Ismail and Zainab.
      * Constructor for the view of a player.
      * <p>
      * The constructor creates the view of a player and registers itself
      * as an observer of the player.
-     *
-     * @param gameController
-     * @param player
      */
 
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
@@ -116,7 +118,7 @@ public class PlayerView extends Tab implements ViewObserver {
         for (int i = 0; i < Player.NO_REGISTERS; i++) {
             CommandCardField cardField = player.getProgramField(i);
             if (cardField != null) {
-                programCardViews[i] = new CardFieldView(gameController, cardField);
+                programCardViews[i] = new CardFieldView(gameController, cardField, player);
                 programPane.add(programCardViews[i], i, 0);
             }
         }
@@ -147,12 +149,13 @@ public class PlayerView extends Tab implements ViewObserver {
         cardsPane = new GridPane();
         cardsPane.setVgap(2.0);
         cardsPane.setHgap(2.0);
-        cardViews = new CardFieldView[Player.NO_CARDS];
-        for (int i = 0; i < Player.NO_CARDS; i++) {
-            CommandCardField cardField = player.getCardField(i);
+
+        //cardViews = new CardFieldView[Player.NO_CARDS];
+        for (int i = 0; i < player.getNumberOfCards(); i++) {
+            CommandCardField cardField = player.getCards().get(i);
             if (cardField != null) {
-                cardViews[i] = new CardFieldView(gameController, cardField);
-                cardsPane.add(cardViews[i], i, 0);
+                cardViews.add(new CardFieldView(gameController, cardField, player));
+                cardsPane.add(cardViews.get(i), i, 0);
             }
         }
 
@@ -168,6 +171,7 @@ public class PlayerView extends Tab implements ViewObserver {
     }
 
     /**
+     * @param subject the subject that changed
      * @author Qiao and Zainab.
      * Updates the view of the player.
      * <p>
@@ -175,8 +179,6 @@ public class PlayerView extends Tab implements ViewObserver {
      * changes. The method updates the view of the player accordingly.
      * The method is called by the player's board whenever the board changes.
      * The method updates the view of the player accordingly.
-     *
-     * @param subject
      */
     @Override
     public void updateView(Subject subject) {
@@ -210,30 +212,28 @@ public class PlayerView extends Tab implements ViewObserver {
                     programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
                 }
                 switch (player.board.getPhase()) {
-                    case INITIALISATION:
+                    case INITIALISATION -> {
                         finishButton.setDisable(true);
                         // XXX just to make sure that there is a way for the player to get
                         //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
                         stepButton.setDisable(true);
-                        break;
-
-                    case PROGRAMMING:
+                    }
+                    case PROGRAMMING -> {
                         finishButton.setDisable(false);
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
-                        break;
-
-                    case ACTIVATION:
+                    }
+                    case ACTIVATION -> {
                         finishButton.setDisable(true);
                         executeButton.setDisable(false);
                         stepButton.setDisable(false);
-                        break;
-
-                    default:
+                    }
+                    default -> {
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
+                    }
                 }
 
 
