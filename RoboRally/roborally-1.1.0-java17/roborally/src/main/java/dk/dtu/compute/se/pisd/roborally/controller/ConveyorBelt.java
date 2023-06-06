@@ -21,7 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,24 +31,33 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class ConveyorBelt extends FieldAction {
 
-    private Heading heading;
+    public final Heading heading;
+    public final Command command;
 
-    public Heading getHeading() {
+    public ConveyorBelt(Heading heading, Command command) {
+        this.heading = heading;
+        this.command = command;
+    }
+
+    /*public Heading getHeading() {
         return heading;
     }
 
     public void setHeading(Heading heading) {
         this.heading = heading;
-    }
+    }*/
 
     @Override
-    public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        // TODO needs to be implemented
+    public boolean doAction(@NotNull GameController gameController, @NotNull Player player) {
+        Space target = player.board.getNeighbour(player.getSpace(), heading);
+        if (target == null && gameController.notWallsBlock(player.getSpace(), heading)) {
+            player.setSpace(null);
+        } else {
+            gameController.executeCommand(player, command, heading);
+        }
         return false;
     }
-
 }
