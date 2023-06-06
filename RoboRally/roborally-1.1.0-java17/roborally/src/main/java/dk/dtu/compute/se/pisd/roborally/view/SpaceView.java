@@ -79,7 +79,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             if (walls.equals(NORTH)) {
 
                 String north = "-fx-background-image: url('wallNorth.png');" +
-                        "-fx-background-size: 60px 25px;" +
+                        "-fx-background-size: 60px 20px;" +
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: up;";
 
@@ -91,7 +91,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             if (walls.equals(EAST)) {
 
                 String east = "-fx-background-image: url('wallEast.png');" +
-                        "-fx-background-size: 28px 60px;" +
+                        "-fx-background-size: 20px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: right;";
                 if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
@@ -100,7 +100,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
             if (walls.equals(WEST)) {
                 String west = "-fx-background-image: url('wallWest.png');" +
-                        "-fx-background-size: 28px 60px;" +
+                        "-fx-background-size: 20px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: left;";
                 if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
@@ -109,7 +109,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
             if (walls.equals(SOUTH)) {
                 String south = "-fx-background-image: url('wallSouth.png');" +
-                        "-fx-background-size: 60px 25px;" +
+                        "-fx-background-size: 60px 20px;" +
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: bottom;";
                 if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
