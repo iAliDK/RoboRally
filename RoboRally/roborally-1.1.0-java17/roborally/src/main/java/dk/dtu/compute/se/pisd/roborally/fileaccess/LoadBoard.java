@@ -28,6 +28,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
@@ -61,8 +62,11 @@ public class LoadBoard {
             boardname = DEFAULTBOARD;
         }
 
+
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
+
+
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
             return new Board(8, 8);
@@ -89,6 +93,13 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+            for(int i = 0; i< template.players.size(); i++){
+                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1));
+                result.addPlayer(player);
+                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
+                player.setHeading(template.players.get(i).heading);
+            }
+
 
 
             reader.close();
@@ -133,10 +144,6 @@ public class LoadBoard {
 
         }
 
-
-
-
-
 //        final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 //        for (int i = 0; i < board.getPlayersNumber(); i++) {
 //            Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
@@ -145,7 +152,6 @@ public class LoadBoard {
 //            myBoard.addProperty("PlayerXCor" + (i+1), player.getSpace().x);
 //            template.player = board.getPlayer(i+1);
 //        }
-
 
             for (int i = 0; i < board.width; i++) {
                 for (int j = 0; j < board.height; j++) {

@@ -89,7 +89,7 @@ public class AppController implements Observer {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = loadBoard("testboard");
+            Board board = loadBoard("defaultboard");
             //GameWalls gameWalls = new GameWalls( board);
             //gameWalls.addAWall(new Walls(4,4));
             gameController = new GameController(board);
@@ -116,11 +116,14 @@ public class AppController implements Observer {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         if (gameController == null) {
-//            newGame();
-            loadBoard("defaultboard");
+            Board board = loadBoard("testboardplayers");
+            gameController = new GameController(board);
+            gameController.startProgrammingPhase();
+            roboRally.createBoardView(gameController);
+
         }
 
-        roboRally.createBoardView(gameController);
+//        roboRally.createBoardView(gameController);
 
 
     }

@@ -12,11 +12,11 @@ public class PlayerTemplate {
    
     public  int x;
     public  int y;
-    private Heading heading;
+    public Heading heading;
     
     private int gameId;
     private String name;
-    private String color;
+    public String color;
     
     public PlayerTemplate(int x, int y, Heading heading, int gameId, String name, String color){
         
