@@ -78,30 +78,42 @@ public class Board extends Subject {
             for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
+
             }
+
         }
-        spaces[2][2].setIsWall(true);
+
+
+        //spaces[2][2].setHeading(Heading.NORTH).setIsWall(true);
+        //Space.setSpaceProperties(2, 2, Heading.NORTH, true);
+
+        //space.setSpaceProperties(2, 2, Heading.NORTH, true);
+
+        spaces[3][2].setIsWall(true);
+        spaces[3][2].setHeading(Heading.NORTH);
+
+
 
         spaces[2][2].setIsWall(true);
+        spaces[2][2].setHeading(Heading.NORTH);
+
+
+        spaces[4][4].setIsWall(true);
+        spaces[4][4].setHeading(Heading.EAST);
+
+        spaces[5][5].setIsWall(true);
+        spaces[5][5].setHeading(Heading.WEST);
+
+        spaces[6][6].setIsWall(true);
+        spaces[6][6].setHeading(Heading.SOUTH);
+
+        spaces[2][5].setIsWall(true);
+        spaces[2][5].setHeading(Heading.WEST);
 
 
 
         this.stepMode = false;
 
-    }
-
-    /*
-        public void addAWall(int wallx, int wally){
-        GameWalls gameWalls = new GameWalls(wallx, wally);
-        walls.addAWall(gameWalls);
-        }
-
-     */
-
-    public void addAWall(int wallx, int wally){
-        GameWalls gameWalls = new GameWalls(this);
-        walls.addAWall(gameWalls);
-        addAWall(2,4);
     }
 
 

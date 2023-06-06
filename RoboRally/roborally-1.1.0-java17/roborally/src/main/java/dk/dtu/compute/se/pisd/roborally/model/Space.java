@@ -27,6 +27,8 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
+
 /**
  * This class represents a space on the board.
  * It also keeps track of the player that is on the space.
@@ -49,6 +51,18 @@ public class Space extends Subject {
     public final int x;
     public final int y;
 
+    private Heading heading;
+
+    private Space[][] spaces;
+
+    public Heading getHeading() {
+        return heading;
+    }
+
+    public void setHeading(Heading heading) {
+        this.heading = heading;
+    }
+
     /**
      * @author Daniel.
      */
@@ -65,6 +79,8 @@ public class Space extends Subject {
     public void setIsWall(boolean wall) {
         isWall = wall;
     }
+
+
 
     /**
      * Constructor for a space on the board.
@@ -112,12 +128,44 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    public void setWalls(List<Heading> walls) {
+        this.walls = walls;
+    }
+
     public List<Heading> getWalls() {
         return walls;
     }
 
+
     public List<FieldAction> getActions() {
         return actions;
     }
+
+    public void setSpaceProperties(int x, int y, Heading heading, boolean isWall) {
+        Space space = spaces[x][y];
+        space.setHeading(heading);
+        space.setIsWall(isWall);
+
+        // Perform any additional operations or logic if needed
+    }
+
+    public String getImagePath(boolean isWallHeading) {
+        if (isWallHeading) {
+            if (this.equals(SOUTH)) {
+                return "wallSouth.png";
+
+            } else if (this.equals(WEST)) {
+                return "wallWest.png";
+
+            } else if (this.equals(NORTH)) {
+                return "wallNorth.png";
+
+            } else if (this.equals(EAST)) {
+                return "wallEast.png";
+            }
+        }
+        return ""; // Return an empty string if it is not a wall heading
+    }
+
 
 }
