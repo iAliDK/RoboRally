@@ -356,7 +356,8 @@ public class GameController {
     public void backUp(@NotNull Player player) {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
-        if (newSpace.getPlayer() == null) {
+        //check if space is wall
+        if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) {
             player.getSpace().setPlayer(null);
             player.setSpace(newSpace);
             newSpace.setPlayer(player);
