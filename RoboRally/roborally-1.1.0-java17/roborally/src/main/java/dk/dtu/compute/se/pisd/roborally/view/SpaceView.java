@@ -22,12 +22,14 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 
 /**
  * The view of a space on the board.
@@ -44,6 +46,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_WIDTH = 60;  // 60; // 75;
 
     public final Space space;
+
 
     /**
      * The constructor of the space view.
@@ -62,17 +65,59 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
+
+
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
         } else {
             this.setStyle("-fx-background-color: black;");
         }
 
-        if(space.isWall()){
-            if(space.isWall()){
-                this.setStyle("-fx-background-color: blue;");
+
+        Heading walls = space.getHeading();
+        if (space.isWall()) {
+            if (walls.equals(NORTH)) {
+
+                String north = "-fx-background-image: url('wallNorth.png');" +
+                        "-fx-background-size: 60px 25px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;";
+
+                if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";;
+                this.setStyle(north);
+
+
+            }
+            if (walls.equals(EAST)) {
+
+                String east = "-fx-background-image: url('wallEast.png');" +
+                        "-fx-background-size: 28px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: right;";
+                if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
+                this.setStyle(east);
+
+            }
+            if (walls.equals(WEST)) {
+                String west = "-fx-background-image: url('wallWest.png');" +
+                        "-fx-background-size: 28px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: left;";
+                if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
+                this.setStyle(west);
+
+            }
+            if (walls.equals(SOUTH)) {
+                String south = "-fx-background-image: url('wallSouth.png');" +
+                        "-fx-background-size: 60px 25px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: bottom;";
+                if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
+                this.setStyle(south);
             }
         }
+
+
 
         // updatePlayer();
 
