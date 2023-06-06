@@ -14,7 +14,7 @@ public class PlayerTemplate {
     public  int y;
     public Heading heading;
     
-    private int gameId;
+    private int gameId = (int)(Math.random()*1001);
     private String name;
     public String color;
     

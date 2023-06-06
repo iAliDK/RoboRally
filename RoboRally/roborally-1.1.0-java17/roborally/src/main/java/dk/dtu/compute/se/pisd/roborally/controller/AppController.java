@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.filelist;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -35,10 +36,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.filelist.*;
+import java.util.*;
+import java.io.File;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
@@ -52,10 +54,28 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
+    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard");
+
+
+    //
+//for (int i = 0; i < listOfFiles.length; i++)
+//    {
+//        if (listOfFiles[i].isFile()) {
+//            System.out.println("File " + listOfFiles[i].getName());
+//        } else if (listOfFiles[i].isDirectory()) {
+//            System.out.println("Directory " + listOfFiles[i].getName());
+//        }
+//    }
+
+//    private List<String> GAME_SAVES  = List.of(filelist.fileNames("/classes/boards")); //Arrays.asList("test","testboardplayers");
+private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
+
+
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
    // private ArrayList<GameWalls> wall;
     private GameController gameController;
+
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -86,46 +106,73 @@ public class AppController implements Observer {
                     return;
                 }
             }
+            ChoiceDialog<String> boardSelection = new ChoiceDialog<>(GAMEBOARD_OPTIONS.get(0), GAMEBOARD_OPTIONS);
+            dialog.setTitle("Board Select");
+            dialog.setHeaderText("Start board");
+            Optional<String> startBoard = boardSelection.showAndWait();
+
+            if (startBoard.isPresent()) {
+                if (gameController == null) {
+                    Board board = loadBoard(startBoard.get());
+                    gameController = new GameController(board);
+                    int noPlayers = result.get();
+                    for (int i = 0; i < noPlayers; i++) {
+                        Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                        board.addPlayer(player);
+                        player.setSpace(board.getSpace(i % board.width, i));
+                    }
+                    gameController.startProgrammingPhase();
+                    roboRally.createBoardView(gameController);
+
+                }
+            }
+
+
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = loadBoard("defaultboard");
-            //GameWalls gameWalls = new GameWalls( board);
-            //gameWalls.addAWall(new Walls(4,4));
-            gameController = new GameController(board);
-            int noPlayers = result.get();
-            for (int i = 0; i < noPlayers; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
-
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
-            gameController.startProgrammingPhase();
-            roboRally.createBoardView(gameController);
+//            Board board = loadBoard("defaultboard");
+//            //GameWalls gameWalls = new GameWalls( board);
+//            //gameWalls.addAWall(new Walls(4,4));
+//            gameController = new GameController(board);
+//            int noPlayers = result.get();
+//            for (int i = 0; i < noPlayers; i++) {
+//                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+//                board.addPlayer(player);
+//                player.setSpace(board.getSpace(i % board.width, i));
+//            }
+//
+//            // XXX: V2
+//            // board.setCurrentPlayer(board.getPlayer(0));
+//            gameController.startProgrammingPhase();
+//            roboRally.createBoardView(gameController);
         }
+
     }
 
     public void saveGame() {
         // XXX needs to be implemented eventually
-        saveBoard(this.gameController.board, "test");
+        saveBoard(this.gameController.board,  this.gameController.board.boardName+"save" + (int)(Math.random()*1001));
     }
 
     public void loadGame() {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
-        if (gameController == null) {
-            Board board = loadBoard("testboardplayers");
-            gameController = new GameController(board);
-            gameController.startProgrammingPhase();
-            roboRally.createBoardView(gameController);
 
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(GAME_SAVES.get(0), GAME_SAVES);
+        dialog.setTitle("Save");
+        dialog.setHeaderText("Select save you wish to load");
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            if (gameController == null) {
+                Board board = loadBoard(result.get());
+                gameController = new GameController(board);
+                gameController.startProgrammingPhase();
+                roboRally.createBoardView(gameController);
+
+            }
         }
-
-//        roboRally.createBoardView(gameController);
-
-
     }
 
     /**
@@ -141,7 +188,6 @@ public class AppController implements Observer {
         if (gameController != null) {
 
             // here we save the game (without asking the user).
-            saveGame();
 
             gameController = null;
             roboRally.createBoardView(null);
