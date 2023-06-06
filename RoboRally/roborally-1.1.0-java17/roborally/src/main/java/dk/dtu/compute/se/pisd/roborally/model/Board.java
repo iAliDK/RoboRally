@@ -307,8 +307,10 @@ public class Board extends Subject {
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         //if (space.getWalls().contains(heading)) {
         //  return null;
+
+        // ASK PERSON WHO WROTE THIS!!
         if (space.getIsWall() == true) {
-            return null;
+            //return null;
         }
         int x = space.x;
         int y = space.y;
@@ -335,9 +337,6 @@ public class Board extends Subject {
             }
 
     }
-        if(result.getIsWall()==true){
-            return null;
-        }
         return result;
     }
 
