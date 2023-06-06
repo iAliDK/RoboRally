@@ -25,5 +25,5 @@ package dk.dtu.compute.se.pisd.roborally.model;
  * Enum for the different phases of the game
  */
 public enum Phase {
-    INITIALISATION, PROGRAMMING, ACTIVATION, PLAYER_INTERACTION
+    INITIALISATION, PROGRAMMING, ACTIVATION, PLAYER_INTERACTION, GAME_WON
 }

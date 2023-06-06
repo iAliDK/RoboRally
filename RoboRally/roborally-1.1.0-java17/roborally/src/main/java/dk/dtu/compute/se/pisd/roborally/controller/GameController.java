@@ -319,7 +319,7 @@ public class GameController {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
         //check if space is wall
-        if (newSpace.getPlayer() == null && !newSpace.getIsWall()) {
+        if (newSpace.getPlayer() == null && newSpace.getIsWall() == false) {
             player.getSpace().setPlayer(null);
             player.setSpace(newSpace);
             newSpace.setPlayer(player);
