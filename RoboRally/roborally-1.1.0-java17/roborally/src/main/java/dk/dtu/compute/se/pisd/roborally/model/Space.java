@@ -32,12 +32,11 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 /**
  * This class represents a space on the board.
  * It also keeps track of the player that is on the space.
- *
+ * <p>
  * The class itself extends the {@link Subject} class, which means that
  * it is observable and can notify its observers about changes.
- *
+ * <p>
  * A space can have a player on it.
- *
  */
 public class Space extends Subject {
 
@@ -107,8 +106,7 @@ public class Space extends Subject {
      */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
-        if (player != oldPlayer &&
-                (player == null || board == player.board)) {
+        if (player != oldPlayer && (player == null || board == player.board)) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen
@@ -121,7 +119,7 @@ public class Space extends Subject {
         }
     }
 
-    void playerChanged() {
+    public void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can
         // notify the space of these changes by calling this method.

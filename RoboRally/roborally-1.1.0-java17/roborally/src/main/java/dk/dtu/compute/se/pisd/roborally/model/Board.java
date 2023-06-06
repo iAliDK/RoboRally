@@ -56,6 +56,11 @@ public class Board extends Subject {
 
     private Walls walls;
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+    private int numberOfCheckpoints;
+
     /**
      * The method is used by the next method. It Sets the current objects boardname to a String and the width and height to integers.
      * It gives each space on the board a coordinate using a foor loop.
@@ -63,10 +68,6 @@ public class Board extends Subject {
      * @param height The height of the current objects board.
      * @param boardName The name of the current objects board.
      */
-
-    public List<Player> getPlayers() {
-        return players;
-    }
 
     public Board(int width, int height, @NotNull String boardName, int gameId) {
         this.boardName = boardName;
@@ -111,7 +112,6 @@ public class Board extends Subject {
         spaces[2][5].setHeading(Heading.WEST);
 
 
-
         this.stepMode = false;
 
     }
@@ -131,6 +131,7 @@ public class Board extends Subject {
     /**
      * The method returns the gameId.
      * Not used.
+     *
      * @return gameId
      */
     public int getGameId() {
@@ -140,7 +141,8 @@ public class Board extends Subject {
     /**
      * This method sets the gameId of the current object and throws an exception if another object has the same gameId.
      * Not used.
-     * @param gameId
+     *
+     * @param gameId The gameId of the current object. (Not used)
      */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
@@ -158,6 +160,7 @@ public class Board extends Subject {
 
     /**
      * This method lets you get a space using the coordinates for the space.
+     *
      * @param x The x position.
      * @param y The y position.
      * @return Returns the space on the coordinate.
@@ -173,6 +176,7 @@ public class Board extends Subject {
 
     /**
      * This method lets you get the amount of players in the game.
+     *
      * @return The number of players.
      */
     public int getPlayersNumber() {
@@ -182,7 +186,8 @@ public class Board extends Subject {
     /**
      * This method is used to check if a player is already added and if not it adds it to an array list.
      * After that it calls the notifyChange method from the Subject class.
-     * @param player
+     *
+     * @param player The player you want to add. (Not used)
      */
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
@@ -193,6 +198,7 @@ public class Board extends Subject {
 
     /**
      * This methods gets the player from the array list equal to the index you give your parameter.
+     *
      * @param i Index of player.
      * @return A player.
      */
@@ -206,6 +212,7 @@ public class Board extends Subject {
 
     /**
      * Returns the current player.
+     *
      * @return The current player.
      */
     public Player getCurrentPlayer() {
@@ -214,6 +221,7 @@ public class Board extends Subject {
 
     /**
      * Sets the current player. Then notifies the observer.
+     *
      * @param player The player you want to be the current player.
      */
     public void setCurrentPlayer(Player player) {
@@ -225,6 +233,7 @@ public class Board extends Subject {
 
     /**
      * Gets the current phase.
+     *
      * @return Enum corresponding to the phase.
      */
     public Phase getPhase() {
@@ -233,6 +242,7 @@ public class Board extends Subject {
 
     /**
      * Sets the current phase and notifies the observer. Does nothing if you try to set the phase to the same phase.
+     *
      * @param phase The parameter determines what phase you want to set it to.
      */
     public void setPhase(Phase phase) {
@@ -244,6 +254,7 @@ public class Board extends Subject {
 
     /**
      * Gets which step you are on.
+     *
      * @return The number of the step you are on.
      */
     public int getStep() {
@@ -252,6 +263,7 @@ public class Board extends Subject {
 
     /**
      * Sets the current step to the step you want and notifies the observer.
+     *
      * @param step The step you want to change to.
      */
     public void setStep(int step) {
@@ -263,6 +275,7 @@ public class Board extends Subject {
 
     /**
      * Checks your stepMode.
+     *
      * @return If stepMode is true or false.
      */
     public boolean isStepMode() {
@@ -272,7 +285,8 @@ public class Board extends Subject {
     /**
      * Sets the stepMode to the one you give it. If it's the same as current stepMode, it does nothing.
      * If it is different, it changes it and updates the observer.
-     * @param stepMode
+     *
+     * @param stepMode The stepMode you want to change to. True or false. (Not used)
      */
     public void setStepMode(boolean stepMode) {
         if (stepMode != this.stepMode) {
@@ -283,6 +297,7 @@ public class Board extends Subject {
 
     /**
      * Gets the index of the layer you provide in the parameter.
+     *
      * @param player a player.
      * @return The index of the player.
      */
@@ -307,27 +322,16 @@ public class Board extends Subject {
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         //if (space.getWalls().contains(heading)) {
         //  return null;
-
-        // ASK PERSON WHO WROTE THIS!!
         if (space.getIsWall() == true) {
-            //return null;
+            return null;
         }
         int x = space.x;
         int y = space.y;
         switch (heading) {
-            case SOUTH:
-                y = (y + 1) % height;
-                break;
-            case WEST:
-                x = (x + width - 1) % width;
-                break;
-            case NORTH:
-                y = (y + height - 1) % height;
-                break;
-            case EAST:
-                x = (x + 1) % width;
-                break;
-
+            case SOUTH -> y = (y + 1) % height;
+            case WEST -> x = (x + width - 1) % width;
+            case NORTH -> y = (y + height - 1) % height;
+            case EAST -> x = (x + 1) % width;
         }
         Heading reverse = Heading.values()[(heading.ordinal() + 2) % Heading.values().length];
         Space result = getSpace(x, y);
@@ -337,6 +341,9 @@ public class Board extends Subject {
             }
 
     }
+        if(result.getIsWall()==true){
+            return null;
+        }
         return result;
     }
 
@@ -352,18 +359,10 @@ public class Board extends Subject {
         int x = space.x;
         int y = space.y;
         switch (heading) {
-            case SOUTH:
-                y = (y + height - 1) % height;
-                break;
-            case WEST:
-                x = (x + 1) % width;
-                break;
-            case NORTH:
-                y = (y + 1) % height;
-                break;
-            case EAST:
-                x = (x + width - 1) % width;
-                break;
+            case SOUTH -> y = (y + height - 1) % height;
+            case WEST -> x = (x + 1) % width;
+            case NORTH -> y = (y + 1) % height;
+            case EAST -> x = (x + width - 1) % width;
         }
 
         return getSpace(x, y);
@@ -371,6 +370,7 @@ public class Board extends Subject {
 
     /**
      * This method shows the status of the game, including the phase, current player and current step.
+     *
      * @return A string showing all the information.
      */
     public String getStatusMessage() {
@@ -384,5 +384,11 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    public int getNumberOfCheckpoints() {
+        return numberOfCheckpoints;
+    }
 
+    public void setNumberOfCheckpoints(int numberOfCheckpoints) {
+        this.numberOfCheckpoints = numberOfCheckpoints;
+    }
 }
