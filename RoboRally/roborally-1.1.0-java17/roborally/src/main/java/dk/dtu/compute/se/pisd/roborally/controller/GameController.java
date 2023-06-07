@@ -287,8 +287,10 @@ public class GameController {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
 
+        // && (newSpace.getIsWall() == false || player.getHeading() != player.getSpace().getWalls())
         //check if space is wall
-            if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading())) {
+        //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
+            if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading()) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
                 player.getSpace().setPlayer(null);
                 player.setSpace(newSpace);
                 newSpace.setPlayer(player);
@@ -365,7 +367,7 @@ public class GameController {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
         //check if space is wall
-        if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) {
+        if (newSpace.getPlayer() == null && ((player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading())) {
             player.getSpace().setPlayer(null);
             player.setSpace(newSpace);
             newSpace.setPlayer(player);

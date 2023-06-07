@@ -166,7 +166,7 @@ public class Space extends Subject {
 
         // Perform any additional operations or logic if needed
     }
-
+/*
     public String getImagePath(boolean isWallHeading) {
         if (isWallHeading) {
             if (this.equals(SOUTH)) {
@@ -184,6 +184,8 @@ public class Space extends Subject {
         }
         return ""; // Return an empty string if it is not a wall heading
     }
+
+ */
 
 
 

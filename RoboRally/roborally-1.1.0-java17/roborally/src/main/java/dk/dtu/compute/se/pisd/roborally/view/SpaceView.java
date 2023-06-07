@@ -86,7 +86,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black;");
         }
 
-
         Heading walls = space.getHeading();
         if (space.isWall()) {
             if (walls.equals(NORTH)) {
