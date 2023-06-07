@@ -67,13 +67,18 @@ public class GameController {
         //   - the counter of moves in the game should be increased by one
         //     if the player is moved
 
+        /*
         // Checks whether the space is free
         if (space.getPlayer() != null) {
             return;
         }
         // Moves player to chosen space
         board.getCurrentPlayer().setSpace(space);
+
+         */
     }
+
+
     // XXX: V2
 
 
@@ -287,7 +292,6 @@ public class GameController {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
 
-        // && (newSpace.getIsWall() == false || player.getHeading() != player.getSpace().getWalls())
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
             if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading()) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
