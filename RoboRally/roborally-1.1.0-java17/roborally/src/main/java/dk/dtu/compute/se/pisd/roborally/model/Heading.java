@@ -40,4 +40,20 @@ public enum Heading {
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
+
+    public Heading getOpposite() {
+        if(this == NORTH){
+        return SOUTH;
+        }
+        if(this == SOUTH){
+            return NORTH;
+        }
+        if(this == EAST){
+            return WEST;
+        }
+        if(this == WEST){
+            return EAST;
+        }
+       return null;
+    }
 }

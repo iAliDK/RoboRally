@@ -21,15 +21,22 @@
  */
 package dk.dtu.compute.se.pisd.roborally.view;
 
+
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
+
+
+import java.awt.*;
 
 /**
  * The view of a space on the board.
@@ -47,13 +54,21 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
-
     /**
      * The constructor of the space view.
      *
      * @param space
      */
     public SpaceView(@NotNull Space space) {
+
+        Pane pane = new Pane();
+        Rectangle rectangle =
+                new Rectangle(50.0, 50.0, SPACE_WIDTH, SPACE_HEIGHT);
+        rectangle.setFill(Color.ALICEBLUE);
+        pane.getChildren().add(rectangle);
+
+
+
         this.space = space;
 
         // XXX the following styling should better be done with styles
@@ -65,14 +80,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-
-
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
         } else {
             this.setStyle("-fx-background-color: black;");
         }
-
 
         Heading walls = space.getHeading();
         if (space.isWall()) {
@@ -118,6 +130,40 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
 
 
+
+
+        if(space.isCheckpoint()){
+            if(space.checkpointNumber == 1){
+                this.setStyle("-fx-background-color: GREEN");
+            }
+            if(space.checkpointNumber == 1){
+                this.setStyle("-fx-background-image: url('TheFlag1.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;");
+            }
+            if(space.checkpointNumber == 2){
+                this.setStyle("-fx-background-image: url('TheFlag2.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;");
+            }
+            if(space.checkpointNumber == 3){
+                this.setStyle("-fx-background-image: url('TheFlag3.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;");
+            }
+            if(space.checkpointNumber == 4){
+                this.setStyle("-fx-background-image: url('TheFlag4.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;");
+            }
+
+        }
+
+        //if(space.getIsWall())
 
         // updatePlayer();
 

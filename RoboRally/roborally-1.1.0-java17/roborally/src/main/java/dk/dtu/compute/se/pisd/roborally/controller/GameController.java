@@ -26,6 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.PlayerView;
 import org.jetbrains.annotations.NotNull;
 
+//import static dk.dtu.compute.se.pisd.roborally.model.Checkpoint.setGameWinner;
+
 /**
  * This is the controller class for the game. It is responsible for
  * the game logic.
@@ -65,13 +67,18 @@ public class GameController {
         //   - the counter of moves in the game should be increased by one
         //     if the player is moved
 
+        /*
         // Checks whether the space is free
         if (space.getPlayer() != null) {
             return;
         }
         // Moves player to chosen space
         board.getCurrentPlayer().setSpace(space);
+
+         */
     }
+
+
     // XXX: V2
 
 
@@ -171,6 +178,7 @@ public class GameController {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        nextTurn();
     }
 
     /**
@@ -208,6 +216,7 @@ public class GameController {
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
+
                         startProgrammingPhase();
                     }
                 }
@@ -265,6 +274,11 @@ public class GameController {
         }
     }
 
+    /*public void gameOver(Player player) {
+        if (player.isGameWon()) {
+            stopGame();
+        }
+    }*/
 
     // TODO Assignment V2
     /**
@@ -278,7 +292,8 @@ public class GameController {
 
 
         //check if space is wall
-            if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading())) {
+        //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
+            if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading()) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
                 player.getSpace().setPlayer(null);
                 player.setSpace(newSpace);
                 newSpace.setPlayer(player);
@@ -314,7 +329,6 @@ public class GameController {
     /**
      * @author Daniel, Ismail and Zainab.
      * This method turns the player to the right
-     *
      * @param player
      */
     public void turnRight(@NotNull Player player) {
@@ -356,7 +370,7 @@ public class GameController {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
         //check if space is wall
-        if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) {
+        if (newSpace.getPlayer() == null && ((player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading())) {
             player.getSpace().setPlayer(null);
             player.setSpace(newSpace);
             newSpace.setPlayer(player);
@@ -364,6 +378,11 @@ public class GameController {
         }
     }
 
+    /*public void gameWon(Player player){
+        if(Checkpoint.getGameWinner(true)){
+
+        }
+    }*/
 
     /**
      * This method checks if a card can be moved from the source field to the target field.
@@ -467,4 +486,5 @@ public class GameController {
             this.heading = heading;
         }
     }
+
 }
