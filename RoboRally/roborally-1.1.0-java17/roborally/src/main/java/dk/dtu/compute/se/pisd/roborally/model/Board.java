@@ -75,12 +75,19 @@ public class Board extends Subject {
         this.gameId = gameId;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+            for(int y = 0; y < height; y++) {
+                /*
+                if(x == 1 && y == 2){
+                    spaces[x][y] = new Space(this, x, y, 1);
+                    return;
+                }
+                if(x == 1 && y == 3){
+                    spaces[x][y] = new Space(this, x, y, 2);
+                    return;
+                } */
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
-
             }
-
         }
 
 
@@ -109,6 +116,21 @@ public class Board extends Subject {
 
         spaces[2][5].setIsWall(true);
         spaces[2][5].setHeading(Heading.WEST);
+
+
+
+
+        spaces[1][2].setCheckpoint(true);
+        spaces[1][2].checkpointNumber = 1;
+
+        spaces[1][4].setCheckpoint(true);
+        spaces[1][4].checkpointNumber = 2;
+
+        spaces[6][7].setCheckpoint(true);
+        spaces[6][7].checkpointNumber = 3;
+
+        spaces[4][7].setCheckpoint(true);
+        spaces[4][7].checkpointNumber = 4;
 
 
 

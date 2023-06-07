@@ -42,7 +42,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 public class Space extends Subject {
 
     private Player player;
-
+    public int checkpointNumber = 0;
     private List<Heading> walls = new ArrayList<>();
     private List<FieldAction> actions = new ArrayList<>();
 
@@ -67,6 +67,16 @@ public class Space extends Subject {
      * @author Daniel.
      */
     private boolean isWall; //Getter og Setter
+
+    private boolean isCheckpoint; //Getter og Setter
+
+    public boolean isCheckpoint() {
+        return isCheckpoint;
+    }
+
+    public void setCheckpoint(boolean checkpoint) {
+        isCheckpoint = checkpoint;
+    }
 
     public boolean isWall() {
         return isWall;
@@ -93,6 +103,14 @@ public class Space extends Subject {
         this.board = board;
         this.x = x;
         this.y = y;
+        player = null;
+    }
+    public Space(Board board, int x, int y, int checkpointNumber) {
+        this.board = board;
+        this.x = x;
+        this.y = y;
+        this.checkpointNumber = checkpointNumber;
+        this.isCheckpoint = true;
         player = null;
     }
 
@@ -166,6 +184,7 @@ public class Space extends Subject {
         }
         return ""; // Return an empty string if it is not a wall heading
     }
+
 
 
 }

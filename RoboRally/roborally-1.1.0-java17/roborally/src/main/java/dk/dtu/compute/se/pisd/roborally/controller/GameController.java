@@ -26,6 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.PlayerView;
 import org.jetbrains.annotations.NotNull;
 
+//import static dk.dtu.compute.se.pisd.roborally.model.Checkpoint.setGameWinner;
+
 /**
  * This is the controller class for the game. It is responsible for
  * the game logic.
@@ -121,6 +123,7 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
+
     }
 
 
@@ -209,6 +212,7 @@ public class GameController {
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
+
                         startProgrammingPhase();
                     }
                 }
@@ -266,6 +270,11 @@ public class GameController {
         }
     }
 
+    /*public void gameOver(Player player) {
+        if (player.isGameWon()) {
+            stopGame();
+        }
+    }*/
 
     // TODO Assignment V2
     /**
@@ -315,7 +324,6 @@ public class GameController {
     /**
      * @author Daniel, Ismail and Zainab.
      * This method turns the player to the right
-     *
      * @param player
      */
     public void turnRight(@NotNull Player player) {
@@ -365,6 +373,11 @@ public class GameController {
         }
     }
 
+    /*public void gameWon(Player player){
+        if(Checkpoint.getGameWinner(true)){
+
+        }
+    }*/
 
     /**
      * This method checks if a card can be moved from the source field to the target field.
@@ -468,4 +481,5 @@ public class GameController {
             this.heading = heading;
         }
     }
+
 }

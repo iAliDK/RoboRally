@@ -147,7 +147,6 @@ private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
 //            gameController.startProgrammingPhase();
 //            roboRally.createBoardView(gameController);
         }
-
     }
 
     public void saveGame() {
@@ -218,6 +217,14 @@ private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
         }
     }
 
+   /* public void gameWon(Player player){
+        if(Checkpoint.getGameWinner(true)){
+            Alert winner = new Alert(AlertType.CONFIRMATION);
+            winner.setTitle("Player"+ this.player.getPlayerCounter()==4);
+            winner.setContentText("Are you sure you want to exit RoboRally?");
+        }
+    }*/
+
     public boolean isGameRunning() {
         return gameController != null;
     }
@@ -227,5 +234,11 @@ private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
     public void update(Subject subject) {
         // XXX do nothing for now
     }
+
+    /*public void gameOver(Player player) {
+        if (player.isGameWon()) {
+            stopGame();
+        }
+    }*/
 
 }

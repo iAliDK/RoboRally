@@ -45,7 +45,7 @@ public class Player extends Subject {
 
     private Space space;
     private Heading heading = SOUTH;
-
+    public int playerCounter = 1;
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
@@ -77,6 +77,48 @@ public class Player extends Subject {
     public PlayerTemplate createTemplate(){
         return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color);
     }
+
+
+public void checkForCheckpoint(Space space){
+        if(this.playerCounter == getSpace().checkpointNumber && getSpace().isCheckpoint()){
+            this.playerCounter++;
+        } if(this.playerCounter==5){
+            setGameWon(true);
+    }
+}
+
+private boolean gameWon;
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+
+
+
+
+public void playerCounterMethod(Player player){
+    int playerCounter = player.getPlayerCounter();
+}
+    public int getPlayerCounter(){
+        return playerCounter;
+    }
+
+    public void setPlayerCounter(int playerCounter){
+        this.playerCounter = playerCounter;
+    }
+
+  /*  private boolean complete1;
+
+    public void setComplete1(boolean completion1){
+        complete1 = completion1;
+    }
+    public boolean getComplete1(){
+        return complete1;
+    } */
 
     public String getName() {
         return name;
@@ -169,5 +211,4 @@ public class Player extends Subject {
     public CommandCardField getCardField(int i) {
         return cards[i];
     }
-
 }
