@@ -22,8 +22,12 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -49,6 +53,7 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+
     /**
      * Constructor method "Player" creates a new player with the specified board, color, and name
      *
@@ -60,7 +65,6 @@ public class Player extends Subject {
         this.board = board;
         this.name = name;
         this.color = color;
-
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -75,8 +79,22 @@ public class Player extends Subject {
     }
 
     public PlayerTemplate createTemplate(){
-        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color);
+        List<CommandCardFieldTemplate> programTemp = new ArrayList<>();
+        List<CommandCardFieldTemplate> cardsTemp = new ArrayList<>();
+
+        for(int i = 0; i<NO_CARDS; i++){
+            cardsTemp.add(new CommandCardFieldTemplate(cards[i].isVisible(), cards[i].getCard()));
+        }
+
+        for(int i = 0; i<NO_REGISTERS; i++){
+            programTemp.add(new CommandCardFieldTemplate(program[i].isVisible(), program[i].getCard()));
+        }
+
+        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
     }
+//    public CommandCardFieldTemplate createCardTemplate(){
+//        return new CommandCardFieldTemplate( player, visible, cards, program);
+//    }
 
     public String getName() {
         return name;

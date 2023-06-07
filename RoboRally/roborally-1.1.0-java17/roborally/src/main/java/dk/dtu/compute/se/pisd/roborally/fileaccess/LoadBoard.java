@@ -30,17 +30,13 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +52,22 @@ public class LoadBoard {
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
-
+    public static String [] saves = null;
+    public static void main(String[] args) throws
+            IOException {
+        String dirName;
+        dirName = System.getProperty("user.dir");
+        dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
+//        dirName = "C:\\Users\\s205412\\IdeaProjects\\RoboRally\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
+        File dir = new File(dirName);
+        if (!dir.isDirectory())
+            System.out.println("*** Not a directory! ***");
+        else {
+            String [] nameOfFiles = dir.list();
+            System.out.println(nameOfFiles);
+            saves = nameOfFiles;
+        }
+    }
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -64,7 +75,7 @@ public class LoadBoard {
 
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname);
 
 
         if (inputStream == null) {
@@ -93,12 +104,31 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
+            //Player positions
             for(int i = 0; i< template.players.size(); i++){
                 Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1));
                 result.addPlayer(player);
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
                 player.setHeading(template.players.get(i).heading);
             }
+
+
+            //Player cards
+//            for (int i = 0; i < result.getPlayersNumber(); i++) {
+//                Player player = result.getPlayer(i);
+//                if (player != null) {
+//                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
+//                        CommandCardField field = player.getProgramField(j);
+//                        field.setCard(null);
+//                        field.setVisible(true);
+//                    }
+//                    for (int j = 0; j < Player.NO_CARDS; j++) {
+//                        CommandCardField field = player.getCardField(j);
+//                        field.setCard(generateRandomCommandCard());
+//                        field.setVisible(true);
+//                    }
+//                }
+//            }
 
 
 
@@ -138,11 +168,28 @@ public class LoadBoard {
         boardTemplate.width = board.width;
         boardTemplate.height = board.height;
 
+        //Players
         List<Player> players =  board.getPlayers();
+
+
         for(int i = 0; i< board.getPlayersNumber(); i++){
             boardTemplate.players.add(players.get(i).createTemplate());
-
         }
+
+//        Player cards
+//        for (int i = 0; i < board.getPlayersNumber(); i++) {
+//            Player player = board.getPlayer(i);
+//            if (player != null) {
+//                Programming
+//                for (int j = 0; j < Player.NO_REGISTERS; j++) {
+//boardTemplate.program.add(players.get(i).createCardTemplate());;
+//                }
+//                Registers
+//                for (int j = 0; j < Player.NO_CARDS; j++) {
+//                    boardTemplate.cards.add(players.get(i).createCardTemplate());
+//                }
+//            }
+//        }
 
 //        final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 //        for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -152,7 +199,7 @@ public class LoadBoard {
 //            myBoard.addProperty("PlayerXCor" + (i+1), player.getSpace().x);
 //            template.player = board.getPlayer(i+1);
 //        }
-
+            //Board size + spaces
             for (int i = 0; i < board.width; i++) {
                 for (int j = 0; j < board.height; j++) {
                     Space space = board.getSpace(i, j);

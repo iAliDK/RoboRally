@@ -195,7 +195,6 @@ public class GameController {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                             return;
                     }
-
                     executeCommand(currentPlayer, command);
                 }
 

@@ -37,8 +37,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.filelist.*;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.File;
+import java.io.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,31 +58,41 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard");
-
-
-    //
-//for (int i = 0; i < listOfFiles.length; i++)
-//    {
-//        if (listOfFiles[i].isFile()) {
-//            System.out.println("File " + listOfFiles[i].getName());
-//        } else if (listOfFiles[i].isDirectory()) {
-//            System.out.println("Directory " + listOfFiles[i].getName());
-//        }
-//    }
-
-//    private List<String> GAME_SAVES  = List.of(filelist.fileNames("/classes/boards")); //Arrays.asList("test","testboardplayers");
-private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
-
-
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
+
    // private ArrayList<GameWalls> wall;
     private GameController gameController;
-
+    public String[] saves = {"test.json"};
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
+        try {
+            saves = loadSaveFiles();
+        } catch (Exception e){
+            System.out.println("No directories found");
+            saves = null;
+        }
+
+
     }
+
+    private String[] loadSaveFiles() throws Exception{
+        String dirName;
+        dirName = System.getProperty("user.dir");
+        dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
+//        dirName = "C:\\Users\\s205412\\IdeaProjects\\RoboRally\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
+        File dir = new File(dirName);
+        if (!dir.isDirectory()) {
+            System.out.println("*** Not a directory! ***");
+            throw new Exception();
+        } else {
+            String [] nameOfFiles = dir.list();
+            System.out.println(nameOfFiles);
+            return nameOfFiles;
+        }
+    }
+
 
 /**
      * This method is called by the {@link RoboRally} class when the
@@ -159,6 +172,8 @@ private List<String> GAME_SAVES  = Arrays.asList("test","testboardplayers");
         // XXX needs to be implemented eventually
         // for now, we just create a new game
 
+
+        List<String> GAME_SAVES  = Arrays.asList(saves);
         ChoiceDialog<String> dialog = new ChoiceDialog<>(GAME_SAVES.get(0), GAME_SAVES);
         dialog.setTitle("Save");
         dialog.setHeaderText("Select save you wish to load");
