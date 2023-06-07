@@ -128,7 +128,6 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
-
     }
 
 
@@ -179,6 +178,7 @@ public class GameController {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        nextTurn();
     }
 
     /**
