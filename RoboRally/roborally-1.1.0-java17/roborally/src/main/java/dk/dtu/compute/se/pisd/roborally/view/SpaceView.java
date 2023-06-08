@@ -133,32 +133,40 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
         if(space.isCheckpoint()){
-            if(space.checkpointNumber == 1){
+           if(space.checkpointNumber == 1){
                 this.setStyle("-fx-background-color: GREEN");
             }
-            if(space.checkpointNumber == 1){
-                this.setStyle("-fx-background-image: url('TheFlag1.png');" +
+            if (space.checkpointNumber == 1) {
+                String cp1 = "-fx-background-image: url('TheFlag1.png');" +
                         "-fx-background-size: 60px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: up;");
+                        "-fx-background-position: up;";
+                if ((space.x + space.y) % 2 != 0) cp1 = cp1 + "-fx-background-color: black;";
+                this.setStyle(cp1);
             }
-            if(space.checkpointNumber == 2){
-                this.setStyle("-fx-background-image: url('TheFlag2.png');" +
+            if (space.checkpointNumber == 2) {
+                String cp2 = "-fx-background-image: url('TheFlag2.png');" +
                         "-fx-background-size: 60px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: up;");
+                        "-fx-background-position: up;";
+                if ((space.x + space.y) % 2 != 0) cp2 = cp2 + "-fx-background-color: black;";
+                this.setStyle(cp2);
             }
-            if(space.checkpointNumber == 3){
-                this.setStyle("-fx-background-image: url('TheFlag3.png');" +
+            if (space.checkpointNumber == 3) {
+                String cp3 = "-fx-background-image: url('TheFlag3.png');" +
                         "-fx-background-size: 60px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: up;");
+                        "-fx-background-position: up;";
+                if ((space.x + space.y) % 2 != 0) cp3 = cp3 + "-fx-background-color: black;";
+                this.setStyle(cp3);
             }
-            if(space.checkpointNumber == 4){
-                this.setStyle("-fx-background-image: url('TheFlag4.png');" +
+            if (space.checkpointNumber == 4) {
+                String cp4 = "-fx-background-image: url('TheFlag4.png');" +
                         "-fx-background-size: 60px 60px;" +
                         "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: up;");
+                        "-fx-background-position: up;";
+                if ((space.x + space.y) % 2 != 0) cp4 = cp4 + "-fx-background-color: black;";
+                this.setStyle(cp4);
             }
 
         }
