@@ -67,16 +67,13 @@ public class AppController implements Observer {
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
-        try {
-            saves = loadSaveFiles();
-        } catch (Exception e){
-            System.out.println("No directories found");
-            saves = null;
-        }
 
 
     }
-
+    private static String removeExtension(final String s)
+    {
+        return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
+    }
     private String[] loadSaveFiles() throws Exception{
         String dirName;
         dirName = System.getProperty("user.dir");
@@ -88,6 +85,9 @@ public class AppController implements Observer {
             throw new Exception();
         } else {
             String [] nameOfFiles = dir.list();
+            for (int i = 0; i < nameOfFiles.length; i++) {
+                nameOfFiles[i]=removeExtension(nameOfFiles[i]);
+            }
             System.out.println(nameOfFiles);
             return nameOfFiles;
         }
@@ -164,14 +164,18 @@ public class AppController implements Observer {
 
     public void saveGame() {
         // XXX needs to be implemented eventually
-        saveBoard(this.gameController.board,  this.gameController.board.boardName+"save" + (int)(Math.random()*1001));
+        saveBoard(this.gameController.board,  this.gameController.board.boardName+"save"+ this.gameController.board.gameId);
     }
 
     public void loadGame() {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
-
-
+        try {
+            saves = loadSaveFiles();
+        } catch (Exception e){
+            System.out.println("No directories found");
+            saves = null;
+        }
         List<String> GAME_SAVES  = Arrays.asList(saves);
         ChoiceDialog<String> dialog = new ChoiceDialog<>(GAME_SAVES.get(0), GAME_SAVES);
         dialog.setTitle("Save");

@@ -1,0 +1,175 @@
+{
+  "width": 8,
+  "height": 8,
+  "spaces": [],
+  "players": [
+    {
+      "x": 0,
+      "y": 0,
+      "heading": "SOUTH",
+      "gameId": 1,
+      "name": "Player 1",
+      "color": "red",
+      "cards": [
+        {
+          "card": {
+            "command": "FAST_FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "LEFT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "BACK_UP",
+            "observers": []
+          },
+          "visible": true
+        }
+      ],
+      "program": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        }
+      ]
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "heading": "SOUTH",
+      "gameId": 1,
+      "name": "Player 2",
+      "color": "green",
+      "cards": [
+        {
+          "card": {
+            "command": "RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "LEFT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "LEFT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        }
+      ],
+      "program": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "program": [],
+  "cards": []
+}

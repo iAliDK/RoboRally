@@ -36,11 +36,13 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Filter;
 
 /**
  * ...
@@ -52,35 +54,17 @@ public class LoadBoard {
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
-    public static String [] saves = null;
-    public static void main(String[] args) throws
-            IOException {
-        String dirName;
-        dirName = System.getProperty("user.dir");
-        dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
-//        dirName = "C:\\Users\\s205412\\IdeaProjects\\RoboRally\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
-        File dir = new File(dirName);
-        if (!dir.isDirectory())
-            System.out.println("*** Not a directory! ***");
-        else {
-            String [] nameOfFiles = dir.list();
-            System.out.println(nameOfFiles);
-            saves = nameOfFiles;
-        }
-    }
+
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
-
-
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname);
-
-
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname+JSON_EXT);
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8, 8);
+            System.out.println("Inputstream null");
+            return  new Board (8,8);
         }
 
         // In simple cases, we can create a Gson object with new Gson():
@@ -96,7 +80,7 @@ public class LoadBoard {
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-            result = new Board(template.width, template.height);
+            result = new Board(template.width, template.height, boardname, (int)(Math.random()*1001));
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                 if (space != null) {
@@ -110,12 +94,7 @@ public class LoadBoard {
                 result.addPlayer(player);
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
                 player.setHeading(template.players.get(i).heading);
-            }
-
-
-            //Player cards
-//            for (int i = 0; i < result.getPlayersNumber(); i++) {
-//                Player player = result.getPlayer(i);
+                //Player cards
 //                if (player != null) {
 //                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
 //                        CommandCardField field = player.getProgramField(j);
@@ -128,8 +107,7 @@ public class LoadBoard {
 //                        field.setVisible(true);
 //                    }
 //                }
-//            }
-
+            }
 
 
             reader.close();
@@ -170,35 +148,10 @@ public class LoadBoard {
 
         //Players
         List<Player> players =  board.getPlayers();
-
-
         for(int i = 0; i< board.getPlayersNumber(); i++){
             boardTemplate.players.add(players.get(i).createTemplate());
         }
 
-//        Player cards
-//        for (int i = 0; i < board.getPlayersNumber(); i++) {
-//            Player player = board.getPlayer(i);
-//            if (player != null) {
-//                Programming
-//                for (int j = 0; j < Player.NO_REGISTERS; j++) {
-//boardTemplate.program.add(players.get(i).createCardTemplate());;
-//                }
-//                Registers
-//                for (int j = 0; j < Player.NO_CARDS; j++) {
-//                    boardTemplate.cards.add(players.get(i).createCardTemplate());
-//                }
-//            }
-//        }
-
-//        final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-//        for (int i = 0; i < board.getPlayersNumber(); i++) {
-//            Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-//            player.getSpace();
-//
-//            myBoard.addProperty("PlayerXCor" + (i+1), player.getSpace().x);
-//            template.player = board.getPlayer(i+1);
-//        }
             //Board size + spaces
             for (int i = 0; i < board.width; i++) {
                 for (int j = 0; j < board.height; j++) {
@@ -221,7 +174,7 @@ public class LoadBoard {
                 //       the file "simpleCards.json" to exist!
 //                String filename = "src/"+ name + JSON_EXT;
 //             String filename = "resources/boards/"+ name + JSON_EXT;
-               String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + JSON_EXT;
+               String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" +  name +JSON_EXT;
 
 
                 // In simple cases, we can create a Gson object with new:
