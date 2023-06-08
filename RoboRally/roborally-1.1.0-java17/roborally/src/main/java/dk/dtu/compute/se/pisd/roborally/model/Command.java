@@ -100,7 +100,7 @@ public enum Command {
      *              <p>
      *                  @return true, if the command is interactive
      *
-     * @return
+     * @return true, if the command is interactive or false, if the command is not interactive
      */
     public boolean isInteractive() {
         return !options.isEmpty();
@@ -117,7 +117,7 @@ public enum Command {
      *             @return the list of options for an interactive command
      *             or null, if the command is not interactive
      *             <p>
-     * @return
+     * @return the list of options for an interactive command or null, if the command is not interactive
      */
     public List<Command> getOptions() {
         return options;

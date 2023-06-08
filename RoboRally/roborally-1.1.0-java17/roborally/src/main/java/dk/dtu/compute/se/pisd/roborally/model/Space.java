@@ -22,38 +22,60 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
-
 /**
  * This class represents a space on the board.
  * It also keeps track of the player that is on the space.
- *
+ * <p>
  * The class itself extends the {@link Subject} class, which means that
  * it is observable and can notify its observers about changes.
- *
+ * <p>
  * A space can have a player on it.
- *
  */
 public class Space extends Subject {
 
-    private Player player;
-    public int checkpointNumber = 0;
-    private List<Heading> walls = new ArrayList<>();
-    private List<FieldAction> actions = new ArrayList<>();
-
     public final Board board;
-
     public final int x;
     public final int y;
-
+    public int checkpointNumber = 0;
+    private Player player;
+    private List<Heading> walls = new ArrayList<>();
+    private List<FieldAction> actions = new ArrayList<>();
     private Heading heading;
-
+    public boolean startPoint = false;
     private Space[][] spaces;
+    /**
+     * @author Daniel.
+     */
+    private boolean isWall; //Getter og Setter
+    private boolean isCheckpoint; //Getter og Setter
+
+    /**
+     * Constructor for a space on the board.
+     *
+     * @param board the board the space belongs to
+     * @param x     the x-coordinate of the space
+     * @param y     the y-coordinate of the space
+     */
+    public Space(Board board, int x, int y) {
+        this.board = board;
+        this.x = x;
+        this.y = y;
+        player = null;
+    }
+
+    public Space(Board board, int x, int y, int checkpointNumber) {
+        this.board = board;
+        this.x = x;
+        this.y = y;
+        this.checkpointNumber = checkpointNumber;
+        this.isCheckpoint = true;
+        player = null;
+    }
 
     public Heading getHeading() {
         return heading;
@@ -62,13 +84,6 @@ public class Space extends Subject {
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
-
-    /**
-     * @author Daniel.
-     */
-    private boolean isWall; //Getter og Setter
-
-    private boolean isCheckpoint; //Getter og Setter
 
     public boolean isCheckpoint() {
         return isCheckpoint;
@@ -90,30 +105,6 @@ public class Space extends Subject {
         isWall = wall;
     }
 
-
-
-    /**
-     * Constructor for a space on the board.
-     *
-     * @param board the board the space belongs to
-     * @param x the x-coordinate of the space
-     * @param y the y-coordinate of the space
-     */
-    public Space(Board board, int x, int y) {
-        this.board = board;
-        this.x = x;
-        this.y = y;
-        player = null;
-    }
-    public Space(Board board, int x, int y, int checkpointNumber) {
-        this.board = board;
-        this.x = x;
-        this.y = y;
-        this.checkpointNumber = checkpointNumber;
-        this.isCheckpoint = true;
-        player = null;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -125,8 +116,7 @@ public class Space extends Subject {
      */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
-        if (player != oldPlayer &&
-                (player == null || board == player.board)) {
+        if (player != oldPlayer && (player == null || board == player.board)) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen
@@ -146,17 +136,23 @@ public class Space extends Subject {
         notifyChange();
     }
 
-    public void setWalls(List<Heading> walls) {
-        this.walls = walls;
-    }
-
     public List<Heading> getWalls() {
         return walls;
     }
 
+    public void setWalls(List<Heading> walls) {
+        this.walls = walls;
+    }
 
+    /*public boolean getActions() {
+        return actions;
+    }*/
     public List<FieldAction> getActions() {
         return actions;
+    }
+
+    public boolean getStartPoint () {
+        return startPoint;
     }
 
     public void setSpaceProperties(int x, int y, Heading heading, boolean isWall) {
@@ -186,7 +182,5 @@ public class Space extends Subject {
     }
 
  */
-
-
 
 }

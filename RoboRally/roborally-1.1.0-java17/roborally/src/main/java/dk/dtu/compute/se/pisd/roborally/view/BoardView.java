@@ -119,7 +119,7 @@ public class BoardView extends VBox implements ViewObserver {
          * Handles a mouse click on a space. If the space is on the board of the
          * current game, the current player is moved to this space.
          *
-         * @param event
+         * @param event the mouse event that triggered the handler call
          */
         @Override
         public void handle(MouseEvent event) {
