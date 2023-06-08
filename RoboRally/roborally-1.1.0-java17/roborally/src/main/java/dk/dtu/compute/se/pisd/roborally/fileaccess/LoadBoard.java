@@ -95,20 +95,19 @@ public class LoadBoard {
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
                 player.setHeading(template.players.get(i).heading);
                 //Player cards
-//                if (player != null) {
-//                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
-//                        CommandCardField field = player.getProgramField(j);
-//                        field.setCard(null);
-//                        field.setVisible(true);
-//                    }
-//                    for (int j = 0; j < Player.NO_CARDS; j++) {
-//                        CommandCardField field = player.getCardField(j);
-//                        field.setCard(generateRandomCommandCard());
-//                        field.setVisible(true);
-//                    }
-//                }
+                if (player != null) {
+                    for (int j = 0; j < Player.NO_CARDS; j++) {
+                        CommandCardField field = player.getCardField(j);
+                        field.setCard(template.players.get(i).cards.get(j).card);
+                        field.setVisible(true);
+                    }
+                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                        CommandCardField field = player.getProgramField(j);
+                        field.setCard(template.players.get(i).program.get(j).card);
+                        field.setVisible(true);
+                    }
+                }
             }
-
 
             reader.close();
             return result;
