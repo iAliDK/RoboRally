@@ -50,6 +50,11 @@ public class Player extends Subject {
     private Space space;
     private Heading heading = SOUTH;
     public int playerCounter = 1;
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
@@ -98,7 +103,7 @@ public class Player extends Subject {
 
 
 public void checkForCheckpoint(Space space){
-        if(this.playerCounter == getSpace().checkpointNumber && getSpace().isCheckpoint()){
+        if(this.playerCounter == getSpace().checkpointNumber  && getSpace().isCheckpoint()){
             this.playerCounter++;
         } if(this.playerCounter==5){
             setGameWon(true);

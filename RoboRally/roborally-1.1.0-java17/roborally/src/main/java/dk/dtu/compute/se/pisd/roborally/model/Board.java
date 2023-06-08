@@ -226,6 +226,7 @@ public class Board extends Subject {
         }
     }
 
+
     /**
      * Returns the current player.
      * @return The current player.
