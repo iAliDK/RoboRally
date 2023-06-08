@@ -26,6 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.PlayerView;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 //import static dk.dtu.compute.se.pisd.roborally.model.Checkpoint.setGameWinner;
 
 /**
@@ -45,10 +47,45 @@ public class GameController {
      * @author Daniel, Ismail and Zainab.
      * Changes the current player to the next one.
      */
-    public void nextTurn() {
-        int currenPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
-        board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
+    public boolean nextTurnAndIsLastPlayer() {
+        int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
+        board.setCurrentPlayer(board.getPlayer((currentPlayerIndex + 1) % board.getPlayersNumber()));
+    return false;
     }
+        //board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
+/*
+        // returner true når det er sidste spiller
+        if (nextPlayerIndex == 0) {
+            // Last player reached, loop back to the first player
+            return true;
+        } else {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerIndex));
+        }
+        return false;
+
+ */
+
+
+
+/*
+    public void nextTurn() {
+        int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
+        int nextPlayerIndex = (currentPlayerIndex + 1) % board.getPlayersNumber();
+
+        if (nextPlayerIndex == 0) {
+            // Last player reached, loop back to the first player
+            board.setCurrentPlayer(board.getPlayer(board.getPlayersNumber()));
+        } else {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerIndex));
+        }
+    }
+
+ */
+
+
+
+
+
 
     /**
      * @author Daniel, Ismail and Zainab.
@@ -119,15 +156,37 @@ public class GameController {
 
     // XXX: V2
 
+
+    // Lav en metode der tjekker om alle spillere har valgt alle deres kort
+    public boolean allCardsChosen(){
+        Player player  = board.getCurrentPlayer();
+
+        for (CommandCardField command : player.getProgram()) {
+            if (command.getCard() == null) {
+                return false;
+            }
+        }
+        return true; // All cards have been chosen
+    }
+
     /**
      * This method stops the programming phase and activates the activation phase
      */
     public void finishProgrammingPhase() {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
-        board.setPhase(Phase.ACTIVATION);
-        board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
+        if (!allCardsChosen()) {
+            return;
+        }
+
+        if (nextTurnAndIsLastPlayer()) {
+            makeProgramFieldsInvisible();
+            makeProgramFieldsVisible(0);
+
+        }
+        if(allCardsChosen()){
+            board.setPhase(Phase.ACTIVATION);
+            board.setCurrentPlayer(board.getPlayer(0));
+            board.setStep(0);
+        }
     }
 
 
@@ -178,7 +237,7 @@ public class GameController {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
-        nextTurn();
+
     }
 
     /**
