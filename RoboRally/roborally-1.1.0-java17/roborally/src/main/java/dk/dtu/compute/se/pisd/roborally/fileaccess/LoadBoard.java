@@ -25,10 +25,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -48,7 +51,7 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
 
-    public static Board loadBoard(String boardname) {
+    public static Board loadBoard(String boardname, GameController gameController) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
@@ -83,7 +86,7 @@ public class LoadBoard {
             }
             //Player positions
             for(int i = 0; i< template.players.size(); i++){
-                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1));
+                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
                 result.addPlayer(player);
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
                 player.setHeading(template.players.get(i).heading);
@@ -149,7 +152,7 @@ public class LoadBoard {
                 for (int j = 0; j < board.height; j++) {
                     Space space = board.getSpace(i, j);
                     if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                        if (!space.getIsWall() == false) {
+                        if (!space.getClass().equals(Wall.class)) {
                             SpaceTemplate spaceTemplate = new SpaceTemplate();
                             spaceTemplate.x = space.x;
                             spaceTemplate.y = space.y;

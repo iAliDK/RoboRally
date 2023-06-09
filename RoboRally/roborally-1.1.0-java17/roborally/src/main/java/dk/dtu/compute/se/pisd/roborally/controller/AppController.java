@@ -127,11 +127,11 @@ public class AppController implements Observer {
 
             if (startBoard.isPresent()) {
                 if (gameController == null) {
-                    Board board = loadBoard(startBoard.get());
+                    Board board = loadBoard(startBoard.get(), gameController);
                     gameController = new GameController(board);
                     int noPlayers = result.get();
                     for (int i = 0; i < noPlayers; i++) {
-                        Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                        Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
                         board.addPlayer(player);
                         player.setSpace(board.getSpace(i % board.width, i));
                     }
@@ -185,7 +185,7 @@ public class AppController implements Observer {
 
         if (result.isPresent()) {
             if (gameController == null) {
-                Board board = loadBoard(result.get());
+                Board board = loadBoard(result.get(), gameController);
                 gameController = new GameController(board);
                 board.setPhase(Phase.PROGRAMMING);
                 board.setCurrentPlayer(board.getPlayer(0));

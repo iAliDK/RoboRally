@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 
 import java.util.ArrayList;
@@ -44,15 +45,26 @@ public class Space extends Subject {
     public int checkpointNumber = 0;
     private Player player;
     private List<Heading> walls = new ArrayList<>();
-    private List<FieldAction> actions = new ArrayList<>();
+    private FieldAction action = null;
     private Heading heading;
-    public boolean startPoint = false;
     private Space[][] spaces;
     /**
      * @author Daniel.
      */
-    private boolean isWall; //Getter og Setter
-    private boolean isCheckpoint; //Getter og Setter
+
+    private boolean isClockwise;
+    private boolean isCounterClockwise;
+
+
+    private List<FieldAction> actions = new ArrayList();
+    private boolean isConveyorBelt;
+
+    private boolean speed;
+
+
+
+
+
 
     /**
      * Constructor for a space on the board.
@@ -66,6 +78,7 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
+
     }
 
     public Space(Board board, int x, int y, int checkpointNumber) {
@@ -73,10 +86,16 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         this.checkpointNumber = checkpointNumber;
-        this.isCheckpoint = true;
         player = null;
     }
 
+    public void setFieldAction(FieldAction action){
+        this.action = action;
+    }
+
+    public FieldAction getFieldAction(){
+        return action;
+    }
     public Heading getHeading() {
         return heading;
     }
@@ -85,36 +104,80 @@ public class Space extends Subject {
         this.heading = heading;
     }
 
-    public boolean isCheckpoint() {
-        return isCheckpoint;
-    }
 
-    public void setCheckpoint(boolean checkpoint) {
-        isCheckpoint = checkpoint;
-    }
 
-    public boolean isWall() {
-        return isWall;
-    }
 
-    public boolean getIsWall() {
-        return isWall;
-    }
-
-    public void setIsWall(boolean wall) {
-        isWall = wall;
-    }
 
     public Player getPlayer() {
         return player;
     }
+
+
+    public boolean isClockwise() {
+        return isClockwise;
+    }
+  /*  public void setIsClockwise(boolean clockwise) {
+        isClockwise = clockwise;
+    }
+    public boolean getIsClockwise() {
+        return isClockwise;
+    } */
+
+
+
+    public boolean isCounterClockwise() {
+        return isCounterClockwise;
+    }
+
+    public void setIsCounterClockwise(boolean counterClockwise) {
+        isCounterClockwise = counterClockwise;
+    }
+
+    public boolean getIsCounterClockwise() {
+        return isCounterClockwise;
+    }
+
+    /////////////////////////////////conveyorBelt/////////////////////////////
+
+    public boolean isConveyorBelt() {
+        return isConveyorBelt;
+    }
+
+    public void setIsConveyorbelt(boolean conveyorbelt) {
+        isConveyorBelt = conveyorbelt;
+    }
+
+    public boolean getIsConveyorbelt() {
+        return isConveyorBelt;
+    }
+
+    /*
+    public void isSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(boolean speed) {
+        this.speed = speed;
+    }
+
+    public boolean speed(){
+        return speed;
+    }
+
+     */
+
+
+
+
+
+
 
     /**
      * Sets the player on this space.
      *
      * @param player the player to be set on this space
      */
-    public void setPlayer(Player player) {
+    public void setPlayer(Player player, GameController gc) {
         Player oldPlayer = this.player;
         if (player != oldPlayer && (player == null || board == player.board)) {
             this.player = player;
@@ -124,10 +187,21 @@ public class Space extends Subject {
             }
             if (player != null) {
                 player.setSpace(this);
+
             }
+            runFieldAction(gc);
             notifyChange();
         }
     }
+
+    private void runFieldAction(GameController gc) {
+        if(action != null){
+            action.doAction(gc, this);
+        }
+    }
+
+
+
 
     void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
@@ -151,14 +225,10 @@ public class Space extends Subject {
         return actions;
     }
 
-    public boolean getStartPoint () {
-        return startPoint;
-    }
-
     public void setSpaceProperties(int x, int y, Heading heading, boolean isWall) {
         Space space = spaces[x][y];
         space.setHeading(heading);
-        space.setIsWall(isWall);
+        //space.setIsWall(isWall);
 
         // Perform any additional operations or logic if needed
     }

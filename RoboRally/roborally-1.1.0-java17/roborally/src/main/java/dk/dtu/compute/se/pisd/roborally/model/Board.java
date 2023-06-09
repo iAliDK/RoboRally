@@ -22,6 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -50,7 +54,7 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
-    private Walls walls;
+    //private Walls walls;
 
     public Board(int width, int height, @NotNull String boardName, int gameId) {
         this.boardName = boardName;
@@ -75,44 +79,59 @@ public class Board extends Subject {
         }
 
 
-        //spaces[2][2].setHeading(Heading.NORTH).setIsWall(true);
-        //Space.setSpaceProperties(2, 2, Heading.NORTH, true);
 
-        //space.setSpaceProperties(2, 2, Heading.NORTH, true);
 
-        spaces[3][2].setIsWall(true);
+     //   spaces[3][2].setIsWall(true);
         spaces[3][2].setHeading(Heading.NORTH);
+        spaces[3][2].setFieldAction(new Wall());
 
 
-        spaces[2][2].setIsWall(true);
+//        spaces[2][2].setIsWall(true);
         spaces[2][2].setHeading(Heading.NORTH);
+        spaces[2][2].setFieldAction(new Wall());
 
-
-        spaces[4][4].setIsWall(true);
+//        spaces[4][4].setIsWall(true);
         spaces[4][4].setHeading(Heading.EAST);
+        spaces[4][4].setFieldAction(new Wall());
 
-        spaces[5][5].setIsWall(true);
+       // spaces[5][5].setIsWall(true);
         spaces[5][5].setHeading(Heading.WEST);
+        spaces[5][5].setFieldAction(new Wall());
 
-        spaces[6][6].setIsWall(true);
+      //  spaces[6][6].setIsWall(true);
         spaces[6][6].setHeading(Heading.SOUTH);
+        spaces[6][6].setFieldAction(new Wall());
 
-        spaces[2][5].setIsWall(true);
+      //  spaces[2][5].setIsWall(true);
         spaces[2][5].setHeading(Heading.WEST);
+        spaces[2][5].setFieldAction(new Wall());
 
 
-        spaces[1][2].setCheckpoint(true);
-        spaces[1][2].checkpointNumber = 1;
 
-        spaces[1][4].setCheckpoint(true);
-        spaces[1][4].checkpointNumber = 2;
+        spaces[1][2].setFieldAction(new Checkpoint(1));
 
-        spaces[6][7].setCheckpoint(true);
-        spaces[6][7].checkpointNumber = 3;
 
-        spaces[4][7].setCheckpoint(true);
-        spaces[4][7].checkpointNumber = 4;
 
+        spaces[1][4].setFieldAction(new Checkpoint(2));
+
+
+        spaces[6][7].setFieldAction(new Checkpoint(3));
+
+
+        spaces[4][7].setFieldAction(new Checkpoint(4));
+
+
+
+
+        spaces[6][5].setFieldAction(new Gear(true));
+
+
+        spaces[7][2].setFieldAction(new Gear(false));
+
+
+
+        //spaces[1][3].setIsConveyorbelt(true);
+        //spaces[1][3].setSpeed();
 
         this.stepMode = false;
 
@@ -329,7 +348,7 @@ public class Board extends Subject {
         //  return null;
 
         // ASK PERSON WHO WROTE THIS!!
-        if (space.getIsWall()) {
+        if (space.getFieldAction().getClass().equals(Wall.class)) {
             //return null;
         }
         int x = space.x;

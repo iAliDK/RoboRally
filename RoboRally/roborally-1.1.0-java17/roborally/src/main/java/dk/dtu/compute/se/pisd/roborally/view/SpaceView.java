@@ -26,9 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.*;
 import dk.dtu.compute.se.pisd.roborally.view.boardElements.ConveyorBeltView;
 import dk.dtu.compute.se.pisd.roborally.view.boardElements.GearView;
 import javafx.scene.canvas.Canvas;
@@ -88,63 +86,97 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
 
         Heading walls = space.getHeading();
-        if (space.isWall()) {
-            if (walls.equals(NORTH)) {
 
-                String north = "-fx-background-image: url('wallNorth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-
-                if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
-                this.setStyle(north);
+        if (space.getFieldAction() != null) {
 
 
+            if (space.getFieldAction().getClass().equals(Wall.class)) {
+                if (walls.equals(NORTH)) {
+
+                    String north = "-fx-background-image: url('wallNorth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+
+                    if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
+                    this.setStyle(north);
+
+
+                }
+                if (walls.equals(EAST)) {
+
+                    String east = "-fx-background-image: url('wallEast.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: right;";
+                    if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
+                    this.setStyle(east);
+
+                }
+                if (walls.equals(WEST)) {
+                    String west = "-fx-background-image: url('wallWest.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: left;";
+                    if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
+                    this.setStyle(west);
+
+                }
+                if (walls.equals(SOUTH)) {
+                    String south = "-fx-background-image: url('wallSouth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: bottom;";
+                    if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
+                    this.setStyle(south);
+                }
             }
-            if (walls.equals(EAST)) {
 
-                String east = "-fx-background-image: url('wallEast.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: right;";
-                if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
-                this.setStyle(east);
 
+            if (space.getFieldAction().getClass().equals(Checkpoint.class)) {
+                Checkpoint checkpoint = (Checkpoint) space.getFieldAction();
+                if (checkpoint.getCheckpointNumber() == 1) {
+                    this.setStyle("-fx-background-color: GREEN");
+                }
+                if (checkpoint.getCheckpointNumber()== 1) {
+                    String cp1 = "-fx-background-image: url('TheFlag1.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    if ((space.x + space.y) % 2 != 0) cp1 = cp1 + "-fx-background-color: black;";
+                    this.setStyle(cp1);
+                }
+                if (checkpoint.getCheckpointNumber() == 2) {
+                    String cp2 = "-fx-background-image: url('TheFlag2.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    if ((space.x + space.y) % 2 != 0) cp2 = cp2 + "-fx-background-color: black;";
+                    this.setStyle(cp2);
+                }
+                if (checkpoint.getCheckpointNumber() == 3) {
+                    String cp3 = "-fx-background-image: url('TheFlag3.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    if ((space.x + space.y) % 2 != 0) cp3 = cp3 + "-fx-background-color: black;";
+                    this.setStyle(cp3);
+                }
+                if (checkpoint.getCheckpointNumber()== 4) {
+                    String cp4 = "-fx-background-image: url('TheFlag4.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    if ((space.x + space.y) % 2 != 0) cp4 = cp4 + "-fx-background-color: black;";
+                    this.setStyle(cp4);
+                }
             }
-            if (walls.equals(WEST)) {
-                String west = "-fx-background-image: url('wallWest.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: left;";
-                if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
-                this.setStyle(west);
 
+///////////////////////////////GEAR//////////////////////////////////////////
+
+
+            //Heading gears = space.getHeading();
+
+            if (space.getFieldAction().getClass().equals(Gear.class)) {
+                //if(space.setIsGear(true)) {
+                Gear gear =  (Gear) space.getFieldAction();
+                if (gear.isClockwise()) {
+                    String gearClockwise = "-fx-background-image: url('gearClockwise.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0) gearClockwise = gearClockwise + "-fx-background-color: black;";
+                    this.setStyle(gearClockwise);
+                }else {
+                    String gearCounterClockwise = "-fx-background-image: url('gearCounterClockwise.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0)
+                        gearCounterClockwise = gearCounterClockwise + "-fx-background-color: black;";
+                    this.setStyle(gearCounterClockwise);
+                }
             }
-            if (walls.equals(SOUTH)) {
-                String south = "-fx-background-image: url('wallSouth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: bottom;";
-                if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
-                this.setStyle(south);
+
+            if (space.isConveyorBelt()) {
+                String eastToWest = "-fx-background-image: url('conveyor_E_to_W.png');" + "-fx-background-size: 60px 30px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
+                if ((space.x + space.y) % 2 != 0)
+                    eastToWest = eastToWest + "-fx-background-color: black;";
+                this.setStyle(eastToWest);
+
             }
         }
 
-
-        if (space.isCheckpoint()) {
-            if (space.checkpointNumber == 1) {
-                this.setStyle("-fx-background-color: GREEN");
-            }
-            if (space.checkpointNumber == 1) {
-                String cp1 = "-fx-background-image: url('TheFlag1.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-                if ((space.x + space.y) % 2 != 0) cp1 = cp1 + "-fx-background-color: black;";
-                this.setStyle(cp1);
-            }
-            if (space.checkpointNumber == 2) {
-                String cp2 = "-fx-background-image: url('TheFlag2.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-                if ((space.x + space.y) % 2 != 0) cp2 = cp2 + "-fx-background-color: black;";
-                this.setStyle(cp2);
-            }
-            if (space.checkpointNumber == 3) {
-                String cp3 = "-fx-background-image: url('TheFlag3.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-                if ((space.x + space.y) % 2 != 0) cp3 = cp3 + "-fx-background-color: black;";
-                this.setStyle(cp3);
-            }
-            if (space.checkpointNumber == 4) {
-                String cp4 = "-fx-background-image: url('TheFlag4.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-                if ((space.x + space.y) % 2 != 0) cp4 = cp4 + "-fx-background-color: black;";
-                this.setStyle(cp4);
-            }
-
-        }
 
         //if(space.getIsWall())
 

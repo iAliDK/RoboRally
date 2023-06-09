@@ -17,10 +17,12 @@ public class GameWalls {
 
     private ArrayList<Walls> wall;
 
+
+    //DO not use this
     public void addAWall(Walls walls) {
         wall.add(walls);
         Space space = board.getSpace(walls.getX(), walls.getY());
-        space.setIsWall(true);
+
         //if (space != null) {
           //  space.setIsWall(true);
             //change space.isWall = true

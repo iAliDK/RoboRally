@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -109,6 +110,9 @@ public class GameController {
                 currentPlayer.setSpace(space);
                 int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
+                if(space.isConveyorBelt()){
+                    activateFieldAction();
+                }
             }
         }
     }
@@ -284,7 +288,7 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
-                    activateFieldAction();
+                    //activateFieldAction();
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
@@ -352,12 +356,13 @@ public class GameController {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
 
+
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        if (newSpace.getPlayer() == null && (!player.getSpace().getIsWall() || player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getIsWall() || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null);
+        if (newSpace.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
+            player.getSpace().setPlayer(null, this);
             player.setSpace(newSpace);
-            newSpace.setPlayer(player);
+            newSpace.setPlayer(player, this);
         }
     }
 
@@ -426,10 +431,10 @@ public class GameController {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
         //check if space is wall
-        if (newSpace.getPlayer() == null && ((!player.getSpace().getIsWall() || player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getIsWall() || player.getHeading() != newSpace.getHeading())) {
-            player.getSpace().setPlayer(null);
+        if (newSpace.getPlayer() == null && ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getClass().equals(Wall.class)|| player.getHeading() != newSpace.getHeading())) {
+            player.getSpace().setPlayer(null, this);
             player.setSpace(newSpace);
-            newSpace.setPlayer(player);
+            newSpace.setPlayer(player, this);
 
         }
     }

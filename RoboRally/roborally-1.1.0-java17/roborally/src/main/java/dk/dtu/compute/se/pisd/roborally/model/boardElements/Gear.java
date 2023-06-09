@@ -7,6 +7,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 
 public class Gear extends FieldAction {
+
     private Heading heading;
 
     public Heading getHeading() {
@@ -17,17 +18,40 @@ public class Gear extends FieldAction {
         this.heading = heading;
     }
 
+    private boolean isClockwise;
+
+
+    public Gear(boolean isClockwise) {
+
+        this.isClockwise = isClockwise;
+
+    }
+
     @Override
     public boolean doAction(GameController gameController, Space space) {
         Heading heading = getHeading();
         Player currentPlayer = space.getPlayer();
         if (currentPlayer != null) {
-            switch (heading) {
-                case EAST -> gameController.turnRight(currentPlayer);
-                case WEST -> gameController.turnLeft(currentPlayer);
+            if(isClockwise){
+                gameController.turnRight(currentPlayer);
+            }else{
+                gameController.turnLeft(currentPlayer);
             }
             return false;
         }
         return false;
     }
+
+    public boolean isClockwise() {
+        return isClockwise;
+    }
+    /*
+    public boolean isClockwise() {
+        return clockwise;
+    }
+    public boolean isCounterClockwise() {
+        return clockwise;
+    }
+
+     */
 }

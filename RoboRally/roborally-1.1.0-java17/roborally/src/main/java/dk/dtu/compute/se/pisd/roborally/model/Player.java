@@ -22,8 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,7 +38,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Player extends Subject {
 
@@ -43,20 +45,16 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
-
+    public int playerCounter = 1;
     private String name;
     private String color;
-
     private Space space;
     private Heading heading = SOUTH;
-    public int playerCounter = 1;
-
-    public CommandCardField[] getProgram() {
-        return program;
-    }
-
     private CommandCardField[] program;
     private CommandCardField[] cards;
+    private boolean gameWon;
+
+    private GameController gc;
 
 
     /**
@@ -64,13 +62,14 @@ public class Player extends Subject {
      *
      * @param board The board where the player is going to play
      * @param color The color of the player
-     * @param name The name of the player
+     * @param name  The name of the player
      */
-    public Player(@NotNull Board board, String color, @NotNull String name) {
+    public Player(@NotNull Board board, String color, @NotNull String name, GameController gc) {
         this.board = board;
         this.name = name;
         this.color = color;
         this.space = null;
+        this.gc = gc;
 
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
@@ -83,34 +82,36 @@ public class Player extends Subject {
         }
     }
 
-    public PlayerTemplate createTemplate(){
-        List<CommandCardFieldTemplate> programTemp = new ArrayList<>();
-        List<CommandCardFieldTemplate> cardsTemp = new ArrayList<>();
-
-        for(int i = 0; i<NO_CARDS; i++){
-            cardsTemp.add(new CommandCardFieldTemplate(cards[i].isVisible(), cards[i].getCard()));
-        }
-
-        for(int i = 0; i<NO_REGISTERS; i++){
-            programTemp.add(new CommandCardFieldTemplate(program[i].isVisible(), program[i].getCard()));
-        }
-
-        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
+    public CommandCardField[] getProgram() {
+        return program;
     }
 //    public CommandCardFieldTemplate createCardTemplate(){
 //        return new CommandCardFieldTemplate( player, visible, cards, program);
 //    }
 
+    public PlayerTemplate createTemplate() {
+        List<CommandCardFieldTemplate> programTemp = new ArrayList<>();
+        List<CommandCardFieldTemplate> cardsTemp = new ArrayList<>();
 
-public void checkForCheckpoint(Space space){
-        if(this.playerCounter == getSpace().checkpointNumber  && getSpace().isCheckpoint()){
-            this.playerCounter++;
-        } if(this.playerCounter==5){
-            setGameWon(true);
+        for (int i = 0; i < NO_CARDS; i++) {
+            cardsTemp.add(new CommandCardFieldTemplate(cards[i].isVisible(), cards[i].getCard()));
+        }
+
+        for (int i = 0; i < NO_REGISTERS; i++) {
+            programTemp.add(new CommandCardFieldTemplate(program[i].isVisible(), program[i].getCard()));
+        }
+
+        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
     }
-}
 
-private boolean gameWon;
+    public void checkForCheckpoint(Space space) {
+        if (this.playerCounter == getSpace().checkpointNumber && getSpace().getClass().equals(Checkpoint.class)) {
+            this.playerCounter++;
+        }
+        if (this.playerCounter == 5) {
+            setGameWon(true);
+        }
+    }
 
     public boolean isGameWon() {
         return gameWon;
@@ -121,16 +122,15 @@ private boolean gameWon;
     }
 
 
+    public void playerCounterMethod(Player player) {
+        int playerCounter = player.getPlayerCounter();
+    }
 
-
-public void playerCounterMethod(Player player){
-    int playerCounter = player.getPlayerCounter();
-}
-    public int getPlayerCounter(){
+    public int getPlayerCounter() {
         return playerCounter;
     }
 
-    public void setPlayerCounter(int playerCounter){
+    public void setPlayerCounter(int playerCounter) {
         this.playerCounter = playerCounter;
     }
 
@@ -147,16 +147,18 @@ public void playerCounterMethod(Player player){
         return name;
     }
 
-    /** Checks whether the name is a null or if it's different from the current field
+    /**
+     * Checks whether the name is a null or if it's different from the current field
      * if not null and name not already in field, it sets the field to the new name value passed as a parameter
      * it then calls the method notifyChange
      * Checks whether space is null
      * if not null, it calls playerChanged
-     *
+     * <p>
      * Overall, the setName method updates the name field of the object,
      * notifies observers of the change,
      * and updates the game board if necessary.
-     * @param name
+     *
+     * @param name The new name to set for the player.
      */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
@@ -174,7 +176,6 @@ public void playerCounterMethod(Player player){
     }
 
     /**
-     *
      * @param color The color chosen for the player
      */
     public void setColor(String color) {
@@ -191,6 +192,7 @@ public void playerCounterMethod(Player player){
 
     /**
      * Space where the player is located on the board
+     *
      * @param space The new space to set for the player.
      */
     public void setSpace(Space space) {
@@ -199,10 +201,10 @@ public void playerCounterMethod(Player player){
                 (space == null || space.board == this.board)) {
             this.space = space;
             if (oldSpace != null) {
-                oldSpace.setPlayer(null);
+                oldSpace.setPlayer(null, gc);
             }
             if (space != null) {
-                space.setPlayer(this);
+                space.setPlayer(this, gc);
             }
             notifyChange();
         }
