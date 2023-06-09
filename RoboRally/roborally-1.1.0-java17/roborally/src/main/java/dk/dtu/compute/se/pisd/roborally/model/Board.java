@@ -22,11 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 import org.jetbrains.annotations.NotNull;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,45 +78,45 @@ public class Board extends Subject {
 
 
 
-        spaces[3][2].setFieldAction(new Wall(Heading.NORTH));
-
-        spaces[2][2].setFieldAction(new Wall(Heading.NORTH));
-
-
-        spaces[4][4].setFieldAction(new Wall(Heading.EAST));
-
-
-        spaces[5][5].setFieldAction(new Wall(Heading.WEST));
-
-
-
-        spaces[6][6].setFieldAction(new Wall(Heading.SOUTH));
-
-        spaces[2][5].setFieldAction(new Wall(Heading.WEST));
-
-
-
-        spaces[1][2].setFieldAction(new Checkpoint(1));
-
-
-
-        spaces[1][4].setFieldAction(new Checkpoint(2));
-
-
-        spaces[6][7].setFieldAction(new Checkpoint(3));
-
-
-        spaces[4][7].setFieldAction(new Checkpoint(4));
-
-
-
-
-        spaces[6][5].setFieldAction(new Gear(true));
-
-
-        spaces[7][2].setFieldAction(new Gear(false));
-
-        spaces[5][2].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
+//        spaces[3][2].setFieldAction(new Wall(Heading.NORTH));
+//
+//        spaces[2][2].setFieldAction(new Wall(Heading.NORTH));
+//
+//
+//        spaces[4][4].setFieldAction(new Wall(Heading.EAST));
+//
+//
+//        spaces[5][5].setFieldAction(new Wall(Heading.WEST));
+//
+//
+//
+//        spaces[6][6].setFieldAction(new Wall(Heading.SOUTH));
+//
+//        spaces[2][5].setFieldAction(new Wall(Heading.WEST));
+//
+//
+//
+//        spaces[1][2].setFieldAction(new Checkpoint(1));
+//
+//
+//
+//        spaces[1][4].setFieldAction(new Checkpoint(2));
+//
+//
+//        spaces[6][7].setFieldAction(new Checkpoint(3));
+//
+//
+//        spaces[4][7].setFieldAction(new Checkpoint(4));
+//
+//
+//
+//
+//        spaces[6][5].setFieldAction(new Gear(true));
+//
+//
+//        spaces[7][2].setFieldAction(new Gear(false));
+//
+//        spaces[5][2].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
 
         this.stepMode = false;
 
