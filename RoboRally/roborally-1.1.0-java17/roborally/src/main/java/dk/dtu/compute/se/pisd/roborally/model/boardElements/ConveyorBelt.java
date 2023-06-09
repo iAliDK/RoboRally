@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model.boardElements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,10 +61,17 @@ public class ConveyorBelt extends FieldAction {
         if (target != null) {
             switch (speed) {
                 case 1 -> {
-                    try {
-                        gameController.moveToSpace(space.getPlayer(), target, heading);
-                    } catch (GameController.ImpossibleMoveException e) {
-                    }
+
+
+                    Player player = space.getPlayer();
+
+                    space.setPlayer(null, gameController);
+                    target.setPlayer(player, gameController);
+                    //check if space is wall
+                    //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
+                    /*if (target.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!target.getClass().equals(Wall.class) || player.getHeading() != target.getHeading().getOpposite())) {
+
+                    } */
                 }
                 case 2 -> {
                     if (target.getActions().get(0) instanceof ConveyorBelt) {

@@ -476,7 +476,7 @@ public class GameController {
      * @throws ImpossibleMoveException if the player cannot be moved to the space with the given heading, or if the player cannot be moved to the space because there is another player on the space and the other player cannot be moved to the space behind it with the same heading. In this case, the player and the other player is not moved. The exception is thrown.
      */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        assert board.getNeighbour(player.getSpace(), heading) == space;
+        /*assert board.getNeighbour(player.getSpace(), heading) == space;
         Player other = space.getPlayer();
         if (other != null) {
             Space target = board.getNeighbour(space, heading);
@@ -486,7 +486,16 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        }
+        } */
+
+        Space newSpace = board.getNeighbour(space, heading);
+
+        //check if space is wall
+        //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
+        space.setPlayer(null, this);
+        player.setSpace(newSpace);
+        newSpace.setPlayer(player, this);
+
     }
 
     /**
