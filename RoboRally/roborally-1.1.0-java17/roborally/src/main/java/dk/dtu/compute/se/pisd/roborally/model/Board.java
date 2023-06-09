@@ -112,14 +112,15 @@ public class Board extends Subject {
         spaces[4][7].setFieldAction(new Checkpoint(4));
 
 
-
-
         spaces[6][5].setFieldAction(new Gear(true));
 
 
         spaces[7][2].setFieldAction(new Gear(false));
 
-        spaces[5][2].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
+        spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
+        spaces[4][0].setFieldAction(new ConveyorBelt(1, Heading.SOUTH));
+        spaces[0][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+        spaces[7][0].setFieldAction(new ConveyorBelt(1, Heading.WEST));
 
         this.stepMode = false;
 
@@ -336,9 +337,7 @@ public class Board extends Subject {
         //  return null;
 
         // ASK PERSON WHO WROTE THIS!!
-        if (space.getFieldAction().getClass().equals(Wall.class)) {
-            //return null;
-        }
+
         int x = space.x;
         int y = space.y;
         switch (heading) {
