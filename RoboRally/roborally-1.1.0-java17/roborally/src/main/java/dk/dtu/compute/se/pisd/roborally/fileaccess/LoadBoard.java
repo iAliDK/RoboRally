@@ -139,7 +139,7 @@ public class LoadBoard {
         boardTemplate.width = board.width;
         boardTemplate.height = board.height;
 
-        //Players
+        //Players + cards
         List<Player> players =  board.getPlayers();
         for(int i = 0; i< board.getPlayersNumber(); i++){
             boardTemplate.players.add(players.get(i).createTemplate());
