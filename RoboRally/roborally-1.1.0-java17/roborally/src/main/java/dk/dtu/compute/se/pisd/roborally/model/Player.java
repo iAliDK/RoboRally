@@ -102,11 +102,13 @@ public class Player extends Subject {
 //    }
 
 
-public void checkForCheckpoint(Space space){
+public void checkForCheckpoint(){
         if(this.playerCounter == getSpace().checkpointNumber  && getSpace().isCheckpoint()){
+            System.out.println("Innit");
             this.playerCounter++;
         } if(this.playerCounter==5){
             setGameWon(true);
+            System.out.println("Wraps");
     }
 }
 

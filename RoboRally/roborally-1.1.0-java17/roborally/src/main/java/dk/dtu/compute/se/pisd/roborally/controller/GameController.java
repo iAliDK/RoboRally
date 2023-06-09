@@ -278,6 +278,7 @@ public class GameController {
                         return;
                     }
                     executeCommand(currentPlayer, command);
+                    currentPlayer.checkForCheckpoint();
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
