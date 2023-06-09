@@ -142,6 +142,7 @@ public class GameController {
      */
 
     public void startProgrammingPhase() {
+        if(board.getCurrentPlayer()!=null) {board.getCurrentPlayer().checkForCheckpoint();}
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -278,7 +279,7 @@ public class GameController {
                         return;
                     }
                     executeCommand(currentPlayer, command);
-                    currentPlayer.checkForCheckpoint();
+                  //  currentPlayer.checkForCheckpoint();
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
