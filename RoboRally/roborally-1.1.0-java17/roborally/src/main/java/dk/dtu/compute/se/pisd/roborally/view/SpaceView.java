@@ -90,29 +90,37 @@ public class SpaceView extends StackPane implements ViewObserver {
         Heading walls = space.getHeading();
         if (space.isWall()) {
             if (walls.equals(NORTH)) {
-
-                String north = "-fx-background-image: url('wallNorth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
-
-                if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
-                this.setStyle(north);
-
+                    String north = "-fx-background-image: url('wallNorth.png');" +
+                            "-fx-background-size: 60px 20px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
+                    if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
+                    this.setStyle(north);
 
             }
             if (walls.equals(EAST)) {
-
-                String east = "-fx-background-image: url('wallEast.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: right;";
+                String east = "-fx-background-image: url('wallEast.png');" +
+                        "-fx-background-size: 20px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: right;";
                 if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
                 this.setStyle(east);
 
             }
             if (walls.equals(WEST)) {
-                String west = "-fx-background-image: url('wallWest.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: left;";
+                String west = "-fx-background-image: url('wallWest.png');" +
+                        "-fx-background-size: 20px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: left;";
                 if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
                 this.setStyle(west);
 
             }
             if (walls.equals(SOUTH)) {
-                String south = "-fx-background-image: url('wallSouth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: bottom;";
+                String south = "-fx-background-image: url('wallSouth.png');" +
+                        "-fx-background-size: 60px 20px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: bottom;";
                 if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
                 this.setStyle(south);
             }
@@ -124,22 +132,34 @@ public class SpaceView extends StackPane implements ViewObserver {
                 this.setStyle("-fx-background-color: GREEN");
             }
             if (space.checkpointNumber == 1) {
-                String cp1 = "-fx-background-image: url('TheFlag1.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                String cp1 = "-fx-background-image: url('TheFlag1.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;";
                 if ((space.x + space.y) % 2 != 0) cp1 = cp1 + "-fx-background-color: black;";
                 this.setStyle(cp1);
             }
             if (space.checkpointNumber == 2) {
-                String cp2 = "-fx-background-image: url('TheFlag2.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                String cp2 = "-fx-background-image: url('TheFlag2.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;";
                 if ((space.x + space.y) % 2 != 0) cp2 = cp2 + "-fx-background-color: black;";
                 this.setStyle(cp2);
             }
             if (space.checkpointNumber == 3) {
-                String cp3 = "-fx-background-image: url('TheFlag3.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                String cp3 = "-fx-background-image: url('TheFlag3.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;";
                 if ((space.x + space.y) % 2 != 0) cp3 = cp3 + "-fx-background-color: black;";
                 this.setStyle(cp3);
             }
             if (space.checkpointNumber == 4) {
-                String cp4 = "-fx-background-image: url('TheFlag4.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                String cp4 = "-fx-background-image: url('TheFlag4.png');" +
+                        "-fx-background-size: 60px 60px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: up;";
                 if ((space.x + space.y) % 2 != 0) cp4 = cp4 + "-fx-background-color: black;";
                 this.setStyle(cp4);
             }
@@ -160,7 +180,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         Player player = space.getPlayer();
         if (player != null) {
-            Polygon arrow = new Polygon(0.0, 0.0, 10.0, 20.0, 20.0, 0.0);
+            Polygon arrow = new Polygon(0.0, 0.0,
+                    10.0, 20.0,
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
