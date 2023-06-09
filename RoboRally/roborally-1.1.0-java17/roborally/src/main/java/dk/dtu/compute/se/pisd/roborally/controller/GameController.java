@@ -63,9 +63,9 @@ public class GameController {
     public boolean nextTurnAndIsLastPlayer() {
         int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
         board.setCurrentPlayer(board.getPlayer((currentPlayerIndex + 1) % board.getPlayersNumber()));
-        return false;
+      return (currentPlayerIndex + 1) % board.getPlayersNumber() == 0;
     }
-    //board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
+        //board.setCurrentPlayer(board.getPlayer((currenPlayerIndex + 1) % board.getPlayersNumber()));
 /*
         // returner true når det er sidste spiller
         if (nextPlayerIndex == 0) {
@@ -197,14 +197,29 @@ public class GameController {
         if (nextTurnAndIsLastPlayer()) {
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
-
-        }
-        if (allCardsChosen()) {
-            board.setPhase(Phase.ACTIVATION);
             board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
+
+        }
+
+        if(allCardsChosen()) {
+                //executeCardSet(board.getCurrentPlayer());
+                board.setPhase(Phase.ACTIVATION);
+                board.setCurrentPlayer(board.getPlayer(0));
         }
     }
+/*
+    private void executeCardSet(Player player) {
+        for (CommandCardField commandField : player.getProgram()) {
+            CommandCard card = commandField.getCard();
+            if (card != null) {
+                executeCommand(player, card.command);
+            }
+        }
+    }
+
+ */
+
 
 
     // XXX: V2
@@ -276,10 +291,9 @@ public class GameController {
                     Command command = card.command;
                     if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                            return;
                     }
                     executeCommand(currentPlayer, command);
-                  //  currentPlayer.checkForCheckpoint();
                 }
 
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -317,7 +331,7 @@ public class GameController {
      */
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player.board == board && command != null) {
+        if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -344,7 +358,6 @@ public class GameController {
     }*/
 
     // TODO Assignment V2
-
     /**
      * @param player This method moves the player two spaces forward
      * @author Daniel, Ismail and Zainab.
@@ -356,10 +369,11 @@ public class GameController {
 
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        if (newSpace.getPlayer() == null && (!player.getSpace().getIsWall() || player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getIsWall() || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null);
-            player.setSpace(newSpace);
-            newSpace.setPlayer(player);
+            if (newSpace.getPlayer() == null && (player.getSpace().getIsWall() == false || player.getHeading() != player.getSpace().getHeading()) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
+                player.getSpace().setPlayer(null);
+                player.setSpace(newSpace);
+                newSpace.setPlayer(player);
+
         }
     }
 
@@ -428,7 +442,7 @@ public class GameController {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
         //check if space is wall
-        if (newSpace.getPlayer() == null && ((!player.getSpace().getIsWall() || player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getIsWall() || player.getHeading() != newSpace.getHeading())) {
+        if (newSpace.getPlayer() == null && ((player.getSpace().getIsWall() == false || player.getHeading() == player.getSpace().getHeading())) && (newSpace.getIsWall() == false || player.getHeading() != newSpace.getHeading())) {
             player.getSpace().setPlayer(null);
             player.setSpace(newSpace);
             newSpace.setPlayer(player);
