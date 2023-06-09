@@ -91,30 +91,44 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
             if (space.getFieldAction().getClass().equals(Wall.class)) {
-                if (walls.equals(NORTH)) {
+                 Wall wall = (Wall) space.getFieldAction();
 
-                    String north = "-fx-background-image: url('wallNorth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                if (wall.getHeading()==NORTH) {
+
+                    String north = "-fx-background-image: url('wallNorth.png');" +
+                            "-fx-background-size: 60px 20px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
 
                     if ((space.x + space.y) % 2 != 0) north = north + "-fx-background-color: black;";
                     this.setStyle(north);
 
 
                 }
-                if (walls.equals(EAST)) {
+                if (wall.getHeading()==EAST) {
 
-                    String east = "-fx-background-image: url('wallEast.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: right;";
+                    String east = "-fx-background-image: url('wallEast.png');" +
+                            "-fx-background-size: 20px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: right;";
                     if ((space.x + space.y) % 2 != 0) east = east + "-fx-background-color: black;";
                     this.setStyle(east);
 
                 }
-                if (walls.equals(WEST)) {
-                    String west = "-fx-background-image: url('wallWest.png');" + "-fx-background-size: 20px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: left;";
+                if (wall.getHeading()==WEST) {
+                    String west = "-fx-background-image: url('wallWest.png');" +
+                            "-fx-background-size: 20px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: left;";
                     if ((space.x + space.y) % 2 != 0) west = west + "-fx-background-color: black;";
                     this.setStyle(west);
 
                 }
-                if (walls.equals(SOUTH)) {
-                    String south = "-fx-background-image: url('wallSouth.png');" + "-fx-background-size: 60px 20px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: bottom;";
+                if (wall.getHeading()==SOUTH) {
+                    String south = "-fx-background-image: url('wallSouth.png');" +
+                            "-fx-background-size: 60px 20px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: bottom;";
                     if ((space.x + space.y) % 2 != 0) south = south + "-fx-background-color: black;";
                     this.setStyle(south);
                 }
@@ -127,22 +141,34 @@ public class SpaceView extends StackPane implements ViewObserver {
                     this.setStyle("-fx-background-color: GREEN");
                 }
                 if (checkpoint.getCheckpointNumber()== 1) {
-                    String cp1 = "-fx-background-image: url('TheFlag1.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    String cp1 = "-fx-background-image: url('TheFlag1.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
                     if ((space.x + space.y) % 2 != 0) cp1 = cp1 + "-fx-background-color: black;";
                     this.setStyle(cp1);
                 }
                 if (checkpoint.getCheckpointNumber() == 2) {
-                    String cp2 = "-fx-background-image: url('TheFlag2.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    String cp2 = "-fx-background-image: url('TheFlag2.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
                     if ((space.x + space.y) % 2 != 0) cp2 = cp2 + "-fx-background-color: black;";
                     this.setStyle(cp2);
                 }
                 if (checkpoint.getCheckpointNumber() == 3) {
-                    String cp3 = "-fx-background-image: url('TheFlag3.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    String cp3 = "-fx-background-image: url('TheFlag3.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
                     if ((space.x + space.y) % 2 != 0) cp3 = cp3 + "-fx-background-color: black;";
                     this.setStyle(cp3);
                 }
                 if (checkpoint.getCheckpointNumber()== 4) {
-                    String cp4 = "-fx-background-image: url('TheFlag4.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: up;";
+                    String cp4 = "-fx-background-image: url('TheFlag4.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: up;";
                     if ((space.x + space.y) % 2 != 0) cp4 = cp4 + "-fx-background-color: black;";
                     this.setStyle(cp4);
                 }
@@ -157,30 +183,67 @@ public class SpaceView extends StackPane implements ViewObserver {
                 //if(space.setIsGear(true)) {
                 Gear gear =  (Gear) space.getFieldAction();
                 if (gear.isClockwise()) {
-                    String gearClockwise = "-fx-background-image: url('gearClockwise.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
+                    String gearClockwise = "-fx-background-image: url('gearClockwise.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
                     if ((space.x + space.y) % 2 != 0) gearClockwise = gearClockwise + "-fx-background-color: black;";
                     this.setStyle(gearClockwise);
                 }else {
-                    String gearCounterClockwise = "-fx-background-image: url('gearCounterClockwise.png');" + "-fx-background-size: 60px 60px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
+                    String gearCounterClockwise = "-fx-background-image: url('gearCounterClockwise.png');" +
+                            "-fx-background-size: 60px 60px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
                     if ((space.x + space.y) % 2 != 0)
-                        gearCounterClockwise = gearCounterClockwise + "-fx-background-color: black;";
+                        gearCounterClockwise = gearCounterClockwise +
+                                "-fx-background-color: black;";
                     this.setStyle(gearCounterClockwise);
                 }
             }
 
-            if (space.isConveyorBelt()) {
-                String eastToWest = "-fx-background-image: url('conveyor_E_to_W.png');" + "-fx-background-size: 60px 30px;" + "-fx-background-repeat: no-repeat;" + "-fx-background-position: center;";
-                if ((space.x + space.y) % 2 != 0)
-                    eastToWest = eastToWest + "-fx-background-color: black;";
-                this.setStyle(eastToWest);
+            if (space.getFieldAction().getClass().equals(ConveyorBelt.class)) {
+                ConveyorBelt conveyorBelt = (ConveyorBelt) space.getFieldAction();
+                if (conveyorBelt.getHeading() == WEST) {
+                    String eastToWest = "-fx-background-image: url('conveyor_E_to_W.png');" +
+                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0)
+                        eastToWest = eastToWest + "-fx-background-color: black;";
+                    this.setStyle(eastToWest);
+                }
 
+                if (conveyorBelt.getHeading() == EAST) {
+                    String westToEast = "-fx-background-image: url('conveyor_W_to_E.png');" +
+                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0)
+                        westToEast = westToEast + "-fx-background-color: black;";
+                    this.setStyle(westToEast);
+                }
+
+                if(conveyorBelt.getHeading() == SOUTH) {
+                    String northToSouth = "-fx-background-image: url('conveyor_N_to_S.png');" +
+                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0)
+                        northToSouth = northToSouth + "-fx-background-color: black;";
+                    this.setStyle(northToSouth);
+                }
+
+                if(conveyorBelt.getHeading() == NORTH) {
+                    String southToNorth = "-fx-background-image: url('conveyor_S_to_N.png');" +
+                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: center;";
+                    if ((space.x + space.y) % 2 != 0)
+                        southToNorth = southToNorth + "-fx-background-color: black;";
+                    this.setStyle(southToNorth);
+                }
             }
         }
-
-
-        //if(space.getIsWall())
-
-        // updatePlayer();
 
         // This space view should listen to changes of the space
         space.attach(this);

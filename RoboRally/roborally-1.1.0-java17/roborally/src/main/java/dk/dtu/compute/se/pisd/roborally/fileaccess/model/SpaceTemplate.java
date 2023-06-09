@@ -21,9 +21,11 @@
  */
 package dk.dtu.compute.se.pisd.roborally.fileaccess.model;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +37,18 @@ import java.util.List;
  */
 public class SpaceTemplate {
 
-    public List<Heading> walls = new ArrayList<>();
-    public List<FieldAction> actions = new ArrayList<>();
+
+
+    public FieldAction action;
 
 
     public int x;
     public int y;
+
+    public SpaceTemplate(int x, int y, FieldAction action){
+        this.x = x;
+        this.y = y;
+        this.action = action;
+    }
 
 }

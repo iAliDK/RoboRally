@@ -79,10 +79,8 @@ public class LoadBoard {
             result = new Board(template.width, template.height, boardname, (int)(Math.random()*1001));
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-                if (space != null) {
-                    space.getActions().addAll(spaceTemplate.actions);
-                    space.getWalls().addAll(spaceTemplate.walls);
-                }
+                space.setFieldAction(spaceTemplate.action);
+
             }
             //Player positions
             for(int i = 0; i< template.players.size(); i++){
@@ -151,16 +149,9 @@ public class LoadBoard {
             for (int i = 0; i < board.width; i++) {
                 for (int j = 0; j < board.height; j++) {
                     Space space = board.getSpace(i, j);
-                    if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                        if (!space.getClass().equals(Wall.class)) {
-                            SpaceTemplate spaceTemplate = new SpaceTemplate();
-                            spaceTemplate.x = space.x;
-                            spaceTemplate.y = space.y;
-                            spaceTemplate.actions.addAll(space.getActions());
-                            spaceTemplate.walls.addAll(space.getWalls());
-//                            template.spaces.add(spaceTemplate);
-                        }
-                    }
+                    SpaceTemplate temp = new SpaceTemplate(space.x, space.y, space.getFieldAction());
+                    boardTemplate.spaces.add(temp);
+
                 }
 
                 ClassLoader classLoader = LoadBoard.class.getClassLoader();

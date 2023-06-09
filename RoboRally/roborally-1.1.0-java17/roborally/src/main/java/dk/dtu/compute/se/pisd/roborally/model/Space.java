@@ -42,18 +42,19 @@ public class Space extends Subject {
     public final Board board;
     public final int x;
     public final int y;
-    public int checkpointNumber = 0;
+
     private Player player;
+
+    //TODO: Remove this
     private List<Heading> walls = new ArrayList<>();
-    private FieldAction action = null;
+    private FieldAction fieldAction = null;
     private Heading heading;
+    //TODO: remove this
     private Space[][] spaces;
     /**
      * @author Daniel.
      */
 
-    private boolean isClockwise;
-    private boolean isCounterClockwise;
 
 
     private List<FieldAction> actions = new ArrayList();
@@ -81,20 +82,14 @@ public class Space extends Subject {
 
     }
 
-    public Space(Board board, int x, int y, int checkpointNumber) {
-        this.board = board;
-        this.x = x;
-        this.y = y;
-        this.checkpointNumber = checkpointNumber;
-        player = null;
-    }
+
 
     public void setFieldAction(FieldAction action){
-        this.action = action;
+        this.fieldAction = action;
     }
 
     public FieldAction getFieldAction(){
-        return action;
+        return fieldAction;
     }
     public Heading getHeading() {
         return heading;
@@ -113,58 +108,8 @@ public class Space extends Subject {
     }
 
 
-    public boolean isClockwise() {
-        return isClockwise;
-    }
-  /*  public void setIsClockwise(boolean clockwise) {
-        isClockwise = clockwise;
-    }
-    public boolean getIsClockwise() {
-        return isClockwise;
-    } */
 
 
-
-    public boolean isCounterClockwise() {
-        return isCounterClockwise;
-    }
-
-    public void setIsCounterClockwise(boolean counterClockwise) {
-        isCounterClockwise = counterClockwise;
-    }
-
-    public boolean getIsCounterClockwise() {
-        return isCounterClockwise;
-    }
-
-    /////////////////////////////////conveyorBelt/////////////////////////////
-
-    public boolean isConveyorBelt() {
-        return isConveyorBelt;
-    }
-
-    public void setIsConveyorbelt(boolean conveyorbelt) {
-        isConveyorBelt = conveyorbelt;
-    }
-
-    public boolean getIsConveyorbelt() {
-        return isConveyorBelt;
-    }
-
-    /*
-    public void isSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(boolean speed) {
-        this.speed = speed;
-    }
-
-    public boolean speed(){
-        return speed;
-    }
-
-     */
 
 
 
@@ -195,8 +140,8 @@ public class Space extends Subject {
     }
 
     private void runFieldAction(GameController gc) {
-        if(action != null){
-            action.doAction(gc, this);
+        if(fieldAction != null){
+            fieldAction.doAction(gc, this);
         }
     }
 

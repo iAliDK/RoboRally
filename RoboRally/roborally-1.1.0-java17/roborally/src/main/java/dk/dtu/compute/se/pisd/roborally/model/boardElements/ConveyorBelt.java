@@ -37,8 +37,9 @@ public class ConveyorBelt extends FieldAction {
     private final int speed;
     private Heading heading;
 
-    public ConveyorBelt(int speed) {
+    public ConveyorBelt(int speed, Heading heading) {
         this.speed = speed;
+        this.heading = heading;
     }
 
     public int getSpeed() {

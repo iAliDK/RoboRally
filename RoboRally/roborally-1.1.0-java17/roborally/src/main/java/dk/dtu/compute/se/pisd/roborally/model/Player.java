@@ -104,14 +104,6 @@ public class Player extends Subject {
         return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
     }
 
-    public void checkForCheckpoint(Space space) {
-        if (this.playerCounter == getSpace().checkpointNumber && getSpace().getClass().equals(Checkpoint.class)) {
-            this.playerCounter++;
-        }
-        if (this.playerCounter == 5) {
-            setGameWon(true);
-        }
-    }
 
     public boolean isGameWon() {
         return gameWon;

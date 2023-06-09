@@ -105,13 +105,16 @@ public class GameController {
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.board == board) {
+
             Player currentPlayer = board.getCurrentPlayer();
             if (currentPlayer != null && space.getPlayer() == null) {
                 currentPlayer.setSpace(space);
                 int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
-                if(space.isConveyorBelt()){
-                    activateFieldAction();
+                if(space.getFieldAction() != null) {
+                    if (space.getFieldAction().getClass().equals(ConveyorBelt.class)) {
+                        activateFieldAction();
+                    }
                 }
             }
         }
