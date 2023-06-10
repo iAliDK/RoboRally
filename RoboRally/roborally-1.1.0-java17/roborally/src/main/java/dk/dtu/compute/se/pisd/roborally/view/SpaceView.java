@@ -225,7 +225,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                 if(conveyorBelt.getHeading() == SOUTH) {
                     String northToSouth = "-fx-background-image: url('conveyor_N_to_S.png');" +
-                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-size: 30px 60px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";
                     if ((space.x + space.y) % 2 != 0)
@@ -235,7 +235,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                 if(conveyorBelt.getHeading() == NORTH) {
                     String southToNorth = "-fx-background-image: url('conveyor_S_to_N.png');" +
-                            "-fx-background-size: 60px 30px;" +
+                            "-fx-background-size: 30px 60px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";
                     if ((space.x + space.y) % 2 != 0)

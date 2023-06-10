@@ -22,10 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -333,11 +330,6 @@ public class Board extends Subject {
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        //if (space.getWalls().contains(heading)) {
-        //  return null;
-
-        // ASK PERSON WHO WROTE THIS!!
-
         int x = space.x;
         int y = space.y;
         switch (heading) {
