@@ -34,6 +34,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +65,11 @@ public class AppController implements Observer {
 
    // private ArrayList<GameWalls> wall;
     private GameController gameController;
+
+    //Variables for saves
     public String[] saves = {"test.json"};
+    int inc = 0;
+    String suffix = ("."+inc);
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -85,7 +90,7 @@ public class AppController implements Observer {
             System.out.println("*** Not a directory! ***");
             throw new Exception();
         } else {
-            String [] nameOfFiles = dir.list();
+            String [] nameOfFiles = dir.list((dir1, name) -> name.contains("save"));
             for (int i = 0; i < nameOfFiles.length; i++) {
                 nameOfFiles[i]=removeExtension(nameOfFiles[i]);
             }
@@ -140,32 +145,46 @@ public class AppController implements Observer {
 
                 }
             }
-
-
-
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-//            Board board = loadBoard("defaultboard");
-//            //GameWalls gameWalls = new GameWalls( board);
-//            //gameWalls.addAWall(new Walls(4,4));
-//            gameController = new GameController(board);
-//            int noPlayers = result.get();
-//            for (int i = 0; i < noPlayers; i++) {
-//                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-//                board.addPlayer(player);
-//                player.setSpace(board.getSpace(i % board.width, i));
-//            }
-//
-//            // XXX: V2
-//            // board.setCurrentPlayer(board.getPlayer(0));
-//            gameController.startProgrammingPhase();
-//            roboRally.createBoardView(gameController);
         }
     }
 
     public void saveGame() {
         // XXX needs to be implemented eventually
-        saveBoard(this.gameController.board,  this.gameController.board.boardName+"save"+ this.gameController.board.gameId);
+        if (this.gameController.board.boardName.contains("save")) {
+            {
+                if (gameController != null) {
+                    ButtonType yes = new ButtonType("Overwrite", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType no = new ButtonType("New save", ButtonBar.ButtonData.OTHER);
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "Do you wish to overwrite your current save?", yes, no);
+                    alert.setTitle("Overwrite save?");
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == yes) {
+                        if(inc !=0){
+                            if (this.gameController.board.boardName.contains(".")){
+                                this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
+                            }
+                            suffix = ("."+inc);
+                            String temp = this.gameController.board.boardName;
+                            this.gameController.board.boardName+=suffix;
+                            saveBoard(this.gameController.board,  this.gameController.board.boardName);
+                            this.gameController.board.boardName = temp;
+                        } else {saveBoard(this.gameController.board,  this.gameController.board.boardName);
+                        }
+                    } else if (result.get() == no)   {
+                        inc++;
+                        if (this.gameController.board.boardName.contains(".")){
+                            this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
+                        }
+                        suffix = ("."+inc);
+                            saveBoard(this.gameController.board,  this.gameController.board.boardName+suffix);
+                    }
+                }
+            }
+        } else {
+            saveBoard(this.gameController.board,  this.gameController.board.boardName+"save"+this.gameController.board.gameId);
+            this.gameController.board.boardName += "save"+this.gameController.board.gameId;
+        }
     }
 
     public void loadGame() {
@@ -186,6 +205,9 @@ public class AppController implements Observer {
         if (result.isPresent()) {
             if (gameController == null) {
                 Board board = loadBoard(result.get(), gameController);
+                if (board.boardName.contains(".")){
+                     inc = Integer.parseInt(board.boardName.substring(board.boardName.indexOf(".")+1));
+                }
                 gameController = new GameController(board);
                 board.setPhase(Phase.PROGRAMMING);
                 board.setCurrentPlayer(board.getPlayer(0));

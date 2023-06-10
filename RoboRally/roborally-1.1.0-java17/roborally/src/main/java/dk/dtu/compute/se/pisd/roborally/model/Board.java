@@ -39,7 +39,7 @@ public class Board extends Subject {
 
     public final int height;
 
-    public final String boardName;
+    public String boardName;
     private final Space[][] spaces;
     private final List<Player> players = new ArrayList<>();
     public Integer gameId;
