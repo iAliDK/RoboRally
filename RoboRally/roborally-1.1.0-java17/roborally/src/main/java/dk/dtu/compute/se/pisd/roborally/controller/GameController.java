@@ -103,6 +103,7 @@ public class GameController {
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
      */
+    /*
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.board == board) {
 
@@ -119,6 +120,8 @@ public class GameController {
             }
         }
     }
+
+     */
 
     // TODO Assignment V1: method should be implemented by the students:
     //   - the current player should be moved to the given space
@@ -171,6 +174,11 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * This method generates a random command card
+     * It is used in executeCommandOptionAndContinue and executeNextStep
+     */
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
@@ -180,6 +188,10 @@ public class GameController {
     // XXX: V2
 
 
+    /**
+     * This method checks if the player have chosen all their cards
+     * @return true if all cards have been chosen, false if not
+     */
     // Lav en metode der tjekker om alle spillere har valgt alle deres kort
     public boolean allCardsChosen() {
         Player player = board.getCurrentPlayer();
@@ -193,7 +205,9 @@ public class GameController {
     }
 
     /**
-     * This method stops the programming phase and activates the activation phase
+     * This method calls nextTurnAndIsLastPlayer and makes the program fields invisible
+     * This method calls allCardsChosen
+     * If all cards have been chosen, it sets the phase to activation and the current player to the first player
      */
     public void finishProgrammingPhase() {
         if (!allCardsChosen()) {
@@ -213,6 +227,12 @@ public class GameController {
     }
 
 
+    /**
+     * This method is used to make the program fields visible
+     * It is used in finishProgrammingPhase
+     * It is used in executeCommandOptionAndContinue and executeNextStep
+     * @param register
+     */
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
@@ -225,7 +245,10 @@ public class GameController {
     }
 
 
-    // XXX: V2
+    /**
+     * This method is used to make the program fields invisible
+     * It is used in finishProgrammingPhase
+     */
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -239,7 +262,6 @@ public class GameController {
     /**
      * This method executes all steps of the current player
      */
-    // XXX: V2
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
@@ -248,14 +270,12 @@ public class GameController {
     /**
      * This method executes the next step of the current player
      */
-    // XXX: V2
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
 
-    // XXX: V2
     private void continuePrograms() {
         do {
             executeNextStep();
@@ -313,14 +333,13 @@ public class GameController {
     }
 
     /**
-     * @param player  This method activates the field action of the given player and changes the phase to PLAYER_INTERACTION if the field action is interactive
-     * @param command This method executes the given command for the given player and changes the phase to PLAYER_INTERACTION if the command is interactive
+     * @param player
+     * @param command
      * @author Daniel, Ismail and Zainab.
      * This method executes the given command for the given player
      * <p>
      * This method is used in executeNextStep
      */
-    // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -342,18 +361,13 @@ public class GameController {
         }
     }
 
-    /*public void gameOver(Player player) {
-        if (player.isGameWon()) {
-            stopGame();
-        }
-    }*/
-
-    // TODO Assignment V2
-
     /**
-     * @param player This method moves the player two spaces forward
+     * @param player
      * @author Daniel, Ismail and Zainab.
      * This method moves the player one space forward
+     * It also checks if the space is a wall
+     * <p>
+     *     This method is used in executeCommand
      */
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
@@ -368,11 +382,8 @@ public class GameController {
             newSpace.setPlayer(player, this);
         }
     }
-
-    // TODO Assignment V2
-
     /**
-     * @param player This method moves the player one space backwards
+     * @param player
      * @author Daniel, Ismail and Zainab.
      * This method moves the player two spaces forward
      */
@@ -382,7 +393,7 @@ public class GameController {
     }
 
     /**
-     * @param player This method moves the player one space backwards
+     * @param player
      * @author Zainab.
      * This method moves the player three spaces forward
      */
@@ -391,11 +402,8 @@ public class GameController {
         moveForward(player);
     }
 
-
-    // TODO Assignment V2
-
     /**
-     * @param player This method turns the player to the right without changing the heading of the player
+     * @param player
      * @author Daniel, Ismail and Zainab.
      * This method turns the player to the right
      */
@@ -403,10 +411,8 @@ public class GameController {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment V2
-
     /**
-     * @param player This method turns the player to the left without changing the heading of the player
+     * @param player
      * @author Daniel, Ismail and Zainab.
      * This method turns the player to the left
      */
@@ -415,17 +421,16 @@ public class GameController {
     }
 
     /**
-     * @param player This method turns the player around (makes a u-turn) without changing the heading of the player
+     * @param player
      * @author Zainab.
-     * This method turns the player around
-     * (makes a u-turn) without changing the heading of the player
+     * This method makes a U-turn for the player
      */
     public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().prev().prev());
     }
 
     /**
-     * @param player This method moves the player one space backwards without changing the heading
+     * @param player
      * @author Zainab.
      * This method moves the player one space backwards
      * without changing the heading
@@ -442,11 +447,6 @@ public class GameController {
         }
     }
 
-    /*public void gameWon(Player player){
-        if(Checkpoint.getGameWinner(true)){
-
-        }
-    }*/
 
     /**
      * This method checks if a card can be moved from the source field to the target field.
@@ -552,6 +552,7 @@ public class GameController {
         }
     }
 
+   /*
     private void activateFieldAction() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player currentPlayer = board.getPlayer(i);
@@ -573,6 +574,8 @@ public class GameController {
         }
     }
 
+
+    */
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This
