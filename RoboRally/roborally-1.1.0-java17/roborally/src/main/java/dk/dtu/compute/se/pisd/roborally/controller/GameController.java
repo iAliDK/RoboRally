@@ -70,6 +70,11 @@ public class GameController {
     public boolean nextTurnAndIsLastPlayer() {
         int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
         board.setCurrentPlayer(board.getPlayer((currentPlayerIndex + 1) % board.getPlayersNumber()));
+
+        int lastPlayer = board.getPlayersNumber()-1;
+        if(currentPlayerIndex == lastPlayer){
+            return true;
+        }
         return false;
     }
 /*
@@ -216,19 +221,22 @@ public class GameController {
      * If all cards have been chosen, it sets the phase to activation and the current player to the first player
      */
     public void finishProgrammingPhase() {
-        /*if (!allCardsChosen()) {
+        if (!allCardsChosen()) {
             return;
-        } */
+        }
+
 
         if (nextTurnAndIsLastPlayer()) {
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
-        }
-
             board.setPhase(Phase.ACTIVATION);
             board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
+
+        }
+
+
 
     }
 
