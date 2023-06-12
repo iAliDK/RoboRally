@@ -20,10 +20,10 @@ public class Wall extends FieldAction{
     }
 
     /**
-     * Returns the heading of the wall as a string.
+     *
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
-     * @return the heading of the wall as a string.
+     * @return
      */
     @Override
     public boolean doAction(GameController gameController, Space space) {
@@ -31,7 +31,6 @@ public class Wall extends FieldAction{
     }
 
     /**
-     * Returns the heading of the wall.
      * @return the heading of the wall.
      */
     public Heading getHeading() {
