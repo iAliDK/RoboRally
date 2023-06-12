@@ -62,8 +62,9 @@ public class ConveyorBelt extends FieldAction {
             switch (speed) {
                 case 1 -> {
                     Player player = space.getPlayer();
-                    space.setPlayer(null, gameController);
-                    target.setPlayer(player, gameController);
+
+                    space.setPlayer(null, gameController, false);
+                    target.setPlayer(player, gameController, false);
                     //check if space is wall
                     //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
                     /*if (target.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!target.getClass().equals(Wall.class) || player.getHeading() != target.getHeading().getOpposite())) {

@@ -122,7 +122,7 @@ public class Space extends Subject {
      *
      * @param player the player to be set on this space
      */
-    public void setPlayer(Player player, GameController gc) {
+    public void setPlayer(Player player, GameController gc, boolean runFieldAction) {
         Player oldPlayer = this.player;
         if (player != oldPlayer && (player == null || board == player.board)) {
             this.player = player;
@@ -134,7 +134,9 @@ public class Space extends Subject {
                 player.setSpace(this);
 
             }
-            runFieldAction(gc);
+            if(runFieldAction){
+                runFieldAction(gc);
+            }
             notifyChange();
         }
     }

@@ -377,9 +377,9 @@ public class GameController {
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
         if (newSpace.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null, this);
+            player.getSpace().setPlayer(null, this, false);
             player.setSpace(newSpace);
-            newSpace.setPlayer(player, this);
+            newSpace.setPlayer(player, this, true);
         }
     }
     /**
@@ -440,9 +440,9 @@ public class GameController {
 
         //check if space is wall
         if (newSpace.getPlayer() == null && ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getClass().equals(Wall.class)|| player.getHeading() != newSpace.getHeading())) {
-            player.getSpace().setPlayer(null, this);
+            player.getSpace().setPlayer(null, this, false);
             player.setSpace(newSpace);
-            newSpace.setPlayer(player, this);
+            newSpace.setPlayer(player, this, true);
 
         }
     }
@@ -492,9 +492,9 @@ public class GameController {
 
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        space.setPlayer(null, this);
+        space.setPlayer(null, this, false);
         player.setSpace(newSpace);
-        newSpace.setPlayer(player, this);
+        newSpace.setPlayer(player, this, false);
 
     }
 
