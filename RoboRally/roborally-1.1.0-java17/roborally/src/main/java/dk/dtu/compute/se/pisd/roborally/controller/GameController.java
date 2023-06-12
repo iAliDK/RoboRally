@@ -103,7 +103,7 @@ public class GameController {
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
      */
-    /*
+
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.board == board) {
 
@@ -114,14 +114,14 @@ public class GameController {
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
                 if(space.getFieldAction() != null) {
                     if (space.getFieldAction().getClass().equals(ConveyorBelt.class)) {
-                        activateFieldAction();
+//                        activateFieldAction();
                     }
                 }
             }
         }
     }
 
-     */
+
 
     // TODO Assignment V1: method should be implemented by the students:
     //   - the current player should be moved to the given space

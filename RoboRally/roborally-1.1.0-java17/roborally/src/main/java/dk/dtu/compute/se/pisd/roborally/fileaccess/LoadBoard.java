@@ -180,7 +180,6 @@ public class LoadBoard {
                 try {
                     fileWriter = new FileWriter(filename);
 
-                    fileWriter.write(boardTemplate.toString());
                     writer = gson.newJsonWriter(fileWriter);
                     gson.toJson(boardTemplate, boardTemplate.getClass(), writer);
                     writer.close();
