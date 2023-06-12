@@ -133,7 +133,7 @@ public class AppController implements Observer {
                     for (int i = 0; i < noPlayers; i++) {
                         Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
                         board.addPlayer(player);
-                        player.setSpace(board.getSpace(i % board.width, i));
+                        player.setSpace(board.getSpace(i % board.width, i), false);
                     }
                     gameController.startProgrammingPhase();
                     roboRally.createBoardView(gameController);

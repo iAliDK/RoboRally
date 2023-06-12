@@ -225,18 +225,27 @@ public class Player extends Subject {
      *
      * @param space The new space to set for the player.
      */
-    public void setSpace(Space space) {
-        Space oldSpace = this.space;
+    public void setSpace(Space space, boolean runFieldAction) {
+        if(getSpace() != null) {
+            getSpace().setPlayer(null, gc, false);
+        }
+
+        this.space = space;
+        space.setPlayer(this, gc, runFieldAction);
+        notifyChange();
+
+
+       /* Space oldSpace = this.space;
         if (space != oldSpace && (space == null || space.board == this.board)) {
             this.space = space;
             if (oldSpace != null) {
                 oldSpace.setPlayer(null, gc, false);
             }
             if (space != null) {
-                space.setPlayer(this, gc, false);
+                space.setPlayer(this, gc, true);
             }
             notifyChange();
-        }
+        } */
     }
 
     /**

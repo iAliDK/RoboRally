@@ -86,7 +86,7 @@ public class LoadBoard {
             for(int i = 0; i< template.players.size(); i++){
                 Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
                 result.addPlayer(player);
-                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y));
+                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
                 player.setHeading(template.players.get(i).heading);
                 //Player cards
                 if (player != null) {

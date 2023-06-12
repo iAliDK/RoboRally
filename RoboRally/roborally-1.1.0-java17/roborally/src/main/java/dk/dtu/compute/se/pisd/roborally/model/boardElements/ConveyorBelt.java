@@ -90,30 +90,12 @@ public class ConveyorBelt extends FieldAction {
                 case 1 -> {
                     Player player = space.getPlayer();
 
-                    space.setPlayer(null, gameController, false);
-                    target.setPlayer(player, gameController, false);
-                    //check if space is wall
-                    //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-                    /*if (target.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!target.getClass().equals(Wall.class) || player.getHeading() != target.getHeading().getOpposite())) {
+                    player.setSpace(target, true);
 
-                    } */
                 }
-                case 2 -> {
-                    if (target.getActions().get(0) instanceof ConveyorBelt) {
-                        Heading targetHeading = ((ConveyorBelt) target.getActions().get(0)).getHeading();
-                        Space target2 = gameController.board.getNeighbour(target, targetHeading);
-                        if (target2 != null) {
-                            try {
-                                gameController.moveToSpace(space.getPlayer(), target2, targetHeading);
-                            } catch (GameController.ImpossibleMoveException e) {
-                            }
-                        }
-                    }
-                    try {
-                        gameController.moveToSpace(space.getPlayer(), target, heading);
-                    } catch (GameController.ImpossibleMoveException e) {
-                    }
-                }
+                /*case 2 -> {
+
+                }*/
             }
         }
         return true;

@@ -109,12 +109,13 @@ public class GameController {
      * happening on the board. This method should eventually be deleted!
      */
 
+    //Musseclick
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.board == board) {
 
             Player currentPlayer = board.getCurrentPlayer();
             if (currentPlayer != null && space.getPlayer() == null) {
-                currentPlayer.setSpace(space);
+                currentPlayer.setSpace(space, true);
                 int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
                 if(space.getFieldAction() != null) {
@@ -215,20 +216,20 @@ public class GameController {
      * If all cards have been chosen, it sets the phase to activation and the current player to the first player
      */
     public void finishProgrammingPhase() {
-        if (!allCardsChosen()) {
+        /*if (!allCardsChosen()) {
             return;
-        }
+        } */
 
         if (nextTurnAndIsLastPlayer()) {
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
         }
-        if (allCardsChosen()) {
+
             board.setPhase(Phase.ACTIVATION);
             board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
-        }
+
     }
 
 
@@ -375,15 +376,15 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
 
-
+        player.setSpace(newSpace, true);
 
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        if (newSpace.getPlayer() == null && (!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null, this, false);
+        /*if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
             player.setSpace(newSpace);
-            newSpace.setPlayer(player, this, true);
-        }
+
+            //newSpace.setPlayer(player, this, true);
+        } */
     }
     /**
      * @param player This method moves the given player two steps forward.
@@ -441,13 +442,17 @@ public class GameController {
     public void backUp(@NotNull Player player) {
         Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
 
+
+        player.setSpace(newSpace, true);
+
+        /*
         //check if space is wall
         if (newSpace.getPlayer() == null && ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getClass().equals(Wall.class)|| player.getHeading() != newSpace.getHeading())) {
-            player.getSpace().setPlayer(null, this, false);
+            player.getSpace().setPlayer(null, this, true);
             player.setSpace(newSpace);
             newSpace.setPlayer(player, this, true);
 
-        }
+        } */
     }
 
 
@@ -478,28 +483,7 @@ public class GameController {
      * @param heading The heading the player should have after moving to the space
      * @throws ImpossibleMoveException if the player cannot be moved to the space with the given heading, or if the player cannot be moved to the space because there is another player on the space and the other player cannot be moved to the space behind it with the same heading. In this case, the player and the other player is not moved. The exception is thrown.
      */
-    public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        /*assert board.getNeighbour(player.getSpace(), heading) == space;
-        Player other = space.getPlayer();
-        if (other != null) {
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                moveToSpace(other, target, heading);
-                assert space.getPlayer() == null : target;
-            } else {
-                throw new ImpossibleMoveException(player, space, heading);
-            }
-        } */
 
-        Space newSpace = board.getNeighbour(space, heading);
-
-        //check if space is wall
-        //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        space.setPlayer(null, this, false);
-        player.setSpace(newSpace);
-        newSpace.setPlayer(player, this, false);
-
-    }
 
     /**
      * @param command The command to execute for the current player

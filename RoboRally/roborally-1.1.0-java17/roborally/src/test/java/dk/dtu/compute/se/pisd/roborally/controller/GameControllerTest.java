@@ -23,7 +23,7 @@ class GameControllerTest {
         for (int i = 0; i < 6; i++) {
             Player player = new Player(board, null,"Player " + i, gameController);
             board.addPlayer(player);
-            player.setSpace(board.getSpace(i, i));
+            player.setSpace(board.getSpace(i, i), false);
             player.setHeading(Heading.values()[i % Heading.values().length]);
         }
         board.setCurrentPlayer(board.getPlayer(0));

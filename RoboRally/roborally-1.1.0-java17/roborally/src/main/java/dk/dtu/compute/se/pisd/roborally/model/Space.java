@@ -127,23 +127,27 @@ public class Space extends Subject {
      * @param player the player to be set on this space
      */
     public void setPlayer(Player player, GameController gc, boolean runFieldAction) {
-        Player oldPlayer = this.player;
-        if (player != oldPlayer && (player == null || board == player.board)) {
-            this.player = player;
-            if (oldPlayer != null) {
-                // this should actually not happen
-                oldPlayer.setSpace(null);
-            }
-            if (player != null) {
-                player.setSpace(this);
 
-            }
-            if (runFieldAction) {
-                runFieldAction(gc);
-            }
-            notifyChange();
+
+        //TODO: player push other player
+        /*
+        Player oldPlayer = this.player;
+        if (oldPlayer != null && player != null) {
+            // this should actually not happen
+            Space nextSpace = board.getNeighbour(oldPlayer.getSpace(), player.getHeading());
+           // nextSpace.setPlayer(oldPlayer, gc, true);
+            oldPlayer.setSpace(nextSpace, true);
+        } */
+        this.player = player;
+
+        if(runFieldAction){
+            runFieldAction(gc);
         }
+        notifyChange();
+
     }
+
+
 
     private void runFieldAction(GameController gc) {
         if (fieldAction != null) {
