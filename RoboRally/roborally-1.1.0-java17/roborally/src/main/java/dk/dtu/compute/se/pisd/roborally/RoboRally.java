@@ -90,7 +90,7 @@ public class RoboRally extends Application {
      * This method creates a new boardview for the given game controller
      * It also replaces the old boardview with the new one.
      *
-     * @param gameController
+     * @param gameController the game controller for which the board view is created.
      */
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
@@ -105,7 +105,11 @@ public class RoboRally extends Application {
         stage.sizeToScene();
     }
 
-
+    /**
+     * This method is called when the application is stopped.
+     * It is called after the stop() method of the last controller
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
         super.stop();

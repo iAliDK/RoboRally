@@ -30,31 +30,58 @@ import org.jetbrains.annotations.NotNull;
 import static javax.swing.UIManager.get;
 
 /**
- * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * This class implements a conveyor belt on board. It has a speed and a heading.
  */
 public class ConveyorBelt extends FieldAction {
     private final int speed;
     private Heading heading;
 
+    /**
+     * Constructor for ConveyorBelt
+     *
+     * @param speed   the speed of the conveyor belt
+     * @param heading the heading of the conveyor belt
+     */
     public ConveyorBelt(int speed, Heading heading) {
         this.speed = speed;
         this.heading = heading;
     }
 
+    /**
+     * Returns the speed of the conveyor belt
+     *
+     * @return the speed of the conveyor belt
+     */
+
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * Returns the heading of the conveyor belt
+     *
+     * @return the heading of the conveyor belt
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * Sets the heading of the conveyor belt
+     *
+     * @param heading the heading of the conveyor belt
+     */
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
+    /**
+     * Executes the field action for a given space. In order to be able to do
+     *
+     * @param gameController the gameController of the respective game
+     * @param space          the space this action should be executed for
+     * @return whether the action was successfully executed
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         Space target = gameController.board.getNeighbour(space, this.heading);

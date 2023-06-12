@@ -26,7 +26,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.filelist;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -38,14 +37,9 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.filelist.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.io.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
@@ -54,7 +48,6 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
  * This class is the controller for the whole application. It is the
  * observer of the {@link RoboRally} class, and it is the controller
  * for the {@link GameController}.
- *
  */
 public class AppController implements Observer {
 
@@ -63,24 +56,23 @@ public class AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
 
-   // private ArrayList<GameWalls> wall;
+    // private ArrayList<GameWalls> wall;
     private GameController gameController;
 
     //Variables for saves
     public String[] saves = {"test.json"};
     int inc = 0;
-    String suffix = ("."+inc);
+    String suffix = ("." + inc);
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
-
-
     }
-    private static String removeExtension(final String s)
-    {
+
+    private static String removeExtension(final String s) {
         return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
     }
-    private String[] loadSaveFiles() throws Exception{
+
+    private String[] loadSaveFiles() throws Exception {
         String dirName;
         dirName = System.getProperty("user.dir");
         dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
@@ -90,9 +82,9 @@ public class AppController implements Observer {
             System.out.println("*** Not a directory! ***");
             throw new Exception();
         } else {
-            String [] nameOfFiles = dir.list((dir1, name) -> name.contains("save"));
+            String[] nameOfFiles = dir.list((dir1, name) -> name.contains("save"));
             for (int i = 0; i < nameOfFiles.length; i++) {
-                nameOfFiles[i]=removeExtension(nameOfFiles[i]);
+                nameOfFiles[i] = removeExtension(nameOfFiles[i]);
             }
             System.out.println(nameOfFiles);
             return nameOfFiles;
@@ -101,16 +93,19 @@ public class AppController implements Observer {
 
 
 /**
-     * This method is called by the {@link RoboRally} class when the
-     * application is started. It sets up the application and shows
-     * the main window.
-     */
+ *
+ * This method is called by the {@link RoboRally} class when the
+ * application is started. It sets up the application and shows
+ * the main window.
+ */
+
     /**
      * Show dialog and makes players choose number of players
-     * creates a new game, and sets up the board
+     * creates a new game, and sets up the board.
      * If a game is already in progress, prompts the user to
      * save the game or abort before starting a new game.
      */
+
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
@@ -148,6 +143,12 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * This method is called by the {@link RoboRally} class when game is to be saved.
+     * The method prompts the user whether to overwrite the current save or create a new one.
+     * <p>
+     *
+     */
     public void saveGame() {
         // XXX needs to be implemented eventually
         if (this.gameController.board.boardName.contains("save")) {
@@ -160,43 +161,48 @@ public class AppController implements Observer {
                     Optional<ButtonType> result = alert.showAndWait();
 
                     if (result.get() == yes) {
-                        if(inc !=0){
-                            if (this.gameController.board.boardName.contains(".")){
+                        if (inc != 0) {
+                            if (this.gameController.board.boardName.contains(".")) {
                                 this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
                             }
-                            suffix = ("."+inc);
+                            suffix = ("." + inc);
                             String temp = this.gameController.board.boardName;
-                            this.gameController.board.boardName+=suffix;
-                            saveBoard(this.gameController.board,  this.gameController.board.boardName);
+                            this.gameController.board.boardName += suffix;
+                            saveBoard(this.gameController.board, this.gameController.board.boardName);
                             this.gameController.board.boardName = temp;
-                        } else {saveBoard(this.gameController.board,  this.gameController.board.boardName);
+                        } else {
+                            saveBoard(this.gameController.board, this.gameController.board.boardName);
                         }
-                    } else if (result.get() == no)   {
+                    } else if (result.get() == no) {
                         inc++;
-                        if (this.gameController.board.boardName.contains(".")){
+                        if (this.gameController.board.boardName.contains(".")) {
                             this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
                         }
-                        suffix = ("."+inc);
-                            saveBoard(this.gameController.board,  this.gameController.board.boardName+suffix);
+                        suffix = ("." + inc);
+                        saveBoard(this.gameController.board, this.gameController.board.boardName + suffix);
                     }
                 }
             }
         } else {
-            saveBoard(this.gameController.board,  this.gameController.board.boardName+"save"+this.gameController.board.gameId);
-            this.gameController.board.boardName += "save"+this.gameController.board.gameId;
+            saveBoard(this.gameController.board, this.gameController.board.boardName + "save" + this.gameController.board.gameId);
+            this.gameController.board.boardName += "save" + this.gameController.board.gameId;
         }
     }
 
+    /**
+     * This method is called by the {@link RoboRally} class when game is to be loaded.
+     * The method prompts the user to select a save file to load.
+     */
     public void loadGame() {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         try {
             saves = loadSaveFiles();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("No directories found");
             saves = null;
         }
-        List<String> GAME_SAVES  = Arrays.asList(saves);
+        List<String> GAME_SAVES = Arrays.asList(saves);
         ChoiceDialog<String> dialog = new ChoiceDialog<>(GAME_SAVES.get(0), GAME_SAVES);
         dialog.setTitle("Save");
         dialog.setHeaderText("Select save you wish to load");
@@ -205,8 +211,8 @@ public class AppController implements Observer {
         if (result.isPresent()) {
             if (gameController == null) {
                 Board board = loadBoard(result.get(), gameController);
-                if (board.boardName.contains(".")){
-                     inc = Integer.parseInt(board.boardName.substring(board.boardName.indexOf(".")+1));
+                if (board.boardName.contains(".")) {
+                    inc = Integer.parseInt(board.boardName.substring(board.boardName.indexOf(".") + 1));
                 }
                 gameController = new GameController(board);
                 board.setPhase(Phase.PROGRAMMING);
@@ -219,13 +225,8 @@ public class AppController implements Observer {
     }
 
     /**
-     * Stop playing the current game, giving the user the option to save
-     * the game or to cancel stopping the game. The method returns true
-     * if the game was successfully stopped (with or without saving the
-     * game); returns false, if the current game was not stopped. In case
-     * there is no current game, false is returned.
-     *
-     * @return true if the current game was stopped, false otherwise
+     * This method is called by the {@link RoboRally} class when game is to be stopped.
+     * @return true if the game was stopped, false if the game was not running.
      */
     public boolean stopGame() {
         if (gameController != null) {
@@ -240,8 +241,9 @@ public class AppController implements Observer {
     }
 
     /**
-     * Method that is used when you want to close the game.
+     * Exits the application, prompts the user whether they are sure to exit the application.
      */
+
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -269,10 +271,13 @@ public class AppController implements Observer {
         }
     }*/
 
+    /**
+     * Returns true if there is currently a game running, false otherwise.
+     */
+
     public boolean isGameRunning() {
         return gameController != null;
     }
-
 
     @Override
     public void update(Subject subject) {
