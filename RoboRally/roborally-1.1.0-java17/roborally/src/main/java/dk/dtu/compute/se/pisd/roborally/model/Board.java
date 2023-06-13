@@ -18,8 +18,8 @@ package dk.dtu.compute.se.pisd.roborally.model;/*
  *  along with this project; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- */x
-package dk.dtu.compute.se.pisd.roborally.model;
+ */
+//package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.*;
@@ -314,6 +314,7 @@ public class Board extends Subject  {
         int x = space.x;
         int y = space.y;
         switch (heading) {
+            // TODO LOOK BACK AT THIS
             case SOUTH -> y = (y + 1) % height;
             case WEST -> x = (x + width - 1) % width;
             case NORTH -> y = (y + height - 1) % height;
