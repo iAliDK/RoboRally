@@ -78,25 +78,25 @@ public class Board extends Subject  {
             }
         }
 
-        spaces[3][2].setFieldAction(new Wall(Heading.NORTH));
-        spaces[2][2].setFieldAction(new Wall(Heading.NORTH));
-        spaces[4][4].setFieldAction(new Wall(Heading.EAST));
-        spaces[5][5].setFieldAction(new Wall(Heading.WEST));
-        spaces[6][6].setFieldAction(new Wall(Heading.SOUTH));
-        spaces[2][5].setFieldAction(new Wall(Heading.WEST));
-
-        spaces[1][2].setFieldAction(new Checkpoint(1));
-        spaces[1][4].setFieldAction(new Checkpoint(2));
-        spaces[6][7].setFieldAction(new Checkpoint(3));
-        spaces[4][7].setFieldAction(new Checkpoint(4));
-
-        spaces[6][5].setFieldAction(new Gear(true));
-        spaces[7][2].setFieldAction(new Gear(false));
-
-        spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
-        spaces[4][0].setFieldAction(new ConveyorBelt(1, Heading.SOUTH));
-        spaces[0][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
-        spaces[7][0].setFieldAction(new ConveyorBelt(1, Heading.WEST));
+//        spaces[3][2].setFieldAction(new Wall(Heading.NORTH));
+//        spaces[2][2].setFieldAction(new Wall(Heading.NORTH));
+//        spaces[4][4].setFieldAction(new Wall(Heading.EAST));
+//        spaces[5][5].setFieldAction(new Wall(Heading.WEST));
+//        spaces[6][6].setFieldAction(new Wall(Heading.SOUTH));
+//        spaces[2][5].setFieldAction(new Wall(Heading.WEST));
+//
+//        spaces[1][2].setFieldAction(new Checkpoint(1));
+//        spaces[1][4].setFieldAction(new Checkpoint(2));
+//        spaces[6][7].setFieldAction(new Checkpoint(3));
+//        spaces[4][7].setFieldAction(new Checkpoint(4));
+//
+//        spaces[6][5].setFieldAction(new Gear(true));
+//        spaces[7][2].setFieldAction(new Gear(false));
+//
+//        spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
+//        spaces[4][0].setFieldAction(new ConveyorBelt(1, Heading.SOUTH));
+//        spaces[0][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[7][0].setFieldAction(new ConveyorBelt(1, Heading.WEST));
 
         this.stepMode = false;
     }

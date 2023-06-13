@@ -22,13 +22,17 @@
 
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-//import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
+import com.google.gson.Gson;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.API.HttpClient;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
+
 import org.jetbrains.annotations.NotNull;
 
 
@@ -40,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GameController {
 
-    //Repository api = new Repository();
+
 
     final public Board board;
 
@@ -122,14 +126,6 @@ public class GameController {
             }
         }
     }
-
-    /*public void loadBoard(){
-        BoardTemplate template = api.loadBoard();
-        board.setPlayers(template.players);
-    }
-
-     */
-
 
 
     // TODO Assignment V1: method should be implemented by the students:
@@ -282,9 +278,16 @@ public class GameController {
     /**
      * This method executes the next step of the current player.
      */
+
+
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
+        try {
+            saveBoardAPI(board, "API");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
