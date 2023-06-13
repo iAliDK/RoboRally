@@ -13,10 +13,11 @@ public class Walls {
     private int x;
     private int y;
 
+    // TODO should be deleted eventually
     public ArrayList<GameWalls> getWall() {
         return wall;
     }
-
+    // TODO should be deleted eventually
     public void setWall(ArrayList<GameWalls> wall) {
         this.wall = wall;
     }
@@ -32,6 +33,7 @@ public class Walls {
         this.y = y;
     }
 
+    // TODO should be deleted eventually
     /**
      * Adds a wall to the game.
      *
@@ -60,7 +62,4 @@ public class Walls {
         return x;
     }
 
-    //public ArrayList<GameWalls> getWall() {
-    //    return wall;
-    //}
 }
