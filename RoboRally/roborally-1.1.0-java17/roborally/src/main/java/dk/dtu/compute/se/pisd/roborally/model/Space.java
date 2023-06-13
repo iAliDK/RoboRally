@@ -155,7 +155,6 @@ public class Space extends Subject {
         }
     }
 
-
     void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can
@@ -171,9 +170,13 @@ public class Space extends Subject {
         this.walls = walls;
     }
 
+    public void setActions(List<FieldAction> actions) {
+        this.actions = actions;
+    }
+
     /*public boolean getActions() {
-        return actions;
-    }*/
+            return actions;
+        }*/
     public List<FieldAction> getActions() {
         return actions;
     }

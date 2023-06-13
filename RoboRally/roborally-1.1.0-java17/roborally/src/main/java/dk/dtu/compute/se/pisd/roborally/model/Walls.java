@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * This class is used to represent a wall in the game.
+ *
  * @author Daniel.
  */
 public class Walls {
@@ -12,18 +13,28 @@ public class Walls {
     private int x;
     private int y;
 
+    public ArrayList<GameWalls> getWall() {
+        return wall;
+    }
+
+    public void setWall(ArrayList<GameWalls> wall) {
+        this.wall = wall;
+    }
+
     /**
      * Constructor for a wall.
+     *
      * @param x the x-coordinate of the wall
      * @param y the y-coordinate of the wall
      */
-    public Walls(int x, int y){
+    public Walls(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     /**
      * Adds a wall to the game.
+     *
      * @param gameWalls the wall to be added
      */
     public void addAWall(GameWalls gameWalls) {
@@ -33,17 +44,19 @@ public class Walls {
 
     /**
      * Gets the y-coordinate of the wall.
+     *
      * @return the x-coordinate of the wall
      */
-    public int getY(){
+    public int getY() {
         return y;
     }
 
     /**
      * Gets the x-coordinate of the wall.
+     *
      * @return the x-coordinate of the wall
      */
-    public int getX(){
+    public int getX() {
         return x;
     }
 
