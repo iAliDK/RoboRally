@@ -22,6 +22,8 @@
 
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
@@ -50,6 +52,8 @@ public class GameController {
             this.heading = heading;
         }
     }
+
+    Repository api = new Repository();
 
     final public Board board;
 
@@ -130,6 +134,11 @@ public class GameController {
                 }
             }
         }
+    }
+
+    public void loadBoard(){
+        BoardTemplate template = api.loadBoard();
+        board.setPlayers(template.players);
     }
 
 

@@ -1,4 +1,4 @@
-/*
+package dk.dtu.compute.se.pisd.roborally.model;/*
  *  This file is part of the initial project provided for the
  *  course "Project in Software Development (02362)" held at
  *  DTU Compute at the Technical University of Denmark.
@@ -18,7 +18,7 @@
  *  along with this project; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- */
+ */x
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
@@ -33,7 +33,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 /**
  * The board class extends subject to use the method notifyChange from Subject.
  */
-public class Board extends Subject {
+public class Board extends Subject  {
     public final int width;
     public final int height;
 
@@ -116,6 +116,12 @@ public class Board extends Subject {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public void setPlayers(List<Player> players) {
+        players = players;
+
+    }
+
 
     /**
      * The method returns the gameId.
