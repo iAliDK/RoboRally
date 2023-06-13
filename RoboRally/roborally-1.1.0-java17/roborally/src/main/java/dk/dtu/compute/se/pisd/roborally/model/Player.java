@@ -25,8 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

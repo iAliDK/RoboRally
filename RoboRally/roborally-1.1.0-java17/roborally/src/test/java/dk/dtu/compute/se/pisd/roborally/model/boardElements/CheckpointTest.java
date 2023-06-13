@@ -1,12 +1,16 @@
 package dk.dtu.compute.se.pisd.roborally.model.boardElements;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CheckpointTest {
     /**
@@ -27,10 +31,44 @@ class CheckpointTest {
      */
     @Test
     void testDoAction() {
-        Checkpoint checkpoint = new Checkpoint(2);
-        GameController gameController = new GameController(new Board(8, 8));
-        checkpoint.doAction(gameController, new Space(new Board(8, 8), 2, 3));
-        assertEquals(2, checkpoint.getCheckpointNumber());
+        //Checkpoint checkpoint = new Checkpoint(1);
+        Board board = new Board(8,8);
+        GameController gameController = new GameController(board);
+        Space space = new Space(board, 2,3);
+        Player player = new Player(board, "red", "player 1", gameController);
+
+
+
+        player.setSpace(space, true);
+        space.setPlayer(player, gameController, true);
+        Player currentPlayer = space.getPlayer();
+
+        Random r = new Random();
+        int random = r.nextInt(4);
+        Checkpoint checkpointNo = new Checkpoint(1);
+        switch(random) {
+            case 0 : checkpointNo = new Checkpoint(1);
+                break;
+            case 1 : checkpointNo = new Checkpoint(2);
+                break;
+            case 2 : checkpointNo = new Checkpoint(3);
+                break;
+            case 3 : checkpointNo = new Checkpoint(4);
+                break;
+        }
+
+        currentPlayer.setPlayerCounter(checkpointNo.getCheckpointNumber());
+        //currentPlayer.setPlayerCounter(1);
+
+
+        boolean result = checkpointNo.doAction(gameController, space);
+
+        assertNotNull(currentPlayer);
+        assertTrue(result);
+
+
+        assertEquals(checkpointNo.getCheckpointNumber()+1,currentPlayer.getPlayerCounter());
+
     }
 }
 

@@ -67,8 +67,17 @@ class GearTest {
 
         assertNotNull(currentPlayer);
         assertTrue(result);
+        assertEquals(initial_heading.next(), currentPlayer.getHeading());
 
+        currentPlayer.setHeading(initial_heading);
+        space.setPlayer(currentPlayer, gameController, true);
 
+        boolean result1 = gear1.doAction(gameController, space);
+
+        assertNotNull(currentPlayer);
+        assertTrue(result1);
+        assertEquals(initial_heading.prev(), currentPlayer.getHeading());
+        /*
         // Der er noget underligt her som vi skal se på, der er fejl da next og prev
         // er blevet exchanged i forhold til om det er med eller mod uret man drejer
         if (gear.isClockwise()) {
@@ -84,7 +93,7 @@ class GearTest {
         } else {
             // Ensure the player has turned left
             assertEquals(initial_heading.next(), currentPlayer.getHeading());
-        }
+        }*/
     }
 }
 
