@@ -56,10 +56,12 @@ public class Gear extends FieldAction {
         if (currentPlayer != null) {
             if(isClockwise){
                 gameController.turnRight(currentPlayer);
+                return true;
             }else{
                 gameController.turnLeft(currentPlayer);
+                return true;
             }
-            return false;
+            //return false;
         }
         return false;
     }
