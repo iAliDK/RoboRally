@@ -35,9 +35,10 @@ import java.util.List;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
- * ...
+ * Class "Player" represents a player in the game.
+ * It is a subject in the observer pattern, because the player is displayed in the GUI and the GUI needs to be updated, when the player changes.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author
  */
 public class Player extends Subject {
 
@@ -82,6 +83,11 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Method "getProgram" returns the program of the player
+     *
+     * @return The program of the player as an array of CommandCardField objects.
+     */
     public CommandCardField[] getProgram() {
         return program;
     }
@@ -89,6 +95,11 @@ public class Player extends Subject {
 //        return new CommandCardFieldTemplate( player, visible, cards, program);
 //    }
 
+    /**
+     * Method "createTemplate" creates a template of the player
+     *
+     * @return The template of the player as a PlayerTemplate object.
+     */
     public PlayerTemplate createTemplate() {
         List<CommandCardFieldTemplate> programTemp = new ArrayList<>();
         List<CommandCardFieldTemplate> cardsTemp = new ArrayList<>();
@@ -104,24 +115,43 @@ public class Player extends Subject {
         return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
     }
 
-
+    /**
+     * Method "isGameWon" returns the gameWon of the player object.
+     * @return The gameWon of the player object as a boolean.
+     */
     public boolean isGameWon() {
         return gameWon;
     }
 
+    /**
+     * Method "setGameWon" returns the gameWon of the player object.
+     * @param gameWon The gameWon of the player object as a boolean.
+     */
     public void setGameWon(boolean gameWon) {
         this.gameWon = gameWon;
     }
 
-
+    /**
+     * Method "playerCounterMethod" returns the player counter of the player object.
+     * @param player The player object.
+     */
     public void playerCounterMethod(Player player) {
         int playerCounter = player.getPlayerCounter();
     }
 
+    /**
+     * Method "getPlayerCounter" returns the player counter of the player object.
+     *
+     * @return The player counter of the player object as an integer.
+     */
     public int getPlayerCounter() {
         return playerCounter;
     }
 
+    /**
+     * Method "setPlayerCounter" sets the player counter of the player object.
+     * @param playerCounter The player counter of the player object as an integer.
+     */
     public void setPlayerCounter(int playerCounter) {
         this.playerCounter = playerCounter;
     }
@@ -135,6 +165,10 @@ public class Player extends Subject {
         return complete1;
     } */
 
+    /**
+     * Method "getName" returns the name of the player object.
+     * @return The name of the player object as a String.
+     */
     public String getName() {
         return name;
     }
@@ -168,7 +202,7 @@ public class Player extends Subject {
     }
 
     /**
-     * @param color The color chosen for the player
+     * @param color The color chosen for the player to set.
      */
     public void setColor(String color) {
         this.color = color;
@@ -178,30 +212,47 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Method "getSpace" returns the space where the player is located on the board
+     * @return The space where the player is located on the board as a Space object.
+     */
     public Space getSpace() {
         return space;
     }
 
     /**
-     * Space where the player is located on the board
+     * Space where the player is located on the board is set.
      *
      * @param space The new space to set for the player.
      */
-    public void setSpace(Space space) {
-        Space oldSpace = this.space;
-        if (space != oldSpace &&
-                (space == null || space.board == this.board)) {
+    public void setSpace(Space space, boolean runFieldAction) {
+        if(getSpace() != null) {
+            getSpace().setPlayer(null, gc, false);
+        }
+
+        this.space = space;
+        space.setPlayer(this, gc, runFieldAction);
+        notifyChange();
+
+
+       /* Space oldSpace = this.space;
+        if (space != oldSpace && (space == null || space.board == this.board)) {
             this.space = space;
             if (oldSpace != null) {
                 oldSpace.setPlayer(null, gc, false);
             }
             if (space != null) {
-                space.setPlayer(this, gc, false);
+                space.setPlayer(this, gc, true);
             }
             notifyChange();
-        }
+        } */
     }
 
+    /**
+     * Method "getHeading" returns the heading direction of the player
+     *
+     * @return The heading direction of the player as a Heading object.
+     */
     public Heading getHeading() {
         return heading;
     }
@@ -221,10 +272,22 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Method "getProgramField" returns the program field of the player at the specified index
+     *
+     * @param i The index of the program field to return
+     * @return The program field of the player at the specified index as a CommandCardField object.
+     */
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
 
+    /**
+     * Method "getCardField" returns the card field of the player at the specified index
+     *
+     * @param i The index of the card field to return
+     * @return The card field of the player at the specified index as a CommandCardField object.
+     */
     public CommandCardField getCardField(int i) {
         return cards[i];
     }

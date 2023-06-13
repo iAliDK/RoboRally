@@ -41,6 +41,9 @@ public enum Heading {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
+    /**
+     * @return the heading opposite to this heading
+     */
     public Heading getOpposite() {
         if(this == NORTH){
         return SOUTH;

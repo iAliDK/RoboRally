@@ -56,15 +56,10 @@ public class Space extends Subject {
      */
 
 
-
     private List<FieldAction> actions = new ArrayList();
     private boolean isConveyorBelt;
 
     private boolean speed;
-
-
-
-
 
 
     /**
@@ -83,38 +78,47 @@ public class Space extends Subject {
     }
 
 
+    /**
+     * @param action the action to be added to this space
+     * @return the field actions on this space
+     */
 
-    public void setFieldAction(FieldAction action){
+    public void setFieldAction(FieldAction action) {
         this.fieldAction = action;
     }
 
-    public FieldAction getFieldAction(){
+    /**
+     * @return the field action on this space
+     * @return the field action on this space
+     */
+    public FieldAction getFieldAction() {
         return fieldAction;
     }
+
+    /**
+     * @return the heading of this space.
+     */
+
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * Sets the heading of this space.
+     *
+     * @param heading the heading to be set on this space
+     */
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
-
-
-
-
+    /**
+     * @return the player on this space
+     * @return the player on this space
+     */
     public Player getPlayer() {
         return player;
     }
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -123,31 +127,33 @@ public class Space extends Subject {
      * @param player the player to be set on this space
      */
     public void setPlayer(Player player, GameController gc, boolean runFieldAction) {
-        Player oldPlayer = this.player;
-        if (player != oldPlayer && (player == null || board == player.board)) {
-            this.player = player;
-            if (oldPlayer != null) {
-                // this should actually not happen
-                oldPlayer.setSpace(null);
-            }
-            if (player != null) {
-                player.setSpace(this);
 
-            }
-            if(runFieldAction){
-                runFieldAction(gc);
-            }
-            notifyChange();
+
+        //TODO: player push other player
+        /*
+        Player oldPlayer = this.player;
+        if (oldPlayer != null && player != null) {
+            // this should actually not happen
+            Space nextSpace = board.getNeighbour(oldPlayer.getSpace(), player.getHeading());
+           // nextSpace.setPlayer(oldPlayer, gc, true);
+            oldPlayer.setSpace(nextSpace, true);
+        } */
+        this.player = player;
+
+        if(runFieldAction){
+            runFieldAction(gc);
         }
+        notifyChange();
+
     }
 
+
+
     private void runFieldAction(GameController gc) {
-        if(fieldAction != null){
+        if (fieldAction != null) {
             fieldAction.doAction(gc, this);
         }
     }
-
-
 
 
     void playerChanged() {
@@ -172,6 +178,12 @@ public class Space extends Subject {
         return actions;
     }
 
+    /**
+     * @param x      the x-coordinate of the space
+     * @param y      the y-coordinate of the space
+     * @param heading the heading of the space
+     * @param isWall whether the space is a wall
+     */
     public void setSpaceProperties(int x, int y, Heading heading, boolean isWall) {
         Space space = spaces[x][y];
         space.setHeading(heading);

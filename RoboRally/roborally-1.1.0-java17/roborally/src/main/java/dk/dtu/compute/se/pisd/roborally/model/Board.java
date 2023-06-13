@@ -34,9 +34,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * The board class extends subject to use the method notifyChange from Subject.
  */
 public class Board extends Subject {
-
     public final int width;
-
     public final int height;
 
     public String boardName;
@@ -44,15 +42,20 @@ public class Board extends Subject {
     private final List<Player> players = new ArrayList<>();
     public Integer gameId;
     private Player current;
-
     private Phase phase = INITIALISATION;
-
     private int step = 0;
-
     private boolean stepMode;
 
     //private Walls walls;
 
+    /**
+     * Constructor for Board
+     *
+     * @param width     the width of the board
+     * @param height    the height of the board
+     * @param boardName the name of the board
+     * @param gameId    the id of the game
+     */
     public Board(int width, int height, @NotNull String boardName, int gameId) {
         this.boardName = boardName;
         this.width = width;
@@ -75,43 +78,19 @@ public class Board extends Subject {
             }
         }
 
-
-
-
         spaces[3][2].setFieldAction(new Wall(Heading.NORTH));
-
         spaces[2][2].setFieldAction(new Wall(Heading.NORTH));
-
-
         spaces[4][4].setFieldAction(new Wall(Heading.EAST));
-
-
         spaces[5][5].setFieldAction(new Wall(Heading.WEST));
-
-
-
         spaces[6][6].setFieldAction(new Wall(Heading.SOUTH));
-
         spaces[2][5].setFieldAction(new Wall(Heading.WEST));
 
-
-
         spaces[1][2].setFieldAction(new Checkpoint(1));
-
-
-
         spaces[1][4].setFieldAction(new Checkpoint(2));
-
-
         spaces[6][7].setFieldAction(new Checkpoint(3));
-
-
         spaces[4][7].setFieldAction(new Checkpoint(4));
 
-
         spaces[6][5].setFieldAction(new Gear(true));
-
-
         spaces[7][2].setFieldAction(new Gear(false));
 
         spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
@@ -120,7 +99,6 @@ public class Board extends Subject {
         spaces[7][0].setFieldAction(new ConveyorBelt(1, Heading.WEST));
 
         this.stepMode = false;
-
     }
 
     /**
@@ -130,6 +108,7 @@ public class Board extends Subject {
      * @param width  Width from previous method.
      * @param height Height from previous method.
      */
+
     public Board(int width, int height) {
         this(width, height, "defaultboard", 1);
     }
@@ -162,10 +141,6 @@ public class Board extends Subject {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
     }
 
     /**
