@@ -39,19 +39,6 @@ import org.jetbrains.annotations.NotNull;
  */
 
 public class GameController {
-    public class ImpossibleMoveException extends Exception {
-
-        private Player player;
-        private Space space;
-        private Heading heading;
-
-        public ImpossibleMoveException(Player player, Space space, Heading heading) {
-            super("Move impossible");
-            this.player = player;
-            this.space = space;
-            this.heading = heading;
-        }
-    }
 
     //Repository api = new Repository();
 
@@ -495,14 +482,6 @@ public class GameController {
             return false;
         }
     }
-
-    /**
-     * @param player  The player to move to the given space
-     * @param space   The space to move the player to
-     * @param heading The heading the player should have after moving to the space
-     * @throws ImpossibleMoveException if the player cannot be moved to the space with the given heading, or if the player cannot be moved to the space because there is another player on the space and the other player cannot be moved to the space behind it with the same heading. In this case, the player and the other player is not moved. The exception is thrown.
-     */
-
 
     /**
      * @param command The command to execute for the current player
