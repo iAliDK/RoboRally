@@ -23,7 +23,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import com.google.gson.Gson;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.API.HttpClient;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.API.SaveClient;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
