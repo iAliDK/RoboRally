@@ -227,12 +227,13 @@ public class GameController {
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
+
+
             board.setPhase(Phase.ACTIVATION);
             board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
 
         }
-
 
 
     }
@@ -290,11 +291,11 @@ public class GameController {
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
-        try {
-            saveBoardAPI(board, gameName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            saveBoardAPI(board, gameName);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -334,7 +335,6 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
-                    //activateFieldAction();
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
@@ -342,13 +342,18 @@ public class GameController {
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
 
+                        //TODO Save phase in a variable somewhere.
                         startProgrammingPhase();
+
                     }
                 }
-            } else {
-                // this should not happen
-                assert false;
             }
+                    try {
+            saveBoardAPI(board, gameName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         } else {
             // this should not happen
             assert false;
@@ -397,11 +402,11 @@ public class GameController {
 
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        /*if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.setSpace(newSpace);
-
-            //newSpace.setPlayer(player, this, true);
-        } */
+//        if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
+//            player.setSpace(newSpace);
+//
+//            //newSpace.setPlayer(player, this, true);
+//        }
     }
     /**
      * @param player This method moves the given player two steps forward.

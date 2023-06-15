@@ -167,6 +167,7 @@ public class AppController implements Observer {
 
             if (startBoard.isPresent()) {
                 if (gameController == null) {
+//                    Board board = new Board(3,3, "defaultboard", 1);
                     Board board = loadBoard(startBoard.get(), gameController);
                     gameController = new GameController(board);
                     int noPlayers = result.get();
@@ -343,7 +344,7 @@ public class AppController implements Observer {
     static Repository api = new Repository();
 
 public void updateButton() {
-    loadGameAPI(gameController.board.boardName);
+    loadGameAPI(gameName);
 }
     public void loadGameAPI(String name) {
         Board result;

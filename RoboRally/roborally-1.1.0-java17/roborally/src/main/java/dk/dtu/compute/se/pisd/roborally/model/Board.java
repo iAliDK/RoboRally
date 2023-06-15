@@ -95,9 +95,20 @@ public class Board extends Subject  {
 //
 //        spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.NORTH));
 //        spaces[4][0].setFieldAction(new ConveyorBelt(1, Heading.SOUTH));
+
+        //Long boye
 //        spaces[0][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[1][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[2][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[3][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[4][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[5][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[6][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+//        spaces[7][7].setFieldAction(new ConveyorBelt(1, Heading.EAST));
 //        spaces[7][0].setFieldAction(new ConveyorBelt(1, Heading.WEST));
 
+        spaces[1][2].setFieldAction(new ConveyorBelt(1, Heading.EAST));
+        spaces[0][2].setFieldAction(new ConveyorBelt(1, Heading.EAST));
         this.stepMode = false;
     }
 
