@@ -44,7 +44,7 @@ import java.util.*;
 import java.io.*;
 import com.google.gson.Gson;
 
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
 
 /**
