@@ -29,13 +29,9 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -64,6 +60,8 @@ public class AppController implements Observer {
     int inc = 0;
     String suffix = ("." + inc);
 
+    private TextField textField1;
+
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
@@ -90,6 +88,23 @@ public class AppController implements Observer {
             return nameOfFiles;
         }
     }
+
+
+
+    private String showGameNameDialog() {
+        TextField nameTextField = new TextField();
+        nameTextField.setPromptText("Enter game name");
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Game Name");
+        alert.setHeaderText("Enter a name for the game");
+        alert.getDialogPane().setContent(nameTextField);
+        alert.showAndWait();
+
+        return nameTextField.getText().trim();
+    }
+
+
 
 
 /**
@@ -123,6 +138,7 @@ public class AppController implements Observer {
             ChoiceDialog<String> boardSelection = new ChoiceDialog<>(GAMEBOARD_OPTIONS.get(0), GAMEBOARD_OPTIONS);
             dialog.setTitle("Board Select");
             dialog.setHeaderText("Start board");
+
             Optional<String> startBoard = boardSelection.showAndWait();
 
             if (startBoard.isPresent()) {
@@ -135,13 +151,23 @@ public class AppController implements Observer {
                         board.addPlayer(player);
                         player.setSpace(board.getSpace(i % board.width, i), false);
                     }
-                    gameController.startProgrammingPhase();
-                    roboRally.createBoardView(gameController);
-
+                    String gameName = showGameNameDialog();
+                    if (gameName != null && !gameName.isEmpty()) {
+                        gameController.startProgrammingPhase();
+                        roboRally.createBoardView(gameController);
+                    } else {
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Invalid Game Name");
+                        alert.setHeaderText("Please enter a valid game name");
+                        alert.setContentText("The game name cannot be empty.");
+                        alert.showAndWait();
+                    }
                 }
             }
         }
     }
+
+
 
     /**
      * This method is called by the {@link RoboRally} class when game is to be saved.
