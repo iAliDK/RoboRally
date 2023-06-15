@@ -195,6 +195,7 @@ public class GameController {
 
 
     /**
+     * @author Zainab
      * This method checks if the player have chosen all their cards
      * @return true if all cards have been chosen, false if not
      */
@@ -211,6 +212,7 @@ public class GameController {
     }
 
     /**
+     * @author Zainab
      * This method calls nextTurnAndIsLastPlayer and makes the program fields invisible
      * This method calls allCardsChosen
      * If all cards have been chosen, it sets the phase to activation and the current player to the first player
@@ -219,7 +221,6 @@ public class GameController {
         if (!allCardsChosen()) {
             return;
         }
-
 
         if (nextTurnAndIsLastPlayer()) {
             makeProgramFieldsInvisible();
