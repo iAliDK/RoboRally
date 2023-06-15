@@ -31,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController.*;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
@@ -290,7 +291,7 @@ public class GameController {
         board.setStepMode(true);
         continuePrograms();
         try {
-            saveBoardAPI(board, board.boardName);
+            saveBoardAPI(board, gameName);
         } catch (Exception e) {
             e.printStackTrace();
         }

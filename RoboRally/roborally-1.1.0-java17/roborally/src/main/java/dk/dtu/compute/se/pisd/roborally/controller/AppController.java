@@ -39,6 +39,9 @@ import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import org.jetbrains.annotations.NotNull;
+import javafx.scene.control.TextField;
+
+
 
 import java.util.*;
 import java.io.*;
@@ -58,6 +61,7 @@ public class AppController implements Observer {
     final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
+    public static String gameName = null;
 
     // private ArrayList<GameWalls> wall;
     private GameController gameController;
@@ -142,6 +146,7 @@ public class AppController implements Observer {
      */
 
     public void newGame() {
+
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
@@ -170,7 +175,7 @@ public class AppController implements Observer {
                         board.addPlayer(player);
                         player.setSpace(board.getSpace(i % board.width, i), false);
                     }
-                    String gameName = showGameNameDialog();
+                    gameName = showGameNameDialog();
                     if (gameName != null && !gameName.isEmpty()) {
                         gameController.startProgrammingPhase();
                         roboRally.createBoardView(gameController);
@@ -185,7 +190,7 @@ public class AppController implements Observer {
             }
         }
         try {
-            api.newGame(newTemplate, gameController.board.boardName);
+            api.newGame(newTemplate, gameName);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -400,3 +405,4 @@ public void updateButton() {
     }*/
 
 }
+
