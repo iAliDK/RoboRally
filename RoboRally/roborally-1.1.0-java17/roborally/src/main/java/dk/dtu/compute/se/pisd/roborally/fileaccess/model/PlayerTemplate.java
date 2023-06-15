@@ -4,8 +4,12 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
+/**
+ *
+ * @author Qiao
+ *
+ */
 public class PlayerTemplate {
 
    

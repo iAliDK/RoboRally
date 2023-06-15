@@ -21,15 +21,20 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 
+import dk.dtu.compute.se.pisd.roborally.model.*;
+
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -40,9 +45,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.io.*;
+import com.google.gson.Gson;
 
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
 
 /**
  * This class is the controller for the whole application. It is the
@@ -68,10 +73,21 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
+    /**
+     * @param s This method removes the extension of a filename.
+     * @return String without extension.
+     * @author Qiao.
+     */
     private static String removeExtension(final String s) {
         return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
     }
 
+    /**
+     *
+     * @return
+     * @throws Exception
+     * @author Qiao.
+     */
     private String[] loadSaveFiles() throws Exception {
         String dirName;
         dirName = System.getProperty("user.dir");
@@ -100,10 +116,12 @@ public class AppController implements Observer {
  */
 
     /**
+     *
      * Show dialog and makes players choose number of players
      * creates a new game, and sets up the board.
      * If a game is already in progress, prompts the user to
      * save the game or abort before starting a new game.
+     * @author Qiao.
      */
 
     public void newGame() {
@@ -141,12 +159,19 @@ public class AppController implements Observer {
                 }
             }
         }
+        try {
+            api.newGame(newTemplate, gameController.board.boardName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
+     *
      * This method is called by the {@link RoboRally} class when game is to be saved.
      * The method prompts the user whether to overwrite the current save or create a new one.
      * <p>
+     *     @author Qiao.
      *
      */
     public void saveGame() {
@@ -190,9 +215,13 @@ public class AppController implements Observer {
     }
 
     /**
+     *
      * This method is called by the {@link RoboRally} class when game is to be loaded.
      * The method prompts the user to select a save file to load.
+     * @author Qiao.
      */
+
+
     public void loadGame() {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
@@ -227,6 +256,7 @@ public class AppController implements Observer {
     /**
      * This method is called by the {@link RoboRally} class when game is to be stopped.
      * @return true if the game was stopped, false if the game was not running.
+     *
      */
     public boolean stopGame() {
         if (gameController != null) {
@@ -279,11 +309,67 @@ public class AppController implements Observer {
         return gameController != null;
     }
 
+//    @Override
+//    public void update(Subject subject) {
+//        // XXX do nothing for now
+//    }
+    static Repository api = new Repository();
+
+public void updateButton() {
+    loadGameAPI(gameController.board.boardName);
+}
+    public void loadGameAPI(String name) {
+        Board result;
+
+        try {
+            // fileReader = new FileReader(filename);
+
+            BoardTemplate template = api.getBoardTemplate(name);
+
+            result = new Board(template.width, template.height, name, (int) (Math.random() * 1001));
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                space.setFieldAction(spaceTemplate.action);
+
+            }
+            //Player positions
+            for (int i = 0; i < template.players.size(); i++) {
+                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
+                result.addPlayer(player);
+                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
+                player.setHeading(template.players.get(i).heading);
+                //Player cards
+                if (player != null) {
+                    for (int j = 0; j < Player.NO_CARDS; j++) {
+                        CommandCardField field = player.getCardField(j);
+                        field.setCard(template.players.get(i).cards.get(j).card);
+                        field.setVisible(true);
+                    }
+                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                        CommandCardField field = player.getProgramField(j);
+                        field.setCard(template.players.get(i).program.get(j).card);
+                        field.setVisible(true);
+                    }
+                }
+            }
+
+            gameController = new GameController(result);
+//            update(gameController.board);
+//            roboRally.createBoardView(gameController);
+            result.setPhase(Phase.ACTIVATION);
+            result.setCurrentPlayer(result.getPlayer(0));
+//            result.setStep(0);
+            roboRally.createBoardView(gameController);
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public void update(Subject subject) {
         // XXX do nothing for now
     }
-
     /*public void gameOver(Player player) {
         if (player.isGameWon()) {
             stopGame();

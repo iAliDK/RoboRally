@@ -30,17 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ...
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Qiao.
  *
  */
 public class SpaceTemplate {
 
-
-
     public FieldAction action;
-
 
     public int x;
     public int y;

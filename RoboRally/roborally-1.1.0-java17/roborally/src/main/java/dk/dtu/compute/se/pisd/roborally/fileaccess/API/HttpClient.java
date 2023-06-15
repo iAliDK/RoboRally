@@ -1,12 +1,16 @@
 package dk.dtu.compute.se.pisd.roborally.fileaccess.API;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 public class HttpClient {
     private String serverUrl = "http://localhost:8080/";
@@ -20,22 +24,46 @@ public class HttpClient {
 
 
     public void sendPostRequest(String path, String jsonInput) throws Exception {
-        HttpPost post = new HttpPost(serverUrl + path);
-        post.setHeader("Content-Type", "application/json");
-        post.setEntity(new StringEntity(jsonInput));
+        try {
+            HttpPost post = new HttpPost(serverUrl + path);
+            post.setHeader("Content-Type", "application/json");
+            post.setEntity(new StringEntity(jsonInput));
 
-        HttpResponse response = httpClient.execute(post);
+            HttpResponse response = httpClient.execute(post);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     public String sendGetRequest(String path) throws Exception {
-        HttpGet get = new HttpGet(serverUrl + path);
-        get.setHeader("Content-Type", "application/json");
+        try {
+            HttpGet get = new HttpGet(serverUrl + path);
+            get.setHeader("Content-Type", "application/json");
 
-        HttpResponse response = httpClient.execute(get);
+            HttpResponse response = httpClient.execute(get);
 
-        return EntityUtils.toString(response.getEntity());
+            return EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public void sendPutRequest(String path, String jsonInput) throws Exception {
+        try {
+            HttpPut put = new HttpPut(serverUrl + path);
+            put.setHeader("Content-Type", "application/json");
+            put.setEntity(new StringEntity(jsonInput));
+
+            HttpResponse response = httpClient.execute(put);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
 
 

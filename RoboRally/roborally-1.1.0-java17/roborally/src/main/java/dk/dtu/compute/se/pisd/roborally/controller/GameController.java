@@ -31,6 +31,8 @@ import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+
+import dk.dtu.compute.se.pisd.roborally.controller.AppController.*;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
  */
 
 public class GameController {
-
 
 
     final public Board board;
@@ -270,10 +271,14 @@ public class GameController {
     /**
      * This method executes all steps of the current player.
      */
-    public void executePrograms() {
+    public void executePrograms()  {
         board.setStepMode(false);
         continuePrograms();
+
     }
+
+
+
 
     /**
      * This method executes the next step of the current player.
@@ -284,10 +289,11 @@ public class GameController {
         board.setStepMode(true);
         continuePrograms();
         try {
-            saveBoardAPI(board, "API");
+            saveBoardAPI(board, board.boardName);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 

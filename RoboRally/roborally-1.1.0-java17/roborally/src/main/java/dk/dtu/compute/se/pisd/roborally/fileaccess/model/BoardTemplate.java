@@ -27,9 +27,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 
 /**
- * ...
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Qiao
  *
  */
 public class BoardTemplate {
@@ -39,8 +38,5 @@ public class BoardTemplate {
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
     public List<PlayerTemplate> players = new ArrayList<>();
-//    public List<CommandCardFieldTemplate> program = new ArrayList<>();
-//    public List<CommandCardFieldTemplate> cards = new ArrayList<>();
-
 
 }

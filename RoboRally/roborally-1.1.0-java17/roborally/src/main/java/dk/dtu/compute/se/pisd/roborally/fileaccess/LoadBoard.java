@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * ...
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Qiao
  */
 public class LoadBoard {
     static Repository api = new Repository();
@@ -50,6 +50,15 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
 
+    public static BoardTemplate newTemplate = null;
+
+    /**
+     *
+     * @param boardname
+     * @param gameController
+     * @return
+     * @author Qiao
+     */
     public static Board loadBoard(String boardname, GameController gameController) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -74,6 +83,8 @@ public class LoadBoard {
             // fileReader = new FileReader(filename);
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+
+
 
             result = new Board(template.width, template.height, boardname, (int)(Math.random()*1001));
             for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -101,7 +112,7 @@ public class LoadBoard {
                     }
                 }
             }
-
+            newTemplate = template;
             reader.close();
             return result;
         } catch (IOException e1) {
@@ -123,62 +134,36 @@ public class LoadBoard {
     }
 
     //HTTP
-    public void loadBoardAPI(String boardname, GameController gameController ) throws Exception {
 
-        BoardTemplate template = api.getBoardTemplate();
-        Board result;
-        result = new Board(template.width, template.height, boardname, (int)(Math.random()*1001));
-        //Player positions
-        for(int i = 0; i< template.players.size(); i++){
-            Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
-            result.addPlayer(player);
-            player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
-            player.setHeading(template.players.get(i).heading);
-            //Player cards
-            if (player != null) {
-                for (int j = 0; j < Player.NO_CARDS; j++) {
-                    CommandCardField field = player.getCardField(j);
-                    field.setCard(template.players.get(i).cards.get(j).card);
-                    field.setVisible(true);
-                }
-                for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                    CommandCardField field = player.getProgramField(j);
-                    field.setCard(template.players.get(i).program.get(j).card);
-                    field.setVisible(true);
-                }
-            }
-        }
-    }
     public static void saveBoardAPI(Board board, String name) throws Exception {
 
 
-
         BoardTemplate boardTemplate = new BoardTemplate();
-
-        String filename = "saveGame/";
-
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
-                setPrettyPrinting();
-        Gson gson = simpleBuilder.create();
-        FileWriter fileWriter = null;
-        JsonWriter writer = null;
-        try {
-            fileWriter = new FileWriter(filename);
-
-            writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(boardTemplate, boardTemplate.getClass(), writer);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JsonIOException e) {
-            e.printStackTrace();
+        boardTemplate.width = board.width;
+        boardTemplate.height = board.height;
+        //Board size + spaces
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                Space space = board.getSpace(i, j);
+                SpaceTemplate temp = new SpaceTemplate(space.x, space.y, space.getFieldAction());
+                boardTemplate.spaces.add(temp);
+            }
         }
+        //Players + cards
+        List<Player> players =  board.getPlayers();
+        for(int i = 0; i< board.getPlayersNumber(); i++){
+            boardTemplate.players.add(players.get(i).createTemplate());
+        }
+
         //TODO: savename
-        api.sendBoardTemplate(boardTemplate, "mySave");
+        api.putBoardTemplate(boardTemplate, name);
         }
 
-
+    /**
+     * @author Qiao
+     * @param board
+     * @param name
+     */
     public static void saveBoard(Board board, String name) {
 
 //        JsonObject myBoard = new JsonObject();
@@ -199,24 +184,20 @@ public class LoadBoard {
             boardTemplate.players.add(players.get(i).createTemplate());
         }
 
-
-
             //Board size + spaces
             for (int i = 0; i < board.width; i++) {
                 for (int j = 0; j < board.height; j++) {
                     Space space = board.getSpace(i, j);
                     SpaceTemplate temp = new SpaceTemplate(space.x, space.y, space.getFieldAction());
                     boardTemplate.spaces.add(temp);
-
                 }
-
+            }
                 ClassLoader classLoader = LoadBoard.class.getClassLoader();
                 // TODO: this is not very defensive, and will result in a NullPointerException
                 //       when the folder "resources" does not exist! But, it does not need
                 //       the file "simpleCards.json" to exist!
 
                String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" +  name +JSON_EXT;
-
 
                 // In simple cases, we can create a Gson object with new:
                 //
@@ -256,4 +237,4 @@ public class LoadBoard {
             }
 
         }
-    }
+

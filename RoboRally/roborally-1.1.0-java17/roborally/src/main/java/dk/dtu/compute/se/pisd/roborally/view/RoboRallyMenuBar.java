@@ -45,6 +45,8 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private MenuItem exitApp;
 
+    private MenuItem update;
+
     /**
      * Creates the view of the board.
      *
@@ -55,6 +57,10 @@ public class RoboRallyMenuBar extends MenuBar {
 
         controlMenu = new Menu("File");
         this.getMenus().add(controlMenu);
+
+        update = new MenuItem("Update");
+        update.setOnAction(e -> this.appController.updateButton());
+        controlMenu.getItems().add(update);
 
         newGame = new MenuItem("New Game");
         newGame.setOnAction(e -> this.appController.newGame());
