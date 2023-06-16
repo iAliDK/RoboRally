@@ -186,7 +186,7 @@ public class GameController {
      * This method generates a random command card
      * It is used in executeCommandOptionAndContinue and executeNextStep.
      */
-    private CommandCard generateRandomCommandCard() {
+    public CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
