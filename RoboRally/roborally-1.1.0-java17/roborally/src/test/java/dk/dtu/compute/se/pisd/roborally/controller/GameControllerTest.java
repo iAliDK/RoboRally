@@ -147,6 +147,24 @@ class GameControllerTest {
         Assertions.assertEquals(player2, board.getCurrentPlayer(), "Current player should be " + player2.getName() + "!");
     }
 
+    /**
+     * Method under test: {@link GameController#startProgrammingPhase()}
+     */
+    @Test
+    @Disabled("TODO: Complete this test")
+    void testStartProgrammingPhase() {
+        // TODO: Complete this test.
+        //   Reason: R013 No inputs found that don't throw a trivial exception.
+        //   Diffblue Cover tried to run the arrange/act section, but the method under
+        //   test threw
+        //   java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+        //       at dk.dtu.compute.se.pisd.roborally.model.Board.<init>(Board.java:110)
+        //       at dk.dtu.compute.se.pisd.roborally.model.Board.<init>(Board.java:124)
+        //   See https://diff.blue/R013 to resolve this issue.
+
+        (new GameController(new Board(1, 1))).startProgrammingPhase();
+    }
+
     @Test
     void moveForward() {
         Board board = gameController.board;

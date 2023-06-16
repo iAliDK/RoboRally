@@ -300,13 +300,27 @@ public class GameController {
     }
 
 
+
     private void continuePrograms() {
+        Player currentPlayer = board.getCurrentPlayer();
+        int step = board.getStep();
         do {
             executeNextStep();
+            updateProgramFieldVisibility(currentPlayer, step);
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
 
     }
+    /*private boolean isProgramFieldVisible(Player player, int step) {
+        CommandCardField programField = player.getProgramField(step);
+        return programField.isVisible();
+    }
 
+     */
+
+    private void updateProgramFieldVisibility(Player player, int step) {
+        CommandCardField programField = player.getProgramField(step);
+        programField.setVisible(false);
+    }
     /**
      * @author Qiao and Zainab.
      * This method executes the next step of the current player
@@ -343,17 +357,17 @@ public class GameController {
                     } else {
 
                         //TODO Save phase in a variable somewhere.
+
                         startProgrammingPhase();
 
                     }
                 }
             }
                     try {
-            saveBoardAPI(board, gameName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+                        saveBoardAPI(board, gameName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
         } else {
             // this should not happen
             assert false;
