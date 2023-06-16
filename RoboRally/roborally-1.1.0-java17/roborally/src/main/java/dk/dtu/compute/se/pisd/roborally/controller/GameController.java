@@ -310,12 +310,6 @@ public class GameController {
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
 
     }
-    /*private boolean isProgramFieldVisible(Player player, int step) {
-        CommandCardField programField = player.getProgramField(step);
-        return programField.isVisible();
-    }
-
-     */
 
     private void updateProgramFieldVisibility(Player player, int step) {
         CommandCardField programField = player.getProgramField(step);
@@ -411,16 +405,63 @@ public class GameController {
      */
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
-
-        player.setSpace(newSpace, true);
+        GameController gameController = new GameController(board);
+        //Wall wallHeading = new Wall(Heading);
+        //player.setSpace(newSpace, true);
 
         //check if space is wall
         //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-//        if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
-//            player.setSpace(newSpace);
-//
-//            //newSpace.setPlayer(player, this, true);
-//        }
+        /*if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
+          player.setSpace(newSpace, true);
+            newSpace.setPlayer(player, this, true);
+       }
+         */
+
+
+        if (newSpace.getPlayer() == null
+                &&
+                // go from wall
+                (player.getSpace().getClass().equals(Wall.class) == false || player.getHeading() != player.getSpace().getHeading())
+                &&
+                // go to wall
+                (newSpace.getClass().equals(Wall.class) == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
+            //player.getSpace().setPlayer(null, gameController, true);
+            //player.setSpace(newSpace, true);
+            player.setSpace(newSpace, true);
+            //newSpace.setPlayer(player, gameController, true);
+
+        }
+
+
+
+        /*if (newSpace.getPlayer() == null
+                &&
+                // go from wall
+                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
+                &&
+                // go to wall
+                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
+            player.getSpace().setPlayer(null, gameController, true);
+            player.setSpace(newSpace, true);
+            newSpace.setPlayer(player, gameController, true);
+        }
+
+         */
+
+        if (newSpace.getPlayer() == null
+                &&
+                // go from wall
+                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
+                &&
+                // go to wall
+                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
+            player.getSpace().setPlayer(null, gameController, true);
+            player.setSpace(newSpace, true);
+            newSpace.setPlayer(player, gameController, true);
+        }
+
+
+
     }
     /**
      * @param player This method moves the given player two steps forward.
