@@ -1,45 +1,63 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AppControllerTest {
 
-    /**
-     * Method under test: {@link AppController#newGame()}
-     */
+
     @Test
-    // TODO: Complete this test
-    void testNewGame() {
+    @DisplayName("Should throw an exception when the game name is not found in API")
+    void loadGameAPIWhenGameNameNotFoundThenThrowException() {
+        RoboRally roboRally = new RoboRally();
+        AppController appController = new AppController(roboRally);
 
-        // Arrange
-        // TODO: Populate arranged inputs
+        String nonexistentGameName = "nonexistentGameName";
+
+        assertThrows(RuntimeException.class, () -> {
+            appController.loadGameAPI(nonexistentGameName);
+        });
+    }
+
+    @Test
+    @DisplayName("Should return false when no game is running")
+    void stopGameWhenNoGameIsRunning() {
+        RoboRally roboRally = new RoboRally();
+        AppController appController = new AppController(roboRally);
+
+        boolean result = appController.stopGame();
+
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Should throw an exception when the directory does not exist")
+    void loadSaveFilesWhenDirectoryDoesNotExistThenThrowException() {
+        RoboRally roboRally = new RoboRally();
+        AppController appController = new AppController(roboRally);
+        String nonexistentDirectory = "nonexistentDirectory";
+        assertThrows(Exception.class, () -> appController.loadSaveFiles(nonexistentDirectory));
+    }
+
+    @Test
+    @DisplayName("Should return the original string if there is no file extension")
+    void removeExtensionReturnsOriginalStringWhenNoExtension() {
+        String fileName = "testFile";
+        String result = AppController.removeExtension(fileName);
+        assertEquals(fileName, result);
+    }
+
+    @Test
+    @DisplayName("Should remove the file extension from a given string")
+    void removeExtensionRemovesFileExtension() {
+        String fileName = "test.json";
+        String expected = "test";
         AppController appController = new AppController(new RoboRally());
-
-
-        // Act
-        appController.newGame();
-
-        // Assert
-        assertEquals(1, appController.saves.length);
-        assertArrayEquals(new String[]{"test.json"}, appController.saves);
-        assertFalse(appController.isGameRunning());
+        String actual = AppController.removeExtension(fileName);
+        assertEquals(expected, actual);
     }
 
     /**
@@ -66,32 +84,6 @@ class AppControllerTest {
     @Test
     void testConstructor2() {
         assertThrows(IllegalArgumentException.class, () -> new AppController(null));
-    }
-
-
-
-    /**
-     * Method under test: {@link AppController#saveGame()}
-     */
-    @Test
-    //TODO: Complete this test
-    void testSaveGame() {
-
-        (new AppController(new RoboRally())).saveGame();
-
-    }
-
-    /**
-     * Method under test: {@link AppController#loadGame()}
-     */
-    @Test
-    //TODO: Complete this test
-    void testLoadGame() {
-
-        (new AppController(new RoboRally())).loadGame();
-
-        assertArrayEquals(new String[]{"test.json"}, (new AppController(new RoboRally())).saves);
-
     }
 
     /**

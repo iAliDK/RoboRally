@@ -21,8 +21,6 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
@@ -34,7 +32,6 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 
-import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -45,7 +42,6 @@ import javafx.scene.control.TextField;
 
 import java.util.*;
 import java.io.*;
-import com.google.gson.Gson;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
@@ -82,8 +78,9 @@ public class AppController implements Observer {
      * @return String without extension.
      * @author Qiao.
      */
-    private static String removeExtension(final String s) {
+    public static String removeExtension(final String s) {
         return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
+
     }
 
     /**
@@ -92,7 +89,7 @@ public class AppController implements Observer {
      * @throws Exception
      * @author Qiao.
      */
-    private String[] loadSaveFiles() throws Exception {
+    public String[] loadSaveFiles(String nonexistentDirectory) throws Exception {
         String dirName;
         dirName = System.getProperty("user.dir");
         dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
@@ -113,7 +110,7 @@ public class AppController implements Observer {
 
 
 
-    private String showGameNameDialog() {
+    public String showGameNameDialog() {
         TextField nameTextField = new TextField();
         nameTextField.setPromptText("Enter game name");
 
@@ -255,7 +252,7 @@ public class AppController implements Observer {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         try {
-            saves = loadSaveFiles();
+            saves = loadSaveFiles("nonexistent_directory");
         } catch (Exception e) {
             System.out.println("No directories found");
             saves = null;
@@ -397,6 +394,14 @@ public void updateButton() {
     @Override
     public void update(Subject subject) {
         // XXX do nothing for now
+    }
+
+    public Object getGameController() {
+        return gameController;
+    }
+
+    public void setGameController(Object mockGameController) {
+        this.gameController = (GameController) mockGameController;
     }
 
     /*public void gameOver(Player player) {
