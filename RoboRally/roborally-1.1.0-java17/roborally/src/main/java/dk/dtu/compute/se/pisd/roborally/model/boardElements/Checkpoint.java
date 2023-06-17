@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+
 /**
  * This class represents a checkpoint on the board.
  */
