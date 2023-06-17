@@ -21,17 +21,23 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -43,8 +49,8 @@ import javafx.scene.control.TextField;
 import java.util.*;
 import java.io.*;
 
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.saveBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoard;
 
 /**
  * This class is the controller for the whole application. It is the
@@ -58,6 +64,9 @@ public class AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
     public static String gameName = null;
+    private static final String BOARDSFOLDER = "boards";
+    private static final String DEFAULTBOARD = "defaultboard";
+    private static final String JSON_EXT = ".json";
 
     // private ArrayList<GameWalls> wall;
     private GameController gameController;
@@ -66,8 +75,6 @@ public class AppController implements Observer {
     public String[] saves = {"test.json"};
     int inc = 0;
     String suffix = ("." + inc);
-
-    private TextField textField1;
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -80,7 +87,6 @@ public class AppController implements Observer {
      */
     public static String removeExtension(final String s) {
         return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
-
     }
 
     /**
@@ -107,9 +113,6 @@ public class AppController implements Observer {
             return nameOfFiles;
         }
     }
-
-
-
     public String showGameNameDialog() {
         TextField nameTextField = new TextField();
         nameTextField.setPromptText("Enter game name");
@@ -122,9 +125,6 @@ public class AppController implements Observer {
 
         return nameTextField.getText().trim();
     }
-
-
-
 
 /**
  *
@@ -165,14 +165,7 @@ public class AppController implements Observer {
             if (startBoard.isPresent()) {
                 if (gameController == null) {
 //                    Board board = new Board(3,3, "defaultboard", 1);
-                    Board board = loadBoard(startBoard.get(), gameController);
-                    gameController = new GameController(board);
-                    int noPlayers = result.get();
-                    for (int i = 0; i < noPlayers; i++) {
-                        Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
-                        board.addPlayer(player);
-                        player.setSpace(board.getSpace(i % board.width, i), false);
-                    }
+                    Board board = loadOfflineBoard(startBoard.get());
                     gameName = showGameNameDialog();
                     if (gameName != null && !gameName.isEmpty()) {
                         gameController.startProgrammingPhase();
@@ -206,35 +199,35 @@ public class AppController implements Observer {
         // XXX needs to be implemented eventually
         if (this.gameController.board.boardName.contains("save")) {
             {
-                if (gameController != null) {
-                    ButtonType yes = new ButtonType("Overwrite", ButtonBar.ButtonData.OK_DONE);
-                    ButtonType no = new ButtonType("New save", ButtonBar.ButtonData.OTHER);
-                    Alert alert = new Alert(AlertType.CONFIRMATION, "Do you wish to overwrite your current save?", yes, no);
-                    alert.setTitle("Overwrite save?");
-                    Optional<ButtonType> result = alert.showAndWait();
 
-                    if (result.get() == yes) {
-                        if (inc != 0) {
-                            if (this.gameController.board.boardName.contains(".")) {
-                                this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
-                            }
-                            suffix = ("." + inc);
-                            String temp = this.gameController.board.boardName;
-                            this.gameController.board.boardName += suffix;
-                            saveBoard(this.gameController.board, this.gameController.board.boardName);
-                            this.gameController.board.boardName = temp;
-                        } else {
-                            saveBoard(this.gameController.board, this.gameController.board.boardName);
-                        }
-                    } else if (result.get() == no) {
-                        inc++;
+                ButtonType yes = new ButtonType("Overwrite", ButtonBar.ButtonData.OK_DONE);
+                ButtonType no = new ButtonType("New save", ButtonBar.ButtonData.OTHER);
+                Alert alert = new Alert(AlertType.CONFIRMATION, "Do you wish to overwrite your current save?", yes, no);
+                alert.setTitle("Overwrite save?");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == yes) {
+                    if (inc != 0) {
                         if (this.gameController.board.boardName.contains(".")) {
                             this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
                         }
                         suffix = ("." + inc);
-                        saveBoard(this.gameController.board, this.gameController.board.boardName + suffix);
+                        String temp = this.gameController.board.boardName;
+                        this.gameController.board.boardName += suffix;
+                        saveBoard(this.gameController.board, this.gameController.board.boardName);
+                        this.gameController.board.boardName = temp;
+                    } else {
+                        saveBoard(this.gameController.board, this.gameController.board.boardName);
                     }
+                } else if (result.get() == no) {
+                    inc++;
+                    if (this.gameController.board.boardName.contains(".")) {
+                        this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
+                    }
+                    suffix = ("." + inc);
+                    saveBoard(this.gameController.board, this.gameController.board.boardName + suffix);
                 }
+
             }
         } else {
             saveBoard(this.gameController.board, this.gameController.board.boardName + "save" + this.gameController.board.gameId);
@@ -249,6 +242,7 @@ public class AppController implements Observer {
      * @author Qiao.
      */
     public void loadGame() {
+
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         try {
@@ -264,20 +258,116 @@ public class AppController implements Observer {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent()) {
-            if (gameController == null) {
-                Board board = loadBoard(result.get(), gameController);
+                Board board = loadOfflineBoard(result.get());
                 if (board.boardName.contains(".")) {
                     inc = Integer.parseInt(board.boardName.substring(board.boardName.indexOf(".") + 1));
                 }
-                gameController = new GameController(board);
-                board.setPhase(Phase.PROGRAMMING);
-                board.setCurrentPlayer(board.getPlayer(0));
-                board.setStep(0);
-                roboRally.createBoardView(gameController);
-
-            }
+            roboRally.createBoardView(gameController);
         }
     }
+
+    /**
+     * @Author Qiao.
+     * @param boardname
+     * @return Loads an initial board based on jsons or an ongoing game.
+     */
+    public Board loadOfflineBoard(String boardname) {
+        if (boardname == null) {
+            boardname = DEFAULTBOARD;
+        }
+        ClassLoader classLoader = SaveBoard.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
+        if (inputStream == null) {
+            // TODO these constants should be defined somewhere
+            System.out.println("Inputstream null");
+            return new Board(8, 8);
+        }
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+        Board result;
+        // FileReader fileReader = null;
+        JsonReader reader = null;
+        try {
+            // fileReader = new FileReader(filename);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+            result = new Board(template.width, template.height, boardname, (int) (Math.random() * 1001));
+            template.width = result.width;
+            template.height = result.height;
+            template.boardName = result.boardName;
+            template.saveName = gameName;
+            template.phase = result.getPhase();
+            template.step = result.getStep();
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                space.setFieldAction(spaceTemplate.action);
+            }
+            gameController = new GameController(result);
+            //Player positions
+            for (int i = 0; i < template.players.size(); i++) {
+                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
+                result.addPlayer(player);
+                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y),false);
+                player.setHeading(template.players.get(i).heading);
+                //Player cards
+                if (player != null&& !template.players.get(i).cards.isEmpty()) {
+                    for (int j = 0; j < Player.NO_CARDS; j++) {
+                        CommandCardField field = player.getCardField(j);
+                        if(template.players.get(i).cards.get(j).visible){
+                            field.setCard(template.players.get(i).cards.get(j).card);
+                            field.setVisible(true);
+                        } else {
+                            field.setVisible(false);
+                        }
+                    }
+                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                        CommandCardField field = player.getProgramField(j);
+                        if(template.players.get(i).program.get(j).visible){
+                            field.setCard(template.players.get(i).program.get(j).card);
+                            field.setVisible(true);
+                        } else {
+                            field.setVisible(false);
+                        }
+                    }
+                }
+            }
+            newTemplate = template;
+            reader.close();
+            result.setPhase(template.phase);
+            result.setCurrentPlayer(result.getPlayer(template.currentplayer));
+            result.setStep(template.step);
+            return result;
+        } catch (IOException e1) {
+            if (reader != null) {
+                try {
+                    reader.close();
+                    inputStream = null;
+                } catch (IOException e2) {
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
+    }
+    public void loadOnlineGame() {
+        gameName = showGameNameDialog();
+        if (gameName != null && !gameName.isEmpty()) {
+            loadTurn(gameName);
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Invalid Game Name");
+            alert.setHeaderText("Please enter a valid game name");
+            alert.setContentText("The game name cannot be empty.");
+            alert.showAndWait();
+        }
+    }
+
 
     /**
      * This method is called by the {@link RoboRally} class when game is to be stopped.
@@ -285,9 +375,6 @@ public class AppController implements Observer {
      */
     public boolean stopGame() {
         if (gameController != null) {
-
-            // here we save the game (without asking the user).
-
             gameController = null;
             roboRally.createBoardView(null);
             return true;
@@ -341,52 +428,60 @@ public class AppController implements Observer {
     static Repository api = new Repository();
 
 public void updateButton() {
-    loadGameAPI(gameName);
+    loadTurn(gameName);
+
+    //TODO Make timer auto refresh save very x seconds.
+//    Timer timer = new Timer();
+//
+//    timer.schedule( new TimerTask() {
+//        public void run() {
+//            loadTurn(gameName);
+//        }
+//    }, 0, 30*1000);
 }
-    public void loadGameAPI(String name) {
+//Works as intended.
+    public void loadTurn(String name) {
         Board result;
-
         try {
-            // fileReader = new FileReader(filename);
-
             BoardTemplate template = api.getBoardTemplate(name);
-
             result = new Board(template.width, template.height, name, (int) (Math.random() * 1001));
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                 space.setFieldAction(spaceTemplate.action);
-
             }
+            gameController = new GameController(result);
             //Player positions
             for (int i = 0; i < template.players.size(); i++) {
                 Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
                 result.addPlayer(player);
-                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
+                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), true);
                 player.setHeading(template.players.get(i).heading);
                 //Player cards
-                if (player != null) {
+                if (player != null && !template.players.get(i).cards.isEmpty()) {
                     for (int j = 0; j < Player.NO_CARDS; j++) {
                         CommandCardField field = player.getCardField(j);
-                        field.setCard(template.players.get(i).cards.get(j).card);
-                        field.setVisible(true);
+                        if(template.players.get(i).cards.get(j).visible){
+                            field.setCard(template.players.get(i).cards.get(j).card);
+                            field.setVisible(true);
+                        } else {
+                            field.setVisible(false);
+                        }
                     }
                     for (int j = 0; j < Player.NO_REGISTERS; j++) {
                         CommandCardField field = player.getProgramField(j);
-                        field.setCard(template.players.get(i).program.get(j).card);
-                        field.setVisible(true);
+                        if(template.players.get(i).program.get(j).visible){
+                            field.setCard(template.players.get(i).program.get(j).card);
+                            field.setVisible(true);
+                        } else {
+                            field.setVisible(false);
+                        }
                     }
                 }
             }
-
-            gameController = new GameController(result);
-//            update(gameController.board);
-//            roboRally.createBoardView(gameController);
-            result.setPhase(Phase.ACTIVATION);
-            result.setCurrentPlayer(result.getPlayer(0));
-//            result.setStep(0);
+            result.setPhase(template.phase);
+            result.setCurrentPlayer(result.getPlayer(template.currentplayer));
+            result.setStep(template.step);
             roboRally.createBoardView(gameController);
-
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

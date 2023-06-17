@@ -52,7 +52,8 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
     private boolean gameWon;
-
+//TODO gamecontroller gc is set to null cus it gets called before the gamecontrolelr exists in appcontroller.
+//TODO Either remove setspace from loadboard and have a seperate one for loading the players  and their spaces or. have 2 boards each.
     private GameController gc;
 
 
@@ -225,11 +226,15 @@ public class Player extends Subject {
      */
     public void setSpace(Space space, boolean runFieldAction) {
         if(getSpace() != null) {
+            {
             getSpace().setPlayer(null, gc, false);
+            }
         }
 
         this.space = space;
-        space.setPlayer(this, gc, runFieldAction);
+        {
+            space.setPlayer(this, gc, runFieldAction);
+            }
         notifyChange();
 
 
@@ -245,6 +250,7 @@ public class Player extends Subject {
             notifyChange();
         } */
     }
+
 
     /**
      * Method "getHeading" returns the heading direction of the player
