@@ -23,15 +23,13 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 
 import java.io.*;
@@ -43,7 +41,7 @@ import java.util.List;
  *
  * @author Qiao
  */
-public class LoadBoard {
+public class SaveBoard {
     static Repository api = new Repository();
 
     private static final String BOARDSFOLDER = "boards";
@@ -52,93 +50,16 @@ public class LoadBoard {
 
     public static BoardTemplate newTemplate = null;
 
-    /**
-     * @param boardname
-     * @param gameController
-     * @return
-     * @author Qiao
-     */
-    public static Board loadBoard(String boardname, GameController gameController) {
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
-        }
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
-        if (inputStream == null) {
-            // TODO these constants should be defined somewhere
-            System.out.println("Inputstream null");
-            return new Board(8, 8);
-        }
-
-        // In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
-        Gson gson = simpleBuilder.create();
-
-        Board result;
-        // FileReader fileReader = null;
-        JsonReader reader = null;
-        try {
-            // fileReader = new FileReader(filename);
-            reader = gson.newJsonReader(new InputStreamReader(inputStream));
-            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
-
-
-            result = new Board(template.width, template.height, boardname, (int) (Math.random() * 1001));
-            for (SpaceTemplate spaceTemplate : template.spaces) {
-                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-                space.setFieldAction(spaceTemplate.action);
-
-            }
-            //Player positions
-            for (int i = 0; i < template.players.size(); i++) {
-                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
-                result.addPlayer(player);
-                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
-                player.setHeading(template.players.get(i).heading);
-                //Player cards
-                if (player != null) {
-                    for (int j = 0; j < Player.NO_CARDS; j++) {
-                        CommandCardField field = player.getCardField(j);
-                        field.setCard(template.players.get(i).cards.get(j).card);
-                        field.setVisible(true);
-                    }
-                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                        CommandCardField field = player.getProgramField(j);
-                        field.setCard(template.players.get(i).program.get(j).card);
-                        field.setVisible(true);
-                    }
-                }
-            }
-            newTemplate = template;
-            reader.close();
-            return result;
-        } catch (IOException e1) {
-            if (reader != null) {
-                try {
-                    reader.close();
-                    inputStream = null;
-                } catch (IOException e2) {
-                }
-            }
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e2) {
-                }
-            }
-        }
-        return null;
-    }
-
-    //HTTP
 
     public static void saveBoardAPI(Board board, String name) throws Exception {
-
-
         BoardTemplate boardTemplate = new BoardTemplate();
         boardTemplate.width = board.width;
         boardTemplate.height = board.height;
+        boardTemplate.currentplayer = board.getPlayerNumber(board.getCurrentPlayer());
+        boardTemplate.phase = board.getPhase();
+        boardTemplate.saveName = name;
+        boardTemplate.boardName = board.boardName;
+        boardTemplate.step = board.getStep();
         //Board size + spaces
         for (int i = 0; i < board.width; i++) {
             for (int j = 0; j < board.height; j++) {
@@ -152,7 +73,6 @@ public class LoadBoard {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             boardTemplate.players.add(players.get(i).createTemplate());
         }
-
         //TODO: savename
         api.putBoardTemplate(boardTemplate, name);
     }
@@ -164,18 +84,13 @@ public class LoadBoard {
      */
     public static void saveBoard(Board board, String name) {
 
-//        JsonObject myBoard = new JsonObject();
-//
-//
-//        myBoard.addProperty("Boardwidth", board.width);
-//
-//        myBoard.addProperty("Boardheight", board.height);
-
         BoardTemplate boardTemplate = new BoardTemplate();
-
         boardTemplate.width = board.width;
         boardTemplate.height = board.height;
-
+        boardTemplate.currentplayer = board.getPlayerNumber(board.getCurrentPlayer());
+        boardTemplate.phase = board.getPhase();
+        boardTemplate.step = board.getStep();
+        boardTemplate.boardName = board.boardName;
         //Players + cards
         List<Player> players = board.getPlayers();
         for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -190,13 +105,13 @@ public class LoadBoard {
                 boardTemplate.spaces.add(temp);
             }
         }
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
+        ClassLoader classLoader = SaveBoard.class.getClassLoader();
         // TODO: this is not very defensive, and will result in a NullPointerException
         //       when the folder "resources" does not exist! But, it does not need
         //       the file "simpleCards.json" to exist!
 
         String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + JSON_EXT;
-
+        boardTemplate.saveName = filename;
         // In simple cases, we can create a Gson object with new:
         //
         //   Gson gson = new Gson();
@@ -234,9 +149,5 @@ public class LoadBoard {
         }
     }
 
-    public static void savePhase(Board board, String name) {
-
-
-    }
 }
 

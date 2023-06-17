@@ -123,7 +123,7 @@ public class Space extends Subject {
 
     /**
      * Sets the player on this space.
-     *
+     * DO NOT CALL THIS TO MOVE PLAYER. USE SET SPACE.
      * @param player the player to be set on this space
      */
     public void setPlayer(Player player, GameController gc, boolean runFieldAction) {

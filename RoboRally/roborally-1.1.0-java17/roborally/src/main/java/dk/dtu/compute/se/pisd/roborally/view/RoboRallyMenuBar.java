@@ -41,11 +41,15 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private MenuItem loadGame;
 
+    private MenuItem loadOnlineGame;
+
     private MenuItem stopGame;
 
     private MenuItem exitApp;
 
     private MenuItem update;
+
+
 
     /**
      * Creates the view of the board.
@@ -77,6 +81,11 @@ public class RoboRallyMenuBar extends MenuBar {
         loadGame = new MenuItem("Load Game");
         loadGame.setOnAction(e -> this.appController.loadGame());
         controlMenu.getItems().add(loadGame);
+
+        loadOnlineGame = new MenuItem("Load Online Game");
+        loadOnlineGame.setOnAction(e -> this.appController.loadOnlineGame());
+        controlMenu.getItems().add(loadOnlineGame);
+
 
         exitApp = new MenuItem("Exit");
         exitApp.setOnAction(e -> this.appController.exit());
