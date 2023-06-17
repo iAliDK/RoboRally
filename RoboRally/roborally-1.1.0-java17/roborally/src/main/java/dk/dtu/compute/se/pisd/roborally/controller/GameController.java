@@ -69,34 +69,6 @@ public class GameController {
         }
         return false;
     }
-/*
-        // returner true når det er sidste spiller
-        if (nextPlayerIndex == 0) {
-            // Last player reached, loop back to the first player
-            return true;
-        } else {
-            board.setCurrentPlayer(board.getPlayer(nextPlayerIndex));
-        }
-        return false;
-
- */
-
-
-
-/*
-    public void nextTurn() {
-        int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
-        int nextPlayerIndex = (currentPlayerIndex + 1) % board.getPlayersNumber();
-
-        if (nextPlayerIndex == 0) {
-            // Last player reached, loop back to the first player
-            board.setCurrentPlayer(board.getPlayer(board.getPlayersNumber()));
-        } else {
-            board.setCurrentPlayer(board.getPlayer(nextPlayerIndex));
-        }
-    }
-
- */
 
 
     /**
@@ -145,8 +117,6 @@ public class GameController {
 
 
     // XXX: V2
-
-
     /**
      * It sets the phase to programming, the current player to the first player and the step to 0
      * It also sets the cards in the program field to null and the cards in the card field to random cards
@@ -188,8 +158,6 @@ public class GameController {
     }
 
     // XXX: V2
-
-
     /**
      * @author Zainab
      * This method checks if the player have chosen all their cards
@@ -222,15 +190,10 @@ public class GameController {
             //makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
-
-
             board.setPhase(Phase.ACTIVATION);
             board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
-
         }
-
-
     }
 
 
@@ -276,13 +239,9 @@ public class GameController {
     }
 
 
-
-
     /**
      * This method executes the next step of the current player.
      */
-
-
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
@@ -386,56 +345,7 @@ public class GameController {
             }
         }
     }
-
-
-
-    public boolean hasWallInDirection(Player player, Heading heading) {
-        Space currentSpace = player.getSpace();
-        Space nextSpace = board.getNeighbour(currentSpace, player.getHeading());
-
-        // Check if current space has a wall in the given direction
-        FieldAction currentFieldAction = currentSpace.getFieldAction();
-        if (currentFieldAction instanceof Wall) {
-            Wall wall = (Wall) currentFieldAction;
-            if (wall.getHeading() == heading) {
-                return true;
-            }
-        }
-
-        // Check if next space has a wall in the opposite direction
-        FieldAction nextFieldAction = nextSpace.getFieldAction();
-        if (nextFieldAction instanceof Wall) {
-            Wall wall = (Wall) nextFieldAction;
-            if (wall.getHeading() == heading.getOpposite()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
     /**
      * @param player This method moves the given player two steps forward. It also checks if the space is a wall. If it is, the player is moved one step forward instead.
