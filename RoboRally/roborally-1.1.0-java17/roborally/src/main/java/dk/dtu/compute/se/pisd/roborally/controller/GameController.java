@@ -22,19 +22,12 @@
 
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import com.google.gson.Gson;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.API.SaveClient;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+
 import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName;
 
-import dk.dtu.compute.se.pisd.roborally.controller.AppController.*;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -224,7 +217,7 @@ public class GameController {
         }
 
         if (nextTurnAndIsLastPlayer()) {
-            makeProgramFieldsInvisible();
+//            makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
 
@@ -349,11 +342,7 @@ public class GameController {
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
-
-                        //TODO Save phase in a variable somewhere.
-
                         startProgrammingPhase();
-
                     }
                 }
             }
@@ -405,7 +394,7 @@ public class GameController {
      */
     public void moveForward(@NotNull Player player) {
         Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
-        GameController gameController = new GameController(board);
+//        GameController gameController = new GameController(board);
         //Wall wallHeading = new Wall(Heading);
         //player.setSpace(newSpace, true);
 
@@ -418,19 +407,21 @@ public class GameController {
          */
 
 
-        if (newSpace.getPlayer() == null
-                &&
-                // go from wall
-                (player.getSpace().getClass().equals(Wall.class) == false || player.getHeading() != player.getSpace().getHeading())
-                &&
-                // go to wall
-                (newSpace.getClass().equals(Wall.class) == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
-            //player.getSpace().setPlayer(null, gameController, true);
-            //player.setSpace(newSpace, true);
-            player.setSpace(newSpace, true);
-            //newSpace.setPlayer(player, gameController, true);
-
-        }
+//        if (newSpace.getPlayer() == null
+//                &&
+//                // go from wall
+//                (player.getSpace().getClass().equals(Wall.class) == false || player.getHeading() != player.getSpace().getHeading())
+//                &&
+//                // go to wall
+//                (newSpace.getFieldAction().getClass().equals(Wall.class) == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
+//                    spaces[2][5].setFieldAction(new Wall(Heading.WEST));
+//            newSpace.getFieldAction().
+//            //player.getSpace().setPlayer(null, gameController, true);
+//            //player.setSpace(newSpace, true);
+//            player.setSpace(newSpace, true);
+//            //newSpace.setPlayer(player, gameController, true);
+//
+//        }
 
 
 
@@ -448,17 +439,17 @@ public class GameController {
 
          */
 
-        if (newSpace.getPlayer() == null
-                &&
-                // go from wall
-                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
-                &&
-                // go to wall
-                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null, gameController, true);
+//        if (newSpace.getPlayer() == null
+//                &&
+//                // go from wall
+//                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
+//                &&
+//                // go to wall
+//                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
+//            player.getSpace().setPlayer(null, gameController, true);
             player.setSpace(newSpace, true);
-            newSpace.setPlayer(player, gameController, true);
-        }
+//            newSpace.setPlayer(player, gameController, true);
+//        }
 
 
 
