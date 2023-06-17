@@ -29,6 +29,8 @@ import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
 
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 import org.jetbrains.annotations.NotNull;
 
 
