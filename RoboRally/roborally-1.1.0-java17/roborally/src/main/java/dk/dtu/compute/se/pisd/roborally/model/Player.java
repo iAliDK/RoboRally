@@ -251,14 +251,7 @@ public class Player extends Subject {
         } */
     }
 
-    public void setSpaceNF(Space space) {
-        if (getSpace() != null) {
-                getSpace().setPlayerNF(null);
-        }
-        this.space = space;
-        space.setPlayerNF(this);
-        notifyChange();
-    }
+
     /**
      * Method "getHeading" returns the heading direction of the player
      *
