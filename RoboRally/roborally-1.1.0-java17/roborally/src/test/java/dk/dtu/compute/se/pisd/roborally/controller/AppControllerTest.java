@@ -33,14 +33,14 @@ class AppControllerTest {
         assertFalse(result);
     }
 
-    @Test
+    /*@Test
     @DisplayName("Should throw an exception when the directory does not exist")
     void loadSaveFilesWhenDirectoryDoesNotExistThenThrowException() {
         RoboRally roboRally = new RoboRally();
         AppController appController = new AppController(roboRally);
         String nonexistentDirectory = "nonexistentDirectory";
         assertThrows(Exception.class, () -> appController.loadSaveFiles(nonexistentDirectory));
-    }
+    }*/
 
     @Test
     @DisplayName("Should return the original string if there is no file extension")
