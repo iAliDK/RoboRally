@@ -224,7 +224,7 @@ public class GameController {
         }
 
         if (nextTurnAndIsLastPlayer()) {
-            makeProgramFieldsInvisible();
+            //makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
 
 
@@ -311,10 +311,17 @@ public class GameController {
 
     }
 
+
+
     private void updateProgramFieldVisibility(Player player, int step) {
         CommandCardField programField = player.getProgramField(step);
         programField.setVisible(false);
     }
+
+
+
+
+
     /**
      * @author Qiao and Zainab.
      * This method executes the next step of the current player
@@ -323,6 +330,7 @@ public class GameController {
      * <p>
      * This method is used in continuePrograms
      */
+
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
@@ -335,7 +343,9 @@ public class GameController {
                     if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
+
                     }
+                    // something should be added here, so that
                     executeCommand(currentPlayer, command);
                 }
 
@@ -368,6 +378,8 @@ public class GameController {
         }
     }
 
+
+
     /**
      * @param player This method moves the given player one step forward.
      * @param command This method executes the given command for the given player.
@@ -396,73 +408,97 @@ public class GameController {
         }
     }
 
+
+
+    public boolean hasWallInDirection(Player player, Heading heading) {
+        Space currentSpace = player.getSpace();
+        Space nextSpace = board.getNeighbour(currentSpace, player.getHeading());
+
+        // Check if current space has a wall in the given direction
+        FieldAction currentFieldAction = currentSpace.getFieldAction();
+        if (currentFieldAction instanceof Wall) {
+            Wall wall = (Wall) currentFieldAction;
+            if (wall.getHeading() == heading) {
+                return true;
+            }
+        }
+
+        // Check if next space has a wall in the opposite direction
+        FieldAction nextFieldAction = nextSpace.getFieldAction();
+        if (nextFieldAction instanceof Wall) {
+            Wall wall = (Wall) nextFieldAction;
+            if (wall.getHeading() == heading.getOpposite()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @param player This method moves the given player two steps forward. It also checks if the space is a wall. If it is, the player is moved one step forward instead.
-     * @author Daniel, Ismail and Zainab.
+     * @author Zainab.
      *
      * <p>
      *     This method is used in executeCommand
      */
-    public void moveForward(@NotNull Player player) {
-        Space newSpace = board.getNeighbour(player.getSpace(), player.getHeading());
-        GameController gameController = new GameController(board);
-        //Wall wallHeading = new Wall(Heading);
-        //player.setSpace(newSpace, true);
+    public void moveForward(Player player) {
+        // Get the current player and the space they are currently standing on
+        Player currentPlayer = board.getCurrentPlayer();
+        Space currentSpace = currentPlayer.getSpace();
 
-        //check if space is wall
-        //If there isn't a player on the new space AND (if the space is not a wall OR the player is not facing the wall
-        /*if ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() != player.getSpace().getHeading()) && (!newSpace.getClass().equals(Wall.class) || player.getHeading() != newSpace.getHeading().getOpposite())) {
-          player.setSpace(newSpace, true);
-            newSpace.setPlayer(player, this, true);
-       }
-         */
+        // Get the heading of the current space's wall (if any)
+        Heading currentWallHeading = getWallHeading(currentSpace);
 
+        // Get the next space the player wants to move to
+        Space nextSpace = getNextSpace(currentPlayer);
 
-        if (newSpace.getPlayer() == null
-                &&
-                // go from wall
-                (player.getSpace().getClass().equals(Wall.class) == false || player.getHeading() != player.getSpace().getHeading())
-                &&
-                // go to wall
-                (newSpace.getClass().equals(Wall.class) == false || player.getHeading() != newSpace.getHeading().getOpposite()) ) {
-            //player.getSpace().setPlayer(null, gameController, true);
-            //player.setSpace(newSpace, true);
-            player.setSpace(newSpace, true);
-            //newSpace.setPlayer(player, gameController, true);
+        // Get the heading of the next space's wall (if any)
+        Heading nextWallHeading = getWallHeading(nextSpace);
 
+        Heading playerHeading = player.getHeading();
+
+        // Check if there already is a robot in the space they want to move to
+        if (nextSpace.getPlayer() != null) {
+            return;
         }
-
-
-
-        /*if (newSpace.getPlayer() == null
-                &&
-                // go from wall
-                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
-                &&
-                // go to wall
-                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null, gameController, true);
-            player.setSpace(newSpace, true);
-            newSpace.setPlayer(player, gameController, true);
+        // Check if there are walls in the current space
+        if (currentWallHeading != null && currentWallHeading == playerHeading){
+            return;
         }
-
-         */
-
-        if (newSpace.getPlayer() == null
-                &&
-                // go from wall
-                (player.getSpace().isWall() == false || player.getHeading() != player.getSpace().getHeading())
-                &&
-                // go to wall
-                (newSpace.isWall() == false || player.getHeading() != newSpace.getHeading().getOpposite())) {
-            player.getSpace().setPlayer(null, gameController, true);
-            player.setSpace(newSpace, true);
-            newSpace.setPlayer(player, gameController, true);
+        // Check if there is a wall in the space they want to move to
+        if (nextWallHeading != null && nextWallHeading == playerHeading.getOpposite()) {
+            return;
+        } else {
+            // No walls in both spaces, move the player forward
+            player.setSpace(nextSpace, true);
         }
-
-
-
     }
+
+
     /**
      * @param player This method moves the given player two steps forward.
      * @author Daniel, Ismail and Zainab.
@@ -517,21 +553,56 @@ public class GameController {
      * without changing the heading
      */
     public void backUp(@NotNull Player player) {
-        Space newSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
+            // Get the current player and the space they are currently standing on
+            Player currentPlayer = board.getCurrentPlayer();
+            Space currentSpace = currentPlayer.getSpace();
 
+            // Get the heading of the current space's wall (if any)
+            Heading currentWallHeading = getWallHeading(currentSpace);
 
-        player.setSpace(newSpace, true);
+            // Get the previous space the player wants to move to (backup space)
+            Space backupSpace = getBackupSpace(currentPlayer);
 
-        /*
-        //check if space is wall
-        if (newSpace.getPlayer() == null && ((!player.getSpace().getClass().equals(Wall.class)|| player.getHeading() == player.getSpace().getHeading())) && (!newSpace.getClass().equals(Wall.class)|| player.getHeading() != newSpace.getHeading())) {
-            player.getSpace().setPlayer(null, this, true);
-            player.setSpace(newSpace);
-            newSpace.setPlayer(player, this, true);
+            // Get the heading of the backup space's wall (if any)
+            Heading backupWallHeading = getWallHeading(backupSpace);
 
-        } */
+            Heading playerHeading = player.getHeading();
+
+        // Check if there already is a robot in the space they want to move to
+            if (backupSpace.getPlayer() != null) {
+                return;
+        }
+            // Check if there are walls current space
+            if (currentWallHeading != null && currentWallHeading != playerHeading) {
+                return;
+            }
+            // Check if the backup space has a wall
+            if (backupWallHeading != null && backupWallHeading != playerHeading.getOpposite()) {
+                return;
+            } else {
+                // No walls in both spaces, move the player to the backup space
+                player.setSpace(backupSpace, true);
+            }
+        }
+
+    private Space getBackupSpace(Player player) {
+    Space backUpSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
+    return backUpSpace;
     }
 
+    private Heading getWallHeading(Space space) {
+        FieldAction fieldAction = space.getFieldAction();
+        if (fieldAction instanceof Wall) {
+            Wall wall = (Wall) fieldAction;
+            return wall.getHeading();
+        }
+        return null;
+    }
+
+    private Space getNextSpace(Player player) {
+        Space nextSpace = board.getNeighbour(player.getSpace(), player.getHeading());
+        return nextSpace;
+    }
 
     /**
      * This method checks if a card can be moved from the source field to the target field.
@@ -571,12 +642,12 @@ public class GameController {
             board.setPhase(Phase.ACTIVATION);
 
             // We have made a switch cases?
+            // execute selected option for current player
             switch (command) {
                 case LEFT -> executeCommand(currentPlayer, Command.LEFT);
                 case RIGHT -> executeCommand(currentPlayer, Command.RIGHT);
-
-                // execute selected option for current player
             }
+
             int step = board.getStep();
             int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
             if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -596,6 +667,11 @@ public class GameController {
             CommandCard card = currentPlayer.getProgramField(step).getCard();
             if (card != null) {
                 continuePrograms();
+                //if(board.getPhase() == Phase.ACTIVATION && !board.isStepMode()){
+                //    updateProgramFieldVisibility(currentPlayer, step);
+                    //return;
+                }
+                //return;
             }
 
             /*
@@ -605,8 +681,8 @@ public class GameController {
 
                 //executeNextStep(); // move to next program card
             }*/
-        }
     }
+
 
    /*
     private void activateFieldAction() {
