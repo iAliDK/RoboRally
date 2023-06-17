@@ -60,7 +60,7 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoard;
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard");
+    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard", "manualboard");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
     public static String gameName = null;
@@ -75,6 +75,7 @@ public class AppController implements Observer {
     public String[] saves = {"test.json"};
     int inc = 0;
     String suffix = ("." + inc);
+    int noPlayers = 0;
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -157,6 +158,8 @@ public class AppController implements Observer {
                     return;
                 }
             }
+             noPlayers = result.get();
+
             ChoiceDialog<String> boardSelection = new ChoiceDialog<>(GAMEBOARD_OPTIONS.get(0), GAMEBOARD_OPTIONS);
             dialog.setTitle("Board Select");
             dialog.setHeaderText("Start board");
@@ -164,8 +167,8 @@ public class AppController implements Observer {
 
             if (startBoard.isPresent()) {
                 if (gameController == null) {
-//                    Board board = new Board(3,3, "defaultboard", 1);
-                    Board board = loadOfflineBoard(startBoard.get());
+//                    Board board = new Board(15,15, "javaboard", 1);
+                    loadOfflineBoard(startBoard.get());
                     gameName = showGameNameDialog();
                     if (gameName != null && !gameName.isEmpty()) {
                         gameController.startProgrammingPhase();
@@ -227,7 +230,6 @@ public class AppController implements Observer {
                     suffix = ("." + inc);
                     saveBoard(this.gameController.board, this.gameController.board.boardName + suffix);
                 }
-
             }
         } else {
             saveBoard(this.gameController.board, this.gameController.board.boardName + "save" + this.gameController.board.gameId);
@@ -278,9 +280,7 @@ public class AppController implements Observer {
         ClassLoader classLoader = SaveBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + JSON_EXT);
         if (inputStream == null) {
-            // TODO these constants should be defined somewhere
-            System.out.println("Inputstream null");
-            return new Board(8, 8);
+            inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + "javaboard" + JSON_EXT);
         }
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
@@ -299,45 +299,58 @@ public class AppController implements Observer {
             template.saveName = gameName;
             template.phase = result.getPhase();
             template.step = result.getStep();
-            for (SpaceTemplate spaceTemplate : template.spaces) {
-                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-                space.setFieldAction(spaceTemplate.action);
+            //Comment spaces out to use board manual creation.
+            if (boardname != "manualboard"){
+                for (SpaceTemplate spaceTemplate : template.spaces) {
+                    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                    space.setFieldAction(spaceTemplate.action);
+                }
             }
             gameController = new GameController(result);
-            //Player positions
-            for (int i = 0; i < template.players.size(); i++) {
-                Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
-                result.addPlayer(player);
-                player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y),false);
-                player.setHeading(template.players.get(i).heading);
-                //Player cards
-                if (player != null&& !template.players.get(i).cards.isEmpty()) {
-                    for (int j = 0; j < Player.NO_CARDS; j++) {
-                        CommandCardField field = player.getCardField(j);
-                        if(template.players.get(i).cards.get(j).visible){
-                            field.setCard(template.players.get(i).cards.get(j).card);
-                            field.setVisible(true);
-                        } else {
-                            field.setVisible(false);
+            if (noPlayers!=0) {
+                for (int i = 0; i < noPlayers; i++) {
+                    Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
+                    result.addPlayer(player);
+                    player.setSpace(result.getSpace(i % result.width, i), false);
+                }
+            } else {
+                //Player positions
+                for (int i = 0; i < template.players.size(); i++) {
+                    Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
+                    result.addPlayer(player);
+                    player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
+                    player.setHeading(template.players.get(i).heading);
+                    //Player cards
+                    if (player != null && !template.players.get(i).cards.isEmpty()) {
+                        for (int j = 0; j < Player.NO_CARDS; j++) {
+                            CommandCardField field = player.getCardField(j);
+                            if (template.players.get(i).cards.get(j).visible) {
+                                field.setCard(template.players.get(i).cards.get(j).card);
+                                field.setVisible(true);
+                            } else {
+                                field.setVisible(false);
+                            }
                         }
-                    }
-                    for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                        CommandCardField field = player.getProgramField(j);
-                        if(template.players.get(i).program.get(j).visible){
-                            field.setCard(template.players.get(i).program.get(j).card);
-                            field.setVisible(true);
-                        } else {
-                            field.setVisible(false);
+                        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                            CommandCardField field = player.getProgramField(j);
+                            if (template.players.get(i).program.get(j).visible) {
+                                field.setCard(template.players.get(i).program.get(j).card);
+                                field.setVisible(true);
+                            } else {
+                                field.setVisible(false);
+                            }
                         }
                     }
                 }
             }
-            newTemplate = template;
-            reader.close();
-            result.setPhase(template.phase);
-            result.setCurrentPlayer(result.getPlayer(template.currentplayer));
-            result.setStep(template.step);
-            return result;
+                reader.close();
+                result.setPhase(template.phase);
+                result.setCurrentPlayer(result.getPlayer(template.currentplayer));
+                result.setStep(template.step);
+                newTemplate = template;
+
+
+            {return result;}
         } catch (IOException e1) {
             if (reader != null) {
                 try {

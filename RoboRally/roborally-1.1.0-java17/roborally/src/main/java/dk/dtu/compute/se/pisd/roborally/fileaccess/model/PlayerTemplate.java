@@ -23,12 +23,14 @@ public class PlayerTemplate {
     public List<CommandCardFieldTemplate> cards;
     public List<CommandCardFieldTemplate> program;
 
+    public int playerCounter;
     
     public PlayerTemplate(int x, int y, Heading heading, int gameId, String name, String color, List<CommandCardFieldTemplate> cards, List<CommandCardFieldTemplate> program){
         
         this.x = x;
         this.y = y;
         this.heading = heading;
+        this.playerCounter = playerCounter;
         this.gameId = gameId;
         this.name = name;
         this.color = color;
