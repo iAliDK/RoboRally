@@ -11,7 +11,7 @@ public class CommandCardFieldTemplate {
 
 
     public CommandCard card;
-    private boolean visible;
+    public boolean visible;
 
     public CommandCardFieldTemplate(boolean visible, CommandCard card){
 

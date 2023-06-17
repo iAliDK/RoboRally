@@ -1,11 +1,9 @@
 {
-  "boardName": "testboard",
-  "saveName": "/C:/Users/GLaDOS/IdeaProjects/roborally2/RoboRally/roborally-1.1.0-java17/roborally/target/classes/boards/testboardsave750.json",
   "width": 8,
   "height": 8,
-  "currentplayer": 0,
-  "phase": "PROGRAMMING",
-  "step": 0,
+  "currentplayer": 1,
+  "phase": "ACTIVATION",
+  "step": 1,
   "spaces": [
     {
       "x": 0,
@@ -368,22 +366,168 @@
     {
       "x": 0,
       "y": 0,
-      "heading": "SOUTH",
-      "gameId": 750,
+      "heading": "NORTH",
+      "gameId": 312,
       "name": "Player 1",
       "color": "red",
-      "cards": [],
-      "program": []
+      "cards": [
+        {
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        }
+      ],
+      "program": [
+        {
+          "card": {
+            "command": "LEFT",
+            "observers": []
+          },
+          "visible": false
+        },
+        {
+          "card": {
+            "command": "LEFT",
+            "observers": []
+          },
+          "visible": false
+        },
+        {
+          "card": {
+            "command": "FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "U_TURN",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FORWARD",
+            "observers": []
+          },
+          "visible": true
+        }
+      ]
     },
     {
       "x": 1,
-      "y": 1,
+      "y": 3,
       "heading": "SOUTH",
-      "gameId": 750,
+      "gameId": 312,
       "name": "Player 2",
       "color": "green",
-      "cards": [],
-      "program": []
+      "cards": [
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "OPTION_LEFT_RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "FORWARD",
+            "observers": []
+          },
+          "visible": true
+        }
+      ],
+      "program": [
+        {
+          "card": {
+            "command": "FAST_FORWARD",
+            "observers": []
+          },
+          "visible": false
+        },
+        {
+          "card": {
+            "command": "FAST_FORWARD",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "RIGHT",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "BACK_UP",
+            "observers": []
+          },
+          "visible": true
+        },
+        {
+          "card": {
+            "command": "BACK_UP",
+            "observers": []
+          },
+          "visible": true
+        }
+      ]
     }
   ]
 }

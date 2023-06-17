@@ -18,7 +18,7 @@ class AppControllerTest {
         String nonexistentGameName = "nonexistentGameName";
 
         assertThrows(RuntimeException.class, () -> {
-            appController.loadGameAPI(nonexistentGameName);
+            appController.loadTurn(nonexistentGameName);
         });
     }
 

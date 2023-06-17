@@ -22,19 +22,12 @@
 
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import com.google.gson.Gson;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.API.SaveClient;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
+
 import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName;
 
-import dk.dtu.compute.se.pisd.roborally.controller.AppController.*;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.*;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -311,17 +304,10 @@ public class GameController {
 
     }
 
-
-
     private void updateProgramFieldVisibility(Player player, int step) {
         CommandCardField programField = player.getProgramField(step);
         programField.setVisible(false);
     }
-
-
-
-
-
     /**
      * @author Qiao and Zainab.
      * This method executes the next step of the current player
@@ -330,7 +316,6 @@ public class GameController {
      * <p>
      * This method is used in continuePrograms
      */
-
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
@@ -343,9 +328,7 @@ public class GameController {
                     if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
-
                     }
-                    // something should be added here, so that
                     executeCommand(currentPlayer, command);
                 }
 
@@ -359,11 +342,7 @@ public class GameController {
                         board.setStep(step);
                         board.setCurrentPlayer(board.getPlayer(0));
                     } else {
-
-                        //TODO Save phase in a variable somewhere.
-
                         startProgrammingPhase();
-
                     }
                 }
             }
@@ -377,8 +356,6 @@ public class GameController {
             assert false;
         }
     }
-
-
 
     /**
      * @param player This method moves the given player one step forward.
@@ -647,7 +624,6 @@ public class GameController {
                 case LEFT -> executeCommand(currentPlayer, Command.LEFT);
                 case RIGHT -> executeCommand(currentPlayer, Command.RIGHT);
             }
-
             int step = board.getStep();
             int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
             if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -682,7 +658,6 @@ public class GameController {
                 //executeNextStep(); // move to next program card
             }*/
     }
-
 
    /*
     private void activateFieldAction() {
