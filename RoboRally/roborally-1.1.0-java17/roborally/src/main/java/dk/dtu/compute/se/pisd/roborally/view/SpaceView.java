@@ -204,7 +204,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             if (space.getFieldAction().getClass().equals(ConveyorBelt.class)) {
                 ConveyorBelt conveyorBelt = (ConveyorBelt) space.getFieldAction();
                 if (conveyorBelt.getHeading() == WEST) {
-                    String eastToWest = "-fx-background-image: url('conveyor_E_to_W.png');" +
+                    String eastToWest = "-fx-background-image: url('../../../../../../../../resources/conveyorBeltWest1.png');" +
                             "-fx-background-size: 60px 30px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";
@@ -214,7 +214,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
 
                 if (conveyorBelt.getHeading() == EAST) {
-                    String westToEast = "-fx-background-image: url('conveyor_W_to_E.png');" +
+                    String westToEast = "-fx-background-image: url('../../../../../../../../resources/conveyorBeltEast1.png');" +
                             "-fx-background-size: 60px 30px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";
@@ -224,7 +224,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
 
                 if(conveyorBelt.getHeading() == SOUTH) {
-                    String northToSouth = "-fx-background-image: url('conveyor_N_to_S.png');" +
+                    String northToSouth = "-fx-background-image: url('../../../../../../../../resources/conveyorBeltSouth1.png');" +
                             "-fx-background-size: 30px 60px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";
@@ -234,7 +234,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
 
                 if(conveyorBelt.getHeading() == NORTH) {
-                    String southToNorth = "-fx-background-image: url('conveyor_S_to_N.png');" +
+                    String southToNorth = "-fx-background-image: url('../../../../../../../../resources/conveyorBeltNorth1.png');" +
                             "-fx-background-size: 30px 60px;" +
                             "-fx-background-repeat: no-repeat;" +
                             "-fx-background-position: center;";

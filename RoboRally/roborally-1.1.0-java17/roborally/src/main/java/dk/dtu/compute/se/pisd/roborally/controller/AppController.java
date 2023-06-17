@@ -96,7 +96,7 @@ public class AppController implements Observer {
      * @throws Exception
      * @author Qiao.
      */
-    public String[] loadSaveFiles(String nonexistentDirectory) throws Exception {
+    public String[] loadSaveFiles() throws Exception {
         String dirName;
         dirName = System.getProperty("user.dir");
         dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
@@ -248,7 +248,7 @@ public class AppController implements Observer {
         // XXX needs to be implemented eventually
         // for now, we just create a new game
         try {
-            saves = loadSaveFiles("nonexistent_directory");
+            saves = loadSaveFiles();
         } catch (Exception e) {
             System.out.println("No directories found");
             saves = null;
