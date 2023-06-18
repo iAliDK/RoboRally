@@ -259,8 +259,8 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         int step = board.getStep();
         do {
-            executeNextStep();
             updateProgramFieldVisibility(currentPlayer, step);
+            executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
 
     }
@@ -536,6 +536,7 @@ public class GameController {
                 case LEFT -> executeCommand(currentPlayer, Command.LEFT);
                 case RIGHT -> executeCommand(currentPlayer, Command.RIGHT);
             }
+        }
             int step = board.getStep();
             int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
             if (nextPlayerNumber < board.getPlayersNumber()) {
@@ -554,9 +555,10 @@ public class GameController {
 
             CommandCard card = currentPlayer.getProgramField(step).getCard();
             if (card != null) {
-                continuePrograms();
-                //if(board.getPhase() == Phase.ACTIVATION && !board.isStepMode()){
-                //    updateProgramFieldVisibility(currentPlayer, step);
+                //continuePrograms();
+
+                if (board.getPhase() == Phase.ACTIVATION && !board.isStepMode()) {
+                    updateProgramFieldVisibility(currentPlayer, step);
                     //return;
                 }
                 //return;
@@ -569,6 +571,7 @@ public class GameController {
 
                 //executeNextStep(); // move to next program card
             }*/
+
     }
 
    /*
