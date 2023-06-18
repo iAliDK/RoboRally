@@ -71,6 +71,30 @@ public class SaveClient
             CompletableFuture<HttpResponse<String>> response =
                     httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
             String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+//            response.thenRunAsync(() -> {
+//                try {
+//                    sendGetRequest(path);
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            });
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    public String sendGetWin(String path) throws Exception {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create(serverUrl + path))
+                    .setHeader("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
             return result;
         } catch (Exception e) {
             return null;

@@ -318,14 +318,18 @@ public class AppController implements Observer {
                             Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
                             result.addPlayer(player);
                             player.setSpace(result.getSpace(i + 0, 0), false);
-                        } break;
+                            template.players.add(i,(result.getPlayer(i).createTemplate()));
+                        }
+                        break;
 
                     default:
                         for (int i = 0; i < noPlayers; i++) {
                             Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
                             result.addPlayer(player);
                             player.setSpace(result.getSpace(i % result.width, i), false);
-                        } break;
+
+                        }
+                        break;
                 }
                 for (int i = 0; i < result.getPlayersNumber(); i++) {
                     Player player = result.getPlayer(i);
@@ -340,6 +344,7 @@ public class AppController implements Observer {
                             field.setCard(gameController.generateRandomCommandCard());
                             field.setVisible(true);
                         }
+                        template.players.add(i,(result.getPlayer(i).createTemplate()));
                     }
                 }
             } else {
@@ -378,10 +383,7 @@ public class AppController implements Observer {
                 template.phase = (Phase.PROGRAMMING);
             }
             result.setPhase(template.phase);
-            List<Player> players = result.getPlayers();
-            for (int i = 0; i < result.getPlayersNumber(); i++) {
-                template.players.set(i,(players.get(i).createTemplate()));
-            }
+
             result.setCurrentPlayer(result.getPlayer(template.currentplayer));
             result.setStep(template.step);
             newTemplate = template;
@@ -459,13 +461,13 @@ public class AppController implements Observer {
         }
     }
 
-   /* public void gameWon(Player player){
-        if(Checkpoint.getGameWinner(true)){
-            Alert winner = new Alert(AlertType.CONFIRMATION);
-            winner.setTitle("Player"+ this.player.getPlayerCounter()==4);
-            winner.setContentText("Are you sure you want to exit RoboRally?");
+    public static void gameWon(Player player){
+            Alert winner = new Alert(AlertType.INFORMATION);
+            winner.setTitle(player.getName() + " won.");
+            winner.setHeaderText("Congratulations! "+ player.getName() + " got all the checkpoints and won! ");
+            winner.setContentText("Good luck next game!");
+            Optional<ButtonType> result = winner.showAndWait();
         }
-    }*/
 
     /**
      * Returns true if there is currently a game running, false otherwise.
@@ -486,7 +488,6 @@ public class AppController implements Observer {
      */
     public void updateButton() {
     loadTurn(gameName);
-
     //TODO Make timer auto refresh save very x seconds.
 //    Timer timer = new Timer();
 //
@@ -541,6 +542,8 @@ public class AppController implements Observer {
                             field.setVisible(false);
                         }
                     }
+                } if (player.playerCounter==5){
+                    gameWon(player);
                 }
             }
             result.setPhase(template.phase);

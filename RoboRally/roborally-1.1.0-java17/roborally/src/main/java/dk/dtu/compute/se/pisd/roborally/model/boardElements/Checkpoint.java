@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model.boardElements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameWon;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -39,7 +40,7 @@ public class Checkpoint extends FieldAction {
         if (checkpointNumber == player.getPlayerCounter()) {
             player.playerCounter++;
             if (player.playerCounter == 5) {
-                player.setGameWon(true);
+                gameWon(player);
             }
             return true;
         }
