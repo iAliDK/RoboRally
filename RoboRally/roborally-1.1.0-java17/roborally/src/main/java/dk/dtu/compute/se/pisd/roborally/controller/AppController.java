@@ -176,7 +176,6 @@ public class AppController implements Observer {
                     loadOfflineBoard(startBoard.get());
                     gameName = showGameNameDialog();
                     if (gameName != null && !gameName.isEmpty()) {
-                        gameController.startProgrammingPhase();
                         roboRally.createBoardView(gameController);
                     } else {
                         Alert alert = new Alert(AlertType.WARNING);
@@ -328,6 +327,21 @@ public class AppController implements Observer {
                             player.setSpace(result.getSpace(i % result.width, i), false);
                         } break;
                 }
+                for (int i = 0; i < result.getPlayersNumber(); i++) {
+                    Player player = result.getPlayer(i);
+                    if (player != null) {
+                        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                            CommandCardField field = player.getProgramField(j);
+                            field.setCard(null);
+                            field.setVisible(true);
+                        }
+                        for (int j = 0; j < Player.NO_CARDS; j++) {
+                            CommandCardField field = player.getCardField(j);
+                            field.setCard(gameController.generateRandomCommandCard());
+                            field.setVisible(true);
+                        }
+                    }
+                }
             } else {
                 //Player positions
                 for (int i = 0; i < template.players.size(); i++) {
@@ -360,13 +374,19 @@ public class AppController implements Observer {
                 }
             }
                 reader.close();
-                result.setPhase(template.phase);
-                result.setCurrentPlayer(result.getPlayer(template.currentplayer));
-                result.setStep(template.step);
-                newTemplate = template;
+            if (template.phase == null) {
+                template.phase = (Phase.PROGRAMMING);
+            }
+            result.setPhase(template.phase);
+            List<Player> players = result.getPlayers();
+            for (int i = 0; i < result.getPlayersNumber(); i++) {
+                template.players.set(i,(players.get(i).createTemplate()));
+            }
+            result.setCurrentPlayer(result.getPlayer(template.currentplayer));
+            result.setStep(template.step);
+            newTemplate = template;
+            return result;
 
-
-            {return result;}
         } catch (IOException e1) {
             if (reader != null) {
                 try {
