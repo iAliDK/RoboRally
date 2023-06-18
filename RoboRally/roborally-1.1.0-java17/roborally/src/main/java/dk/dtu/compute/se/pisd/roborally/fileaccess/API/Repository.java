@@ -16,10 +16,7 @@ public class Repository {
 
     //WIP
     public void newGame(BoardTemplate boardTemplate, String saveName) throws Exception {
-
         String fullPath = "saves/"+saveName;
-
-
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();

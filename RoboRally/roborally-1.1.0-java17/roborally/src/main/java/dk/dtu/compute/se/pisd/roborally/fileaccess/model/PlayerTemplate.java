@@ -25,7 +25,7 @@ public class PlayerTemplate {
 
     public int playerCounter;
     
-    public PlayerTemplate(int x, int y, Heading heading, int gameId, String name, String color, List<CommandCardFieldTemplate> cards, List<CommandCardFieldTemplate> program){
+    public PlayerTemplate(int x, int y, Heading heading, int playerCounter, int gameId, String name, String color, List<CommandCardFieldTemplate> cards, List<CommandCardFieldTemplate> program){
         
         this.x = x;
         this.y = y;

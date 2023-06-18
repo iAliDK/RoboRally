@@ -111,7 +111,7 @@ public class Player extends Subject {
             programTemp.add(new CommandCardFieldTemplate(program[i].isVisible(), program[i].getCard()));
         }
 
-        return new PlayerTemplate(space.x, space.y, heading, board.getGameId(), name, color, cardsTemp, programTemp);
+        return new PlayerTemplate(space.x, space.y, heading, playerCounter ,board.getGameId(), name, color, cardsTemp, programTemp);
     }
 
     /**

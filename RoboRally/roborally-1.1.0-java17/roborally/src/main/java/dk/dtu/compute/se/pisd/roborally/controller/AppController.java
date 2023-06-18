@@ -60,7 +60,7 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoard;
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard", "manualboard");
+    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard", "manualboard", "bermuda","factory");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
     public static String gameName = null;
@@ -292,13 +292,11 @@ public class AppController implements Observer {
             // fileReader = new FileReader(filename);
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
-            result = new Board(11, 11, boardname, (int) (Math.random() * 1001));
+            result = new Board(template.width, template.height, boardname, (int) (Math.random() * 1001));
             template.width = result.width;
             template.height = result.height;
             template.boardName = result.boardName;
             template.saveName = gameName;
-            template.phase = result.getPhase();
-            template.step = result.getStep();
             //Comment spaces out to use board manual creation.
             if (boardname != "manualboard"){
                 for (SpaceTemplate spaceTemplate : template.spaces) {
@@ -308,15 +306,26 @@ public class AppController implements Observer {
             }
             gameController = new GameController(result);
             if (noPlayers!=0) {
-                for (int i = 0; i < noPlayers; i++) {
-                    Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
-                    result.addPlayer(player);
-                    player.setSpace(result.getSpace(i % result.width, i), false);
+                switch (boardname) {
+                    case "bermuda", "factory":
+                        for (int i = 0; i < noPlayers; i++) {
+                            Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
+                            result.addPlayer(player);
+                            player.setSpace(result.getSpace(i + 0, 0), false);
+                        } break;
+
+                    default:
+                        for (int i = 0; i < noPlayers; i++) {
+                            Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
+                            result.addPlayer(player);
+                            player.setSpace(result.getSpace(i % result.width, i), false);
+                        } break;
                 }
             } else {
                 //Player positions
                 for (int i = 0; i < template.players.size(); i++) {
                     Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
+                    player.playerCounter = template.players.get(i).playerCounter;
                     result.addPlayer(player);
                     player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
                     player.setHeading(template.players.get(i).heading);
@@ -466,6 +475,7 @@ public void updateButton() {
             //Player positions
             for (int i = 0; i < template.players.size(); i++) {
                 Player player = new Player(result, template.players.get(i).color, "Player " + (i + 1), gameController);
+                player.playerCounter = template.players.get(i).playerCounter;
                 result.addPlayer(player);
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), true);
                 player.setHeading(template.players.get(i).heading);
