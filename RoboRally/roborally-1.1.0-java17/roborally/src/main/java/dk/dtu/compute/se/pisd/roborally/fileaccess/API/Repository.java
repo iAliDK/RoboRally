@@ -14,10 +14,17 @@ import java.util.List;
  */
 public class Repository {
 
-//    HttpClient client = new HttpClient();
     SaveClient client = new SaveClient();
 
-    //WIP
+    /**
+     *
+     * Makes the SaveClient send a post request with the pathname that is on saves/saveName.
+     * It also serializes the board template to a json and provides it to the post request.
+     * @param boardTemplate the boardTemplate object of the game you're trying to save.
+     * @param saveName the save name you're trying to post to the server.
+     * @throws Exception
+     * @author Qiao.
+     */
     public void newGame(BoardTemplate boardTemplate, String saveName) throws Exception {
         String fullPath = "saves/"+saveName;
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -26,6 +33,15 @@ public class Repository {
         String jsonBoardTemplateString = gson.toJson(boardTemplate, boardTemplate.getClass());
         client.sendPostRequest(fullPath,jsonBoardTemplateString);
     }
+
+    /**
+     * Provides the sendGetRequest method in SaveClient a path name for the save its trying to load.
+     * After that it returns the board template on the path name.
+     * @param savename the name of the save you want to get as a board template.
+     * @return The board template of the save you requested.
+     * @throws Exception
+     * @author Qiao.
+     */
     public BoardTemplate getBoardTemplate(String savename) throws Exception {
         String fullPath = "saves/"+savename;
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -36,7 +52,14 @@ public class Repository {
         return boardTemplate;
     }
 
-
+    /**
+     * Makes the SaveClient class send a put request using the parameters given.
+     * The board template is first serialized before sending it.
+     * @param boardTemplate the updated boardtemplate you want to put.
+     * @param saveName the name of the save you're putting to.
+     * @throws Exception
+     * @author Qiao.
+     */
     public void putBoardTemplate(BoardTemplate boardTemplate, String saveName) throws Exception {
         String fullPath = "saves/"+saveName;
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -44,9 +67,10 @@ public class Repository {
         Gson gson = simpleBuilder.create();
         String jsonBoardTemplateString = gson.toJson(boardTemplate, boardTemplate.getClass());
         client.sendPutRequest(fullPath,jsonBoardTemplateString);
-
     }
 
+
+    //TODO List of saves.
     public ArrayList<String> getSavesOnline() throws Exception {
         String fullPath = "saves";
 //        for (int i = 0; i < getSaves().size() ; i++) {

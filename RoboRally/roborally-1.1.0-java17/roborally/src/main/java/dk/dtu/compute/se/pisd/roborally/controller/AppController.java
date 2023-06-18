@@ -91,8 +91,8 @@ public class AppController implements Observer {
     }
 
     /**
-     *
-     * @return
+     * Method used to get the names of files in the boards folder. Returns an error if it's the boards folder isnt a directory.
+     * @return Returns an array of strings with the name of the files in the boards folder.
      * @throws Exception
      * @author Qiao.
      */
@@ -114,6 +114,12 @@ public class AppController implements Observer {
             return nameOfFiles;
         }
     }
+
+    /**
+     * This method makes an alert with a text box where you can type in a name for your game.
+     * @return A string of your gamename.
+     * @author Zainab.
+     */
     public String showGameNameDialog() {
         TextField nameTextField = new TextField();
         nameTextField.setPromptText("Enter game name");
@@ -136,10 +142,9 @@ public class AppController implements Observer {
 
     /**
      *
-     * Show dialog and makes players choose number of players
-     * creates a new game, and sets up the board.
-     * If a game is already in progress, prompts the user to
-     * save the game or abort before starting a new game.
+     * Shows a dialog and makes players choose number of players
+     * Then it prompts for what board you want to play on.
+     * It then prompts the above method to ask for a game name and in the end it calls the api.newgame function to save the game on the server,
      * @author Qiao.
      */
 
@@ -158,7 +163,7 @@ public class AppController implements Observer {
                     return;
                 }
             }
-             noPlayers = result.get();
+            noPlayers = result.get();
 
             ChoiceDialog<String> boardSelection = new ChoiceDialog<>(GAMEBOARD_OPTIONS.get(0), GAMEBOARD_OPTIONS);
             dialog.setTitle("Board Select");
@@ -193,9 +198,8 @@ public class AppController implements Observer {
     /**
      *
      * This method is called by the {@link RoboRally} class when game is to be saved.
-     * The method prompts the user whether to overwrite the current save or create a new one.
-     * <p>
-     *     @author Qiao.
+     * The method prompts the user whether to overwrite the current save or create a new one locally.
+     * @author Qiao.
      *
      */
     public void saveGame() {
@@ -239,8 +243,9 @@ public class AppController implements Observer {
 
     /**
      *
-     * This method is called by the {@link RoboRally} class when game is to be loaded.
-     * The method prompts the user to select a save file to load.
+     * This method is called by the {@link RoboRally} class when a local game is loaded.
+     * The method prompts the user to select a local save file to load.
+     * It has a small if statement to increase the inc integer by the save number.
      * @author Qiao.
      */
     public void loadGame() {
@@ -269,9 +274,11 @@ public class AppController implements Observer {
     }
 
     /**
-     * @Author Qiao.
+     * Is used both when starting a new game, it checks the starting board or loads total game state when loading an ongoing game.
+     * It also changes player start positions based on the board picked.
      * @param boardname
-     * @return Loads an initial board based on jsons or an ongoing game.
+     * @return Returns a board object with the boardname given.
+     * @author Qiao.
      */
     public Board loadOfflineBoard(String boardname) {
         if (boardname == null) {
@@ -377,6 +384,11 @@ public class AppController implements Observer {
         }
         return null;
     }
+
+    /**
+     * Asks you for a gamename input to load from the online save files.
+     * @author Qiao.
+     */
     public void loadOnlineGame() {
         gameName = showGameNameDialog();
         if (gameName != null && !gameName.isEmpty()) {
@@ -449,7 +461,10 @@ public class AppController implements Observer {
 //    }
     static Repository api = new Repository();
 
-public void updateButton() {
+    /**
+     * Makes the update button run the load turn with the current games gamename as parameter.
+     */
+    public void updateButton() {
     loadTurn(gameName);
 
     //TODO Make timer auto refresh save very x seconds.
@@ -462,6 +477,13 @@ public void updateButton() {
 //    }, 0, 30*1000);
 }
 //Works as intended.
+
+    /**
+     * It loads the save file from the server by getting the boardtemplate with the gamename.
+     * It then sets all the game information with the template variables.
+     * @param name The name of the game you want to load.
+     * @author Qiao.
+     */
     public void loadTurn(String name) {
         Board result;
         try {
