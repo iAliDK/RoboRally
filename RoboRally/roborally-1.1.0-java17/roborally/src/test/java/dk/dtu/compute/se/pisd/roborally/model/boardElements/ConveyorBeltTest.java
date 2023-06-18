@@ -35,16 +35,7 @@ class ConveyorBeltTest {
      * Method under test: {@link ConveyorBelt#doAction(GameController, Space)}
      */
     @Test
-    //@Disabled("TODO: Complete this test")
     void testDoAction() {
-        // TODO: Complete this test.
-        //   Reason: No inputs found that don't throw a trivial exception.
-        //   Tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 1
-        //       at dk.dtu.compute.se.pisd.roborally.model.Board.<init>(Board.java:81)
-        //       at dk.dtu.compute.se.pisd.roborally.model.Board.<init>(Board.java:134)
-
         //ConveyorBelt conveyorBelt = new ConveyorBelt(1, Heading.SOUTH);
         Board board = new Board(8,8);
         GameController gameController = new GameController(board);
@@ -68,9 +59,6 @@ class ConveyorBeltTest {
             case 3 : belt = new ConveyorBelt(1, Heading.NORTH);
                 break;
         }
-
-        //ConveyorBelt conveyorBelt1 = initial_heading;
-
 
         boolean result = belt.doAction(gameController, space);
 
