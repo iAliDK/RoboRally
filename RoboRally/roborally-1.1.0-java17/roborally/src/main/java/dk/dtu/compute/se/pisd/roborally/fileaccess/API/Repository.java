@@ -8,7 +8,10 @@ import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This Repository class, holds the methods that interacts with the games that is played on the server.
+ * The methods include functionalities such as creating a new game, and using board templates to create the board, for those games.
+ */
 public class Repository {
 
 //    HttpClient client = new HttpClient();
