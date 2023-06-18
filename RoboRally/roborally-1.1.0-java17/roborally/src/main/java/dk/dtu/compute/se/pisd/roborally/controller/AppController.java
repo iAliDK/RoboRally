@@ -292,7 +292,7 @@ public class AppController implements Observer {
             // fileReader = new FileReader(filename);
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
-            result = new Board(template.width, template.height, boardname, (int) (Math.random() * 1001));
+            result = new Board(11, 11, boardname, (int) (Math.random() * 1001));
             template.width = result.width;
             template.height = result.height;
             template.boardName = result.boardName;
