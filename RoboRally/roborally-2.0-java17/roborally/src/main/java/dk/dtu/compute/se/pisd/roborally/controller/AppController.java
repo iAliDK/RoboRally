@@ -97,7 +97,7 @@ public class AppController implements Observer {
     public String[] loadSaveFiles() throws Exception {
         String dirName;
         dirName = System.getProperty("user.dir");
-        dirName += "\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
+        dirName += "\\RoboRally\\roborally-2.0-java17\\roborally\\target\\classes\\boards";
 //        dirName = "C:\\Users\\s205412\\IdeaProjects\\RoboRally\\RoboRally\\roborally-1.1.0-java17\\roborally\\target\\classes\\boards";
         File dir = new File(dirName);
         if (!dir.isDirectory()) {
