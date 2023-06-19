@@ -1,15 +1,12 @@
 package dk.dtu.compute.se.pisd.roborally.model.boardElements;
 
-import com.beust.ah.A;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
-import java.util.Random.*;
 
 
 class GearTest {

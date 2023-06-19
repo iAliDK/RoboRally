@@ -26,30 +26,28 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-
 import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
-
 import dk.dtu.compute.se.pisd.roborally.model.*;
-
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import org.jetbrains.annotations.NotNull;
-import javafx.scene.control.TextField;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-
-import java.util.*;
-import java.io.*;
-
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.newTemplate;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoard;
 
 /**
@@ -91,9 +89,8 @@ public class AppController implements Observer {
     }
 
     /**
-     * Method used to get the names of files in the boards folder. Returns an error if it's the boards folder isnt a directory.
+     * Method used to get the names of files in the boards folder. Returns an error if it's the boards folder isn't a directory.
      * @return Returns an array of strings with the name of the files in the boards folder.
-     * @throws Exception
      * @author Qiao.
      */
     public String[] loadSaveFiles() throws Exception {
@@ -110,7 +107,6 @@ public class AppController implements Observer {
             for (int i = 0; i < nameOfFiles.length; i++) {
                 nameOfFiles[i] = removeExtension(nameOfFiles[i]);
             }
-            System.out.println(nameOfFiles);
             return nameOfFiles;
         }
     }
@@ -132,13 +128,6 @@ public class AppController implements Observer {
 
         return nameTextField.getText().trim();
     }
-
-/**
- *
- * This method is called by the {@link RoboRally} class when the
- * application is started. It sets up the application and shows
- * the main window.
- */
 
     /**
      *
@@ -211,8 +200,7 @@ public class AppController implements Observer {
                 Alert alert = new Alert(AlertType.CONFIRMATION, "Do you wish to overwrite your current save?", yes, no);
                 alert.setTitle("Overwrite save?");
                 Optional<ButtonType> result = alert.showAndWait();
-
-                if (result.get() == yes) {
+                if (result.get() == yes ) {
                     if (inc != 0) {
                         if (this.gameController.board.boardName.contains(".")) {
                             this.gameController.board.boardName = this.gameController.board.boardName.substring(0, this.gameController.board.boardName.indexOf("."));
@@ -257,6 +245,8 @@ public class AppController implements Observer {
             System.out.println("No directories found");
             saves = null;
         }
+        noPlayers = 0;
+        assert saves != null;
         List<String> GAME_SAVES = Arrays.asList(saves);
         ChoiceDialog<String> dialog = new ChoiceDialog<>(GAME_SAVES.get(0), GAME_SAVES);
         dialog.setTitle("Save");
@@ -275,7 +265,6 @@ public class AppController implements Observer {
     /**
      * Is used both when starting a new game, it checks the starting board or loads total game state when loading an ongoing game.
      * It also changes player start positions based on the board picked.
-     * @param boardname
      * @return Returns a board object with the boardname given.
      * @author Qiao.
      */
@@ -304,7 +293,7 @@ public class AppController implements Observer {
             template.boardName = result.boardName;
             template.saveName = gameName;
             //Comment spaces out to use board manual creation.
-            if (boardname != "manualboard"){
+            if (!boardname.equals("manualboard")){
                 for (SpaceTemplate spaceTemplate : template.spaces) {
                     Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                     space.setFieldAction(spaceTemplate.action);
@@ -317,8 +306,7 @@ public class AppController implements Observer {
                         for (int i = 0; i < noPlayers; i++) {
                             Player player = new Player(result, PLAYER_COLORS.get(i), "Player " + (i + 1), gameController);
                             result.addPlayer(player);
-                            player.setSpace(result.getSpace(i + 0, 0), false);
-                            template.players.add(i,(result.getPlayer(i).createTemplate()));
+                            player.setSpace(result.getSpace(i, 0), false);
                         }
                         break;
 
@@ -356,7 +344,7 @@ public class AppController implements Observer {
                     player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), false);
                     player.setHeading(template.players.get(i).heading);
                     //Player cards
-                    if (player != null && !template.players.get(i).cards.isEmpty()) {
+                    if (!template.players.get(i).cards.isEmpty()) {
                         for (int j = 0; j < Player.NO_CARDS; j++) {
                             CommandCardField field = player.getCardField(j);
                             if (template.players.get(i).cards.get(j).visible) {
@@ -390,12 +378,10 @@ public class AppController implements Observer {
             return result;
 
         } catch (IOException e1) {
-            if (reader != null) {
-                try {
-                    reader.close();
-                    inputStream = null;
-                } catch (IOException e2) {
-                }
+            try {
+                reader.close();
+                inputStream = null;
+            } catch (IOException e2) {
             }
             if (inputStream != null) {
                 try {
@@ -449,7 +435,7 @@ public class AppController implements Observer {
             alert.setContentText("Are you sure you want to exit RoboRally?");
             Optional<ButtonType> result = alert.showAndWait();
 
-            if (!result.isPresent() || result.get() != ButtonType.OK) {
+            if (result.isEmpty() || result.get() != ButtonType.OK) {
                 return; // return without exiting the application
             }
         }
@@ -466,7 +452,7 @@ public class AppController implements Observer {
             winner.setTitle(player.getName() + " won.");
             winner.setHeaderText("Congratulations! "+ player.getName() + " got all the checkpoints and won! ");
             winner.setContentText("Good luck next game!");
-            Optional<ButtonType> result = winner.showAndWait();
+            winner.showAndWait();
         }
 
     /**
@@ -477,27 +463,16 @@ public class AppController implements Observer {
         return gameController != null;
     }
 
-//    @Override
-//    public void update(Subject subject) {
-//        // XXX do nothing for now
-//    }
+
     static Repository api = new Repository();
 
     /**
      * Makes the update button run the load turn with the current games gamename as parameter.
      */
-    public void updateButton() {
-    loadTurn(gameName);
-    //TODO Make timer auto refresh save very x seconds.
-//    Timer timer = new Timer();
-//
-//    timer.schedule( new TimerTask() {
-//        public void run() {
-//            loadTurn(gameName);
-//        }
-//    }, 0, 30*1000);
-}
-//Works as intended.
+    public  void updateButton() {
+        loadTurn(gameName);
+    }
+
 
     /**
      * It loads the save file from the server by getting the boardtemplate with the gamename.
@@ -513,6 +488,7 @@ public class AppController implements Observer {
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                 space.setFieldAction(spaceTemplate.action);
+
             }
             gameController = new GameController(result);
             //Player positions
@@ -523,7 +499,7 @@ public class AppController implements Observer {
                 player.setSpace(result.getSpace(template.players.get(i).x, template.players.get(i).y), true);
                 player.setHeading(template.players.get(i).heading);
                 //Player cards
-                if (player != null && !template.players.get(i).cards.isEmpty()) {
+                if (!template.players.get(i).cards.isEmpty()) {
                     for (int j = 0; j < Player.NO_CARDS; j++) {
                         CommandCardField field = player.getCardField(j);
                         if(template.players.get(i).cards.get(j).visible){
@@ -566,12 +542,5 @@ public class AppController implements Observer {
     public void setGameController(Object mockGameController) {
         this.gameController = (GameController) mockGameController;
     }
-
-    /*public void gameOver(Player player) {
-        if (player.isGameWon()) {
-            stopGame();
-        }
-    }*/
-
 }
 

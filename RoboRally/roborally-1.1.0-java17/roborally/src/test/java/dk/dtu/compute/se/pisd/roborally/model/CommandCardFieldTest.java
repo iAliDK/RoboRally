@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -80,13 +80,4 @@ public class Gear extends FieldAction {
     public boolean isClockwise() {
         return isClockwise;
     }
-    /*
-    public boolean isClockwise() {
-        return clockwise;
-    }
-    public boolean isCounterClockwise() {
-        return clockwise;
-    }
-
-     */
 }

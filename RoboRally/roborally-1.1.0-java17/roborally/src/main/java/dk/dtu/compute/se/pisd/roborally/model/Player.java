@@ -90,9 +90,6 @@ public class Player extends Subject {
     public CommandCardField[] getProgram() {
         return program;
     }
-//    public CommandCardFieldTemplate createCardTemplate(){
-//        return new CommandCardFieldTemplate( player, visible, cards, program);
-//    }
 
     /**
      * Method "createTemplate" creates a template of the player

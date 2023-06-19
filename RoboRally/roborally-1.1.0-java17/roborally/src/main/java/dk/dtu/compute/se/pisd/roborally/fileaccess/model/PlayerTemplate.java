@@ -16,9 +16,9 @@ public class PlayerTemplate {
     public  int x;
     public  int y;
     public Heading heading;
-    
-    private int gameId = (int)(Math.random()*1001);
-    private String name;
+
+    private int gameId;
+    public String name;
     public String color;
     public List<CommandCardFieldTemplate> cards;
     public List<CommandCardFieldTemplate> program;

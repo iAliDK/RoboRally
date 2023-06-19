@@ -23,17 +23,12 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.ConveyorBelt;
-
-import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName;
-
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.*;
-
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 import org.jetbrains.annotations.NotNull;
 
-
+import static dk.dtu.compute.se.pisd.roborally.controller.AppController.gameName;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoardAPI;
 
 /**
  * This is the game controller class for the game. It is responsible for
@@ -88,11 +83,6 @@ public class GameController {
                 currentPlayer.setSpace(space, true);
                 int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
                 board.setCurrentPlayer(board.getPlayer(playerNumber));
-                if(space.getFieldAction() != null) {
-                    if (space.getFieldAction().getClass().equals(ConveyorBelt.class)) {
-//                        activateFieldAction();
-                    }
-                }
             }
         }
     }
@@ -214,21 +204,6 @@ public class GameController {
         }
     }
 
-
-    /**
-     * This method is used to make the program fields invisible
-     * It is used in finishProgrammingPhase.
-     */
-    private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player player = board.getPlayer(i);
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                CommandCardField field = player.getProgramField(j);
-                field.setVisible(false);
-            }
-        }
-    }
-
     /**
      * This method executes all steps of the current player.
      */
@@ -245,12 +220,6 @@ public class GameController {
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
-//        try {
-//            saveBoardAPI(board, gameName);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
     }
 
 
@@ -485,7 +454,7 @@ public class GameController {
         }
 
     /**
-     * @auther Zainab.
+     * @author Zainab.
      * This method gets the space behind the player.
      * @param player
      * @return
@@ -497,7 +466,7 @@ public class GameController {
 
     /**
      *  this method gets the heading of the wall in the space.
-     * @auther Zainab.
+     * @author Zainab.
      * @param space
      * @return
      */

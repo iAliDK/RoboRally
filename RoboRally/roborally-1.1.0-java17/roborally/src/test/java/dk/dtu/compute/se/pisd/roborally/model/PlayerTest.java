@@ -6,7 +6,6 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -24,7 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.model.boardElements.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +57,7 @@ public class Space extends Subject {
 
 
     private List<FieldAction> actions = new ArrayList();
-    private boolean isConveyorBelt;
-    private boolean speed;
+
 
 
     /**
