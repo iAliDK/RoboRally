@@ -45,16 +45,10 @@ public class Space extends Subject {
 
     private Player player;
 
-    //TODO: Remove this
+
     private List<Heading> walls = new ArrayList<>();
     private FieldAction fieldAction = null;
     private Heading heading;
-    //TODO: remove this
-    private Space[][] spaces;
-    /**
-     * @author Daniel.
-     */
-
 
     private List<FieldAction> actions = new ArrayList();
 

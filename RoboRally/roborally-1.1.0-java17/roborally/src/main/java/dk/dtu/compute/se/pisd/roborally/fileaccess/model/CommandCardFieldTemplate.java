@@ -7,6 +7,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
  * It is used to save the CommandCardField to a file.
  * @author Qiao.
  */
+@SuppressWarnings("CanBeFinal")
 public class CommandCardFieldTemplate {
 
 

@@ -87,11 +87,6 @@ public class Board extends Subject  {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
-        players = players;
-
-    }
-
 
     /**
      * The method returns the gameId.

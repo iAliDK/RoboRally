@@ -32,6 +32,7 @@ import java.util.List;
  * @author Qiao
  *
  */
+@SuppressWarnings("ALL")
 public class BoardTemplate {
 
     public String boardName;

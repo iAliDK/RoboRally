@@ -60,10 +60,7 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer((currentPlayerIndex + 1) % board.getPlayersNumber()));
 
         int lastPlayer = board.getPlayersNumber()-1;
-        if(currentPlayerIndex == lastPlayer){
-            return true;
-        }
-        return false;
+        return currentPlayerIndex == lastPlayer;
     }
 
 
@@ -225,7 +222,7 @@ public class GameController {
 
 
     /**
-     * @Author Zainab
+     * @author Zainab
      * This method is used to continue the programs of the current player
      * It is used in executePrograms and executeStep
      */
@@ -240,7 +237,7 @@ public class GameController {
     }
 
     /**
-     * @Author Zainab
+     * @author Zainab
      * This method updates the program field visibility
      * @param player
      * @param step
@@ -360,7 +357,6 @@ public class GameController {
         }
         // Check if there is a wall in the space they want to move to
         if (nextWallHeading != null && nextWallHeading == playerHeading.getOpposite()) {
-            return;
         } else {
             // No walls in both spaces, move the player forward
             player.setSpace(nextSpace, true);
@@ -446,7 +442,6 @@ public class GameController {
             }
             // Check if the backup space has a wall
             if (backupWallHeading != null && backupWallHeading != playerHeading.getOpposite()) {
-                return;
             } else {
                 // No walls in both spaces, move the player to the backup space
                 player.setSpace(backupSpace, true);
@@ -472,15 +467,14 @@ public class GameController {
      */
     private Heading getWallHeading(Space space) {
         FieldAction fieldAction = space.getFieldAction();
-        if (fieldAction instanceof Wall) {
-            Wall wall = (Wall) fieldAction;
+        if (fieldAction instanceof Wall wall) {
             return wall.getHeading();
         }
         return null;
     }
 
     /**
-     * @auther Zainab.
+     * @author Zainab.
      * This method gets the next space in the direction of the player.
      * @param player
      * @return

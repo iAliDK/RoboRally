@@ -10,6 +10,7 @@ import java.util.List;
  * @author Qiao
  *
  */
+@SuppressWarnings("ALL")
 public class PlayerTemplate {
 
    

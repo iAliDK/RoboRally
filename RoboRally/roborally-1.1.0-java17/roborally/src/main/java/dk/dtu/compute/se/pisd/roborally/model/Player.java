@@ -36,7 +36,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * Class "Player" represents a player in the game.
  * It is a subject in the observer pattern, because the player is displayed in the GUI and the GUI needs to be updated, when the player changes.
  *
- * @author
+ *
  */
 public class Player extends Subject {
 
@@ -45,16 +45,14 @@ public class Player extends Subject {
 
     final public Board board;
     public int playerCounter = 1;
-    private String name;
-    private String color;
+    private final String name;
+    private final String color;
     private Space space;
     private Heading heading = SOUTH;
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
-    private boolean gameWon;
-//TODO gamecontroller gc is set to null cus it gets called before the gamecontrolelr exists in appcontroller.
-//TODO Either remove setspace from loadboard and have a seperate one for loading the players  and their spaces or. have 2 boards each.
-    private GameController gc;
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
+
+    private final GameController gc;
 
 
     /**
@@ -137,43 +135,9 @@ public class Player extends Subject {
         return name;
     }
 
-    /**
-     * Checks whether the name is a null or if it's different from the current field
-     * if not null and name not already in field, it sets the field to the new name value passed as a parameter
-     * it then calls the method notifyChange
-     * Checks whether space is null
-     * if not null, it calls playerChanged
-     * <p>
-     * Overall, the setName method updates the name field of the object,
-     * notifies observers of the change,
-     * and updates the game board if necessary.
-     *
-     * @param name The new name to set for the player.
-     */
-    public void setName(String name) {
-        if (name != null && !name.equals(this.name)) {
-            this.name = name;
-            notifyChange();
-            if (space != null) {
-                space.playerChanged();
-            }
-        }
-    }
-
 
     public String getColor() {
         return color;
-    }
-
-    /**
-     * @param color The color chosen for the player to set.
-     */
-    public void setColor(String color) {
-        this.color = color;
-        notifyChange();
-        if (space != null) {
-            space.playerChanged();
-        }
     }
 
     /**

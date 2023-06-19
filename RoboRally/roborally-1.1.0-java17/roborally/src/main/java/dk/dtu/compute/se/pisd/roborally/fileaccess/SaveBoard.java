@@ -36,20 +36,25 @@ import java.io.*;
 import java.util.List;
 
 /**
- * ...
- *
+ * This class has the methods for saving the board and all its info into JSON files.
+ * One method is for saving online and one is for saving locally.
  * @author Qiao
  */
 public class SaveBoard {
     static Repository api = new Repository();
 
     private static final String BOARDSFOLDER = "boards";
-    private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
 
     public static BoardTemplate newTemplate = null;
 
-
+    /**
+     * The save board API method saves all the information of the game into a boardtemplate and then serializes it into a JSON file.
+     * After that it calls the API to send it to the server.
+     * @param board The board object that is getting saved.
+     * @param name The name of your JSON file.
+     * @author Qiao.
+     */
     public static void saveBoardAPI(Board board, String name) throws Exception {
         BoardTemplate boardTemplate = new BoardTemplate();
         boardTemplate.width = board.width;
@@ -77,9 +82,10 @@ public class SaveBoard {
     }
 
     /**
-     * @param board
-     * @param name
-     * @author Qiao
+     * The save board method saves all the information of the game into a boardtemplate and then serializes it into a JSON file.
+     * @param board The board object that is getting saved.
+     * @param name The name of your JSON file.
+     * @author Qiao.
      */
     public static void saveBoard(Board board, String name) {
 

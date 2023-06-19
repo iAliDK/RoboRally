@@ -130,10 +130,9 @@ public class AppController implements Observer {
     }
 
     /**
-     *
      * Shows a dialog and makes players choose number of players
      * Then it prompts for what board you want to play on.
-     * It then prompts the above method to ask for a game name and in the end it calls the api.newgame function to save the game on the server,
+     * It then prompts the above method to ask for a game name and in the end it calls the api.newgame method to save the game on the server,
      * @author Qiao.
      */
 
@@ -184,17 +183,17 @@ public class AppController implements Observer {
     }
 
     /**
-     *
-     * This method is called by the {@link RoboRally} class when game is to be saved.
-     * The method prompts the user whether to overwrite the current save or create a new one locally.
+     * The method prompts the user whether to overwrite the current save or create a new one locally when pressing the save game button.
+     * It has a bunch of if statements for making sure the JSON file is in easy to understand format.
+     * The first save it will save it as the boardname + save + random number from 1 to 1000.
+     * The subsequent saves will have .1 and then .2 and so forth. Supports loading save with a save number and continue
+     * the iteration.
      * @author Qiao.
      *
      */
     public void saveGame() {
-        // XXX needs to be implemented eventually
         if (this.gameController.board.boardName.contains("save")) {
             {
-
                 ButtonType yes = new ButtonType("Overwrite", ButtonBar.ButtonData.OK_DONE);
                 ButtonType no = new ButtonType("New save", ButtonBar.ButtonData.OTHER);
                 Alert alert = new Alert(AlertType.CONFIRMATION, "Do you wish to overwrite your current save?", yes, no);
@@ -394,7 +393,7 @@ public class AppController implements Observer {
     }
 
     /**
-     * Asks you for a gamename input to load from the online save files.
+     * Asks you for a game name input to load from the online save files.
      * @author Qiao.
      */
     public void loadOnlineGame() {
@@ -464,7 +463,7 @@ public class AppController implements Observer {
     }
 
 
-    static Repository api = new Repository();
+    static final Repository api = new Repository();
 
     /**
      * Makes the update button run the load turn with the current games gamename as parameter.
@@ -532,15 +531,7 @@ public class AppController implements Observer {
     }
     @Override
     public void update(Subject subject) {
-        // XXX do nothing for now
     }
 
-    public Object getGameController() {
-        return gameController;
-    }
-
-    public void setGameController(Object mockGameController) {
-        this.gameController = (GameController) mockGameController;
-    }
 }
 
