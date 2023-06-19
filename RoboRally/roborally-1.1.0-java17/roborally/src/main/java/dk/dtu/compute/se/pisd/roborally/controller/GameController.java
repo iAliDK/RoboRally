@@ -58,6 +58,7 @@ public class GameController {
      * @author Daniel, Ismail and Zainab.
      * Changes the current player to the next one.
      * If the current player is the last player, the first player is chosen next.
+     * @author Zainab
      */
     public boolean nextTurnAndIsLastPlayer() {
         int currentPlayerIndex = board.getPlayerNumber(board.getCurrentPlayer());
@@ -157,7 +158,6 @@ public class GameController {
         return new CommandCard(commands[random]);
     }
 
-    // XXX: V2
     /**
      * @author Zainab
      * This method checks if the player have chosen all their cards
@@ -255,6 +255,11 @@ public class GameController {
 
 
 
+    /**
+     * @Author Zainab
+     * This method is used to continue the programs of the current player
+     * It is used in executePrograms and executeStep
+     */
     private void continuePrograms() {
         Player currentPlayer = board.getCurrentPlayer();
         int step = board.getStep();
@@ -265,10 +270,17 @@ public class GameController {
 
     }
 
+    /**
+     * @Author Zainab
+     * This method updates the program field visibility
+     * @param player
+     * @param step
+     */
     private void updateProgramFieldVisibility(Player player, int step) {
         CommandCardField programField = player.getProgramField(step);
         programField.setVisible(false);
     }
+
     /**
      * @author Qiao and Zainab.
      * This method executes the next step of the current player
@@ -277,7 +289,6 @@ public class GameController {
      * <p>
      * This method is used in continuePrograms
      */
-    // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -319,11 +330,11 @@ public class GameController {
     }
 
     /**
-     * @param player This method moves the given player one step forward.
-     * @param command This method executes the given command for the given player.
+     * @param player
+     * @param command
      * @author Daniel, Ismail and Zainab.
-     * <p>
      * This method is used in executeNextStep
+     * This method executes the given command for the given player.
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player.board == board && command != null) {
@@ -348,11 +359,11 @@ public class GameController {
     
 
     /**
-     * @param player This method moves the given player two steps forward. It also checks if the space is a wall. If it is, the player is moved one step forward instead.
+     * @param player
      * @author Zainab.
-     *
-     * <p>
-     *     This method is used in executeCommand
+     * This method moves the given player one step forward.
+     * It also checks if the space is a wall.
+     * This method is used in executeCommand
      */
     public void moveForward(Player player) {
         // Get the current player and the space they are currently standing on
@@ -389,9 +400,9 @@ public class GameController {
 
 
     /**
-     * @param player This method moves the given player two steps forward.
+     * @param player
      * @author Daniel, Ismail and Zainab.
-     *
+     * This method moves the given player two steps forward.
      */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
@@ -399,7 +410,7 @@ public class GameController {
     }
 
     /**
-     * @param player This method moves the given player three steps forward.
+     * @param player
      * @author Zainab.
      * This method moves the player three spaces forward
      */
@@ -409,37 +420,36 @@ public class GameController {
     }
 
     /**
-     * @param player This method turns the given player to the right.
+     * @param player
      * @author Daniel, Ismail and Zainab.
-     *
+     * This method turns the given player to the right.
      */
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
 
     /**
-     * @param player This method turns the given player to the left.
+     * @param player
      * @author Daniel, Ismail and Zainab.
-     *
+     * This method turns the given player to the left.
      * */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
     /**
-     * @param player This method makes a U-turn for the given player.
+     * @param player
      * @author Zainab.
-     *
+     * This method makes a U-turn for the given player.
      * */
     public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().prev().prev());
     }
 
     /**
-     * @param player This method moves the given player one step backwards without changing the heading.
+     * @param player
      * @author Zainab.
-     *
-     * without changing the heading
+     * This method moves the given player one step backwards without changing the heading.
      */
     public void backUp(@NotNull Player player) {
             // Get the current player and the space they are currently standing on
@@ -474,11 +484,23 @@ public class GameController {
             }
         }
 
+    /**
+     * @auther Zainab.
+     * This method gets the space behind the player.
+     * @param player
+     * @return
+     */
     private Space getBackupSpace(Player player) {
     Space backUpSpace = board.getSpaceBehind(player.getSpace(), player.getHeading());
     return backUpSpace;
     }
 
+    /**
+     *  this method gets the heading of the wall in the space.
+     * @auther Zainab.
+     * @param space
+     * @return
+     */
     private Heading getWallHeading(Space space) {
         FieldAction fieldAction = space.getFieldAction();
         if (fieldAction instanceof Wall) {
@@ -488,6 +510,12 @@ public class GameController {
         return null;
     }
 
+    /**
+     * @auther Zainab.
+     * This method gets the next space in the direction of the player.
+     * @param player
+     * @return
+     */
     private Space getNextSpace(Player player) {
         Space nextSpace = board.getNeighbour(player.getSpace(), player.getHeading());
         return nextSpace;
@@ -530,7 +558,6 @@ public class GameController {
         if (phase == Phase.PLAYER_INTERACTION && currentPlayer != null) {
             board.setPhase(Phase.ACTIVATION);
 
-            // We have made a switch cases?
             // execute selected option for current player
             switch (command) {
                 case LEFT -> executeCommand(currentPlayer, Command.LEFT);
@@ -555,56 +582,10 @@ public class GameController {
 
             CommandCard card = currentPlayer.getProgramField(step).getCard();
             if (card != null) {
-                //continuePrograms();
                 if (board.getPhase() == Phase.ACTIVATION && !board.isStepMode()) {
                     updateProgramFieldVisibility(currentPlayer, step);
-                    //return;
-                }
-                //return;
-            }
-        }
-
-            /*
-            if (phase == Phase.ACTIVATION && currentPlayer != null) {
-                executeNextStep();
-                board.setPhase(Phase.PROGRAMMING);
-
-                //executeNextStep(); // move to next program card
-            }*/
-
-    }
-
-   /*
-    private void activateFieldAction() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player currentPlayer = board.getPlayer(i);
-            Space currentSpace = currentPlayer.getSpace();
-            for (FieldAction fiac : currentSpace.getActions()) {
-                if (fiac instanceof ConveyorBelt) {
-                    fiac.doAction(this, currentSpace);
                 }
             }
         }
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player currentPlayer = board.getPlayer(i);
-            Space currentSpace = currentPlayer.getSpace();
-            for (FieldAction fiac : currentSpace.getActions()) {
-                if (!(fiac instanceof Gear)) {
-                    fiac.doAction(this, currentSpace);
-                }
-            }
-        }
-    }
-
-
-    */
-
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
     }
 }
