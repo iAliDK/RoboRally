@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import static javax.swing.UIManager.get;
 
 /**
+ * @author Ismail
  * This class implements a conveyor belt on board. It has a speed and a heading.
  */
 public class ConveyorBelt extends FieldAction {
@@ -37,6 +38,7 @@ public class ConveyorBelt extends FieldAction {
     private Heading heading;
 
     /**
+     * @author Ismail
      * Constructor for ConveyorBelt
      *
      * @param speed   the speed of the conveyor belt
@@ -48,6 +50,7 @@ public class ConveyorBelt extends FieldAction {
     }
 
     /**
+     * @author Ismail
      * Returns the speed of the conveyor belt
      *
      * @return the speed of the conveyor belt
@@ -58,6 +61,7 @@ public class ConveyorBelt extends FieldAction {
     }
 
     /**
+     * @author Ismail
      * Returns the heading of the conveyor belt
      *
      * @return the heading of the conveyor belt
@@ -67,6 +71,7 @@ public class ConveyorBelt extends FieldAction {
     }
 
     /**
+     * @author Ismail
      * Sets the heading of the conveyor belt
      *
      * @param heading the heading of the conveyor belt
@@ -76,6 +81,7 @@ public class ConveyorBelt extends FieldAction {
     }
 
     /**
+     * @author Ismail
      * Executes the field action for a given space. In order to be able to do
      *
      * @param gameController the gameController of the respective game

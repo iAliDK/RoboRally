@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
+ * @author Zainab
  * This class implements a wall on board. It has a heading.
  */
 public class Wall extends FieldAction{
@@ -12,6 +13,7 @@ public class Wall extends FieldAction{
     private Heading heading;
 
     /**
+     * @author Zainab
      * Constructor for Wall
      * @param heading the heading of the wall
      */
@@ -20,7 +22,7 @@ public class Wall extends FieldAction{
     }
 
     /**
-     *
+     * @author Zainab
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
      * @return
@@ -31,6 +33,7 @@ public class Wall extends FieldAction{
     }
 
     /**
+     * @author Zainab
      * @return the heading of the wall.
      */
     public Heading getHeading() {

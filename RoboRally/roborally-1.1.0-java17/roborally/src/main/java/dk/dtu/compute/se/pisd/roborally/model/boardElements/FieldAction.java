@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
+ * @author Ismail
  * This is the abstract class for all field actions.
  * A field action is an action that is executed when a robot enters a field.
  */
@@ -32,6 +33,7 @@ public abstract class FieldAction {
 
 
     /**
+     * @author Ismail
      * Executes the field action for a given space. In order to be able to do
      * that the GameController associated with the game is passed to this method.
      *
