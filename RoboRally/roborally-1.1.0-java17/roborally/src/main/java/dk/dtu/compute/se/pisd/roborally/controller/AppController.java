@@ -58,7 +58,7 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.SaveBoard.saveBoard;
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("testboard", "defaultboard", "javaboard", "manualboard", "bermuda","factory");
+    final private List<String> GAMEBOARD_OPTIONS = Arrays.asList("bermuda","factory","testboard");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     final private RoboRally roboRally;
     public static String gameName = null;
