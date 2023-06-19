@@ -49,8 +49,6 @@ public class BoardView extends VBox implements ViewObserver {
 
     private final Label statusLabel;
 
-    private SpaceEventHandler spaceEventHandler;
-
     /**
      * The event handler for mouse clicks on a space.
      * <p>
