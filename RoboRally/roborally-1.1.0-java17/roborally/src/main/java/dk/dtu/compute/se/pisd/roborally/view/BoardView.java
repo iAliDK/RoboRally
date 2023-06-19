@@ -46,7 +46,6 @@ public class BoardView extends VBox implements ViewObserver {
     private final SpaceView[][] spaces;
 
     private final PlayersView playersView;
-
     private final Label statusLabel;
 
     /**

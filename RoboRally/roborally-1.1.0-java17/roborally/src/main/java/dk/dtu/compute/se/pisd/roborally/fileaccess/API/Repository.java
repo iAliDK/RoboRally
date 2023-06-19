@@ -12,8 +12,6 @@ import dk.dtu.compute.se.pisd.roborally.model.boardElements.FieldAction;
 public class Repository {
 
     SaveClient client = new SaveClient();
-
-
     /**
      *
      * Makes the SaveClient send a post request with the pathname that is on saves/saveName.

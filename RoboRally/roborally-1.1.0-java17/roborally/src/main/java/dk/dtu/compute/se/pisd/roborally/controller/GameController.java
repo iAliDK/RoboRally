@@ -63,54 +63,11 @@ public class GameController {
         return currentPlayerIndex == lastPlayer;
     }
 
-
-    /**
-     * @param space the space to which the current player should move
-     * @author Daniel, Ismail and Zainab.
-     * This is just some dummy controller operation to make a simple move to see something
-     * happening on the board. This method should eventually be deleted!
-     */
-
-    //Musseclick
-    public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        if (space.board == board) {
-
-            Player currentPlayer = board.getCurrentPlayer();
-            if (currentPlayer != null && space.getPlayer() == null) {
-                currentPlayer.setSpace(space, true);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
-                board.setCurrentPlayer(board.getPlayer(playerNumber));
-            }
-        }
-    }
-
-
-    // TODO Assignment V1: method should be implemented by the students:
-    //   - the current player should be moved to the given space
-    //     (if it is free()
-    //   - and the current player should be set to the player
-    //     following the current player
-    //   - the counter of moves in the game should be increased by one
-    //     if the player is moved
-
-        /*
-        // Checks whether the space is free
-        if (space.getPlayer() != null) {
-            return;
-        }
-        // Moves player to chosen space
-        board.getCurrentPlayer().setSpace(space);
-
-         */
-
-
-    // XXX: V2
     /**
      * It sets the phase to programming, the current player to the first player and the step to 0
      * It also sets the cards in the program field to null and the cards in the card field to random cards
      * It is used in executeCommandOptionAndContinue and executeNextStep.
      */
-
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -133,8 +90,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
-
     /**
      * This method generates a random command card
      * It is used in executeCommandOptionAndContinue and executeNextStep.
@@ -150,7 +105,6 @@ public class GameController {
      * This method checks if the player have chosen all their cards
      * @return true if all cards have been chosen, false if not
      */
-    // Lav en metode der tjekker om alle spillere har valgt alle deres kort
     public boolean allCardsChosen() {
         Player player = board.getCurrentPlayer();
 
@@ -159,7 +113,7 @@ public class GameController {
                 return false;
             }
         }
-        return true; // All cards have been chosen
+        return true;
     }
 
     /**
@@ -190,7 +144,6 @@ public class GameController {
      * It is used in executeCommandOptionAndContinue and executeNextStep
      * @param register the register to which the program fields should be made visible to
      */
-    // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -207,7 +160,6 @@ public class GameController {
     public void executePrograms()  {
         board.setStepMode(false);
         continuePrograms();
-
     }
 
 
@@ -218,8 +170,6 @@ public class GameController {
         board.setStepMode(true);
         continuePrograms();
     }
-
-
 
     /**
      * @author Zainab
@@ -233,7 +183,6 @@ public class GameController {
             updateProgramFieldVisibility(currentPlayer, step);
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
-
     }
 
     /**
@@ -318,11 +267,9 @@ public class GameController {
                 case BACK_UP -> this.backUp(player);
                 default -> {
                 }
-                // DO NOTHING (for now)
             }
         }
     }
-    
 
     /**
      * @param player
@@ -362,7 +309,6 @@ public class GameController {
             player.setSpace(nextSpace, true);
         }
     }
-
 
     /**
      * @param player

@@ -113,7 +113,6 @@ public class Space extends Subject {
 
     /**
      * Sets the player on this space.
-     * DO NOT CALL THIS TO MOVE PLAYER. USE SET SPACE.
      * @param player the player to be set on this space
      */
     public void setPlayer(Player player, GameController gc, boolean runFieldAction) {
@@ -125,8 +124,6 @@ public class Space extends Subject {
         notifyChange();
     }
 
-
-
     private void runFieldAction(GameController gc) {
         if (fieldAction != null) {
             fieldAction.doAction(gc, this);
@@ -134,9 +131,6 @@ public class Space extends Subject {
     }
 
     void playerChanged() {
-        // This is a minor hack; since some views that are registered with the space
-        // also need to update when some player attributes change, the player can
-        // notify the space of these changes by calling this method.
         notifyChange();
     }
 

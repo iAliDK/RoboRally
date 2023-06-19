@@ -66,7 +66,6 @@ public class AppController implements Observer {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = ".json";
 
-    // private ArrayList<GameWalls> wall;
     private GameController gameController;
 
     //Variables for saves
@@ -74,6 +73,8 @@ public class AppController implements Observer {
     int inc = 0;
     String suffix = ("." + inc);
     int noPlayers = 0;
+    static final Repository api = new Repository();
+
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -135,7 +136,6 @@ public class AppController implements Observer {
      * It then prompts the above method to ask for a game name and in the end it calls the api.newgame method to save the game on the server,
      * @author Qiao.
      */
-
     public void newGame() {
 
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -409,7 +409,6 @@ public class AppController implements Observer {
         }
     }
 
-
     /**
      * This method is called by the {@link RoboRally} class when game is to be stopped.
      * @return true if the game was stopped, false if the game was not running.
@@ -426,7 +425,6 @@ public class AppController implements Observer {
     /**
      * Exits the application, prompts the user whether they are sure to exit the application.
      */
-
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -446,6 +444,10 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * Shows an alert once someone wins the game.
+     * @param player
+     */
     public static void gameWon(Player player){
             Alert winner = new Alert(AlertType.INFORMATION);
             winner.setTitle(player.getName() + " won.");
@@ -457,13 +459,9 @@ public class AppController implements Observer {
     /**
      * Returns true if there is currently a game running, false otherwise.
      */
-
     public boolean isGameRunning() {
         return gameController != null;
     }
-
-
-    static final Repository api = new Repository();
 
     /**
      * Makes the update button run the load turn with the current games gamename as parameter.
@@ -471,7 +469,6 @@ public class AppController implements Observer {
     public  void updateButton() {
         loadTurn(gameName);
     }
-
 
     /**
      * It loads the save file from the server by getting the boardtemplate with the gamename.

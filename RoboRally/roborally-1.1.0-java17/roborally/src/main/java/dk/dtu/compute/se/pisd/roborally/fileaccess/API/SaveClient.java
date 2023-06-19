@@ -78,7 +78,6 @@ public class SaveClient {
 
     }
 
-
     /**
      * The sendPutRequest method attempts to send the JSON file as a string to the path given asynchronously.
      * It builds the HttpRequest, sets the body as a string containing jsonInput, the uri as the serverUrl + path given.
@@ -105,5 +104,4 @@ public class SaveClient {
             return false;
         }
     }
-
 }

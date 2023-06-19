@@ -51,7 +51,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
  * space changes.
  */
 public class SpaceView extends StackPane implements ViewObserver {
-
     final public static int SPACE_HEIGHT = 60; // 60; // 75;
     final public static int SPACE_WIDTH = 60;  // 60; // 75;
 
@@ -175,10 +174,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 ///////////////////////////////GEAR//////////////////////////////////////////
 
 
-            //Heading gears = space.getHeading();
-
             if (space.getFieldAction().getClass().equals(Gear.class)) {
-                //if(space.setIsGear(true)) {
                 Gear gear =  (Gear) space.getFieldAction();
                 if (gear.isClockwise()) {
                     String gearClockwise = "-fx-background-image: url('gearClockwise.png');" +
@@ -243,7 +239,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
 
-        // This space view should listen to changes of the space
         space.attach(this);
         update(space);
     }
@@ -291,10 +286,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
         updatePlayer();
-        //WallView.drawWall(this, space);
     }
-
-
     public void updateSpace() {
         Image image = new Image("file:src/main/resources/flag.png");
         Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);

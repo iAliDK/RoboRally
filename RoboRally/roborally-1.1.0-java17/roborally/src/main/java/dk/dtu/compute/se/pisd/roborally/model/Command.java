@@ -50,8 +50,6 @@ import java.util.List;
  */
 public enum Command {
 
-    // This is a very simplistic way of realizing different commands.
-
     FORWARD("Fwd"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),

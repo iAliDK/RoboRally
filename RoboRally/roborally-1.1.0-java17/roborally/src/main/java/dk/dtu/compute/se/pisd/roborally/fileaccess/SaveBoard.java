@@ -29,10 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.API.Repository;
-
-
 import java.io.*;
-
 import java.util.List;
 
 /**
@@ -77,7 +74,6 @@ public class SaveBoard {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             boardTemplate.players.add(players.get(i).createTemplate());
         }
-        //TODO: savename
         api.putBoardTemplate(boardTemplate, name);
     }
 
@@ -111,19 +107,8 @@ public class SaveBoard {
             }
         }
         ClassLoader classLoader = SaveBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
-
         String filename = classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + JSON_EXT;
         boardTemplate.saveName = filename;
-        // In simple cases, we can create a Gson object with new:
-        //
-        //   Gson gson = new Gson();
-        //
-        // But, if you need to configure it, it is better to create it from
-        // a builder (here, we want to configure the JSON serialisation with
-        // a pretty printer):
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
                 setPrettyPrinting();

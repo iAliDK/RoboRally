@@ -64,27 +64,20 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PlayerView extends Tab implements ViewObserver {
 
-    private Player player;
-
-    private VBox top;
-
-    private Label programLabel;
-    private GridPane programPane;
-    private Label cardsLabel;
-    private GridPane cardsPane;
-
-    private CardFieldView[] programCardViews;
-    private CardFieldView[] cardViews;
-
-    private VBox buttonPanel;
-
-    private Button finishButton;
-    private Button executeButton;
-    private Button stepButton;
-
-    private VBox playerInteractionPanel;
-
-    private GameController gameController;
+    private final Player player;
+    private final VBox top;
+    private final Label programLabel;
+    private final GridPane programPane;
+    private final Label cardsLabel;
+    private final GridPane cardsPane;
+    private final CardFieldView[] programCardViews;
+    private final CardFieldView[] cardViews;
+    private final VBox buttonPanel;
+    private final Button finishButton;
+    private final Button executeButton;
+    private final Button stepButton;
+    private final VBox playerInteractionPanel;
+    private final GameController gameController;
 
     /**
      * @author Daniel, Ismail and Zainab.
@@ -120,11 +113,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 programPane.add(programCardViews[i], i, 0);
             }
         }
-
-        // XXX  the following buttons should actually not be on the tabs of the individual
-        //      players, but on the PlayersView (view for all players). This should be
-        //      refactored.
-
         finishButton = new Button("Finish Programming");
         finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
 
@@ -137,8 +125,6 @@ public class PlayerView extends Tab implements ViewObserver {
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
         buttonPanel.setSpacing(3.0);
-        // programPane.add(buttonPanel, Player.NO_REGISTERS, 0); done in update now
-
         playerInteractionPanel = new VBox();
         playerInteractionPanel.setAlignment(Pos.CENTER_LEFT);
         playerInteractionPanel.setSpacing(3.0);
@@ -212,8 +198,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 switch (player.board.getPhase()) {
                     case INITIALISATION:
                         finishButton.setDisable(true);
-                        // XXX just to make sure that there is a way for the player to get
-                        //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
                         stepButton.setDisable(true);
                         break;
@@ -235,8 +219,6 @@ public class PlayerView extends Tab implements ViewObserver {
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
                 }
-
-
             } else {
                 if (!programPane.getChildren().contains(playerInteractionPanel)) {
                     programPane.getChildren().remove(buttonPanel);
@@ -245,10 +227,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 playerInteractionPanel.getChildren().clear();
 
                 if (player.board.getCurrentPlayer() == player) {
-                    // TODO Assignment V3: these buttons should be shown only when there is
-                    //      an interactive command card, and the buttons should represent
-                    //      the player's choices of the interactive command card. The
-                    //      following is just a mockup showing two options
                     Command currentCommand = player.getProgramField(player.board.getStep()).getCard().command;
                     for (Command command : currentCommand.getOptions()) {
                         Button optionButton = new Button(command.toString());

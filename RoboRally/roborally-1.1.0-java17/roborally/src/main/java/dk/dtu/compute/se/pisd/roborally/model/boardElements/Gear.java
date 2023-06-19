@@ -33,7 +33,7 @@ public class Gear extends FieldAction {
         this.heading = heading;
     }
 
-    private boolean isClockwise;
+    private final boolean isClockwise;
 
     /**
      * @author Ismail
@@ -56,7 +56,6 @@ public class Gear extends FieldAction {
 
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        Heading heading = getHeading();
         Player currentPlayer = space.getPlayer();
         if (currentPlayer != null) {
             if(isClockwise){
@@ -66,7 +65,6 @@ public class Gear extends FieldAction {
                 gameController.turnLeft(currentPlayer);
                 return true;
             }
-            //return false;
         }
         return false;
     }
