@@ -70,13 +70,6 @@ public enum Command {
 
     final public String displayName;
 
-    // XXX Assignment P3
-    // Command(String displayName) {
-    //     this.displayName = displayName;
-    // }
-    //
-    // replaced by the code below:
-
     final private List<Command> options;
 
     Command(String displayName, Command... options) {
@@ -85,21 +78,6 @@ public enum Command {
     }
 
     /**
-     * Returns true, if the command is interactive, i.e., if the
-     * command has options, which can be chosen by the user.
-     * <p>
-     *      Interactive commands have a method {@link #getOptions()},
-     *      which returns the list of options.
-     *      <p>
-     *          The method returns true for all commands, which have
-     *          options, and false for all other commands.
-     *          <p>
-     *              The method is used in the GUI to decide, if the
-     *              command should be displayed as a button or as a
-     *              menu item.
-     *              <p>
-     *                  @return true, if the command is interactive
-     *
      * @return true, if the command is interactive or false, if the command is not interactive
      */
     public boolean isInteractive() {
@@ -107,16 +85,6 @@ public enum Command {
     }
 
     /**
-     * Returns the list of options for an interactive command.
-     * <p>
-     *     The method returns null, if the command is not interactive.
-     *     <p>
-     *         The method is used in the GUI to display the options of
-     *         an interactive command.
-     *         <p>
-     *             @return the list of options for an interactive command
-     *             or null, if the command is not interactive
-     *             <p>
      * @return the list of options for an interactive command or null, if the command is not interactive
      */
     public List<Command> getOptions() {

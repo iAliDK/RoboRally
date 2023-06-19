@@ -115,30 +115,6 @@ public class Player extends Subject {
     }
 
     /**
-     * Method "isGameWon" returns the gameWon of the player object.
-     * @return The gameWon of the player object as a boolean.
-     */
-    public boolean isGameWon() {
-        return gameWon;
-    }
-
-    /**
-     * Method "setGameWon" returns the gameWon of the player object.
-     * @param gameWon The gameWon of the player object as a boolean.
-     */
-    public void setGameWon(boolean gameWon) {
-        this.gameWon = gameWon;
-    }
-
-    /**
-     * Method "playerCounterMethod" returns the player counter of the player object.
-     * @param player The player object.
-     */
-    public void playerCounterMethod(Player player) {
-        int playerCounter = player.getPlayerCounter();
-    }
-
-    /**
      * Method "getPlayerCounter" returns the player counter of the player object.
      *
      * @return The player counter of the player object as an integer.
@@ -155,14 +131,6 @@ public class Player extends Subject {
         this.playerCounter = playerCounter;
     }
 
-  /*  private boolean complete1;
-
-    public void setComplete1(boolean completion1){
-        complete1 = completion1;
-    }
-    public boolean getComplete1(){
-        return complete1;
-    } */
 
     /**
      * Method "getName" returns the name of the player object.
@@ -230,25 +198,11 @@ public class Player extends Subject {
             getSpace().setPlayer(null, gc, false);
             }
         }
-
         this.space = space;
         {
             space.setPlayer(this, gc, runFieldAction);
             }
         notifyChange();
-
-
-       /* Space oldSpace = this.space;
-        if (space != oldSpace && (space == null || space.board == this.board)) {
-            this.space = space;
-            if (oldSpace != null) {
-                oldSpace.setPlayer(null, gc, false);
-            }
-            if (space != null) {
-                space.setPlayer(this, gc, true);
-            }
-            notifyChange();
-        } */
     }
 
 

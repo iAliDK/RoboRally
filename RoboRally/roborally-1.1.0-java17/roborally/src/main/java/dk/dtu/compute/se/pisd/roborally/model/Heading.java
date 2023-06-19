@@ -43,6 +43,7 @@ public enum Heading {
     }
 
     /**
+     * @author Zainab
      * @return the heading opposite to this heading
      */
     public Heading getOpposite() {

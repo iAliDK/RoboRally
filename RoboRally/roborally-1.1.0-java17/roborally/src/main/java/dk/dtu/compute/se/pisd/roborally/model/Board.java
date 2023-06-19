@@ -64,15 +64,6 @@ public class Board extends Subject  {
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                /*
-                if(x == 1 && y == 2){
-                    spaces[x][y] = new Space(this, x, y, 1);
-                    return;
-                }
-                if(x == 1 && y == 3){
-                    spaces[x][y] = new Space(this, x, y, 2);
-                    return;
-                } */
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -179,7 +170,6 @@ public class Board extends Subject  {
             return null;
         }
     }
-
 
     /**
      * Returns the current player.
@@ -294,7 +284,6 @@ public class Board extends Subject  {
         int x = space.x;
         int y = space.y;
         switch (heading) {
-            // TODO LOOK BACK AT THIS
             case SOUTH -> y = (y + 1) % height;
             case WEST -> x = (x + width - 1) % width;
             case NORTH -> y = (y + height - 1) % height;

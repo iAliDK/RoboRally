@@ -42,9 +42,6 @@ public class RoboRally extends Application {
 
     private Stage stage;
     private BorderPane boardRoot;
-    // private RoboRallyMenuBar menuBar;
-
-    // private AppController appController;
 
     public static void main(String[] args) {
         launch(args);
@@ -113,11 +110,5 @@ public class RoboRally extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-
-        // XXX just in case we need to do something here eventually;
-        //     but right now the only way for the user to exit the app
-        //     is delegated to the exit() method in the AppController,
-        //     so that the AppController can take care of that.
     }
-
 }

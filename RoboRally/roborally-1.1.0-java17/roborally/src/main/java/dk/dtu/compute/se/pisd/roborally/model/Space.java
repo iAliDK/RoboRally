@@ -59,8 +59,6 @@ public class Space extends Subject {
 
     private List<FieldAction> actions = new ArrayList();
     private boolean isConveyorBelt;
-
-
     private boolean speed;
 
 
@@ -76,7 +74,6 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
-
     }
 
 
@@ -98,6 +95,7 @@ public class Space extends Subject {
     }
 
     /**
+     * @author Zainab
      * @return the heading of this space.
      */
     public Heading getHeading() {
@@ -121,31 +119,18 @@ public class Space extends Subject {
         return player;
     }
 
-
     /**
      * Sets the player on this space.
      * DO NOT CALL THIS TO MOVE PLAYER. USE SET SPACE.
      * @param player the player to be set on this space
      */
     public void setPlayer(Player player, GameController gc, boolean runFieldAction) {
-
-
-        //TODO: player push other player
-        /*
-        Player oldPlayer = this.player;
-        if (oldPlayer != null && player != null) {
-            // this should actually not happen
-            Space nextSpace = board.getNeighbour(oldPlayer.getSpace(), player.getHeading());
-           // nextSpace.setPlayer(oldPlayer, gc, true);
-            oldPlayer.setSpace(nextSpace, true);
-        } */
         this.player = player;
 
         if(runFieldAction){
             runFieldAction(gc);
         }
         notifyChange();
-
     }
 
 
@@ -175,45 +160,8 @@ public class Space extends Subject {
         this.actions = actions;
     }
 
-    /*public boolean getActions() {
-            return actions;
-        }*/
     public List<FieldAction> getActions() {
         return actions;
     }
-
-    /**
-     * @param x      the x-coordinate of the space
-     * @param y      the y-coordinate of the space
-     * @param heading the heading of the space
-     * @param isWall whether the space is a wall
-     */
-    public void setSpaceProperties(int x, int y, Heading heading, boolean isWall) {
-        Space space = spaces[x][y];
-        space.setHeading(heading);
-        //space.setIsWall(isWall);
-
-        // Perform any additional operations or logic if needed
-    }
-/*
-    public String getImagePath(boolean isWallHeading) {
-        if (isWallHeading) {
-            if (this.equals(SOUTH)) {
-                return "wallSouth.png";
-
-            } else if (this.equals(WEST)) {
-                return "wallWest.png";
-
-            } else if (this.equals(NORTH)) {
-                return "wallNorth.png";
-
-            } else if (this.equals(EAST)) {
-                return "wallEast.png";
-            }
-        }
-        return ""; // Return an empty string if it is not a wall heading
-    }
-
- */
 
 }
